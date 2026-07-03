@@ -43,17 +43,30 @@ Completed in this batch:
 - Updated image alt text.
 - Kept routes, auth, Supabase and AI logic untouched.
 
+Reason: this batch focuses only on visible product identity and should remain low-risk.
+
+## Batch 3 — Lovable Runtime Audit
+
+Goal: map all confirmed Lovable-related build/runtime touchpoints before removing anything dangerous.
+
+Completed in this batch:
+
+- Added `docs/LOVABLE_REMOVAL_PLAN.md`.
+- Classified Lovable packages by risk.
+- Identified Vite/TanStack config as the highest-risk dependency.
+- Identified Lovable-specific error reporting as a low-risk replacement target.
+- Identified root metadata and Supabase generated copy as safe cleanup targets.
+- Defined safe phased removal order.
+
 Not changed yet in this batch:
 
-- Lovable runtime dependencies.
-- Lovable Vite/TanStack configuration.
+- Package removal.
+- Vite config replacement.
 - Auth implementation.
-- Supabase integration.
+- Supabase runtime behavior.
 - AI Gateway implementation.
-- Final logo asset.
-- Full design-system color update.
 
-Reason: this batch focuses only on visible product identity and should remain low-risk.
+Reason: this batch is a map before the surgery.
 
 ## Validation
 
@@ -64,13 +77,14 @@ npm run build
 npm run dev
 ```
 
-## Later Batch — Remove Lovable
+## Next Batch — Safe Internal Runtime Rebrand
 
 Planned changes:
 
-- Replace Lovable Vite config with explicit project-owned Vite/TanStack config.
-- Remove `@lovable.dev/cloud-auth-js` when auth is replaced or isolated.
-- Remove Lovable-specific folders and comments.
-- Regenerate lockfiles after dependency cleanup.
+- Create `src/lib/error-reporting.ts`.
+- Replace `reportLovableError` with `reportAppError`.
+- Update root metadata to ShinGiTai Language.
+- Update Supabase missing environment message.
+- Keep Lovable packages installed for now.
 
-This should happen after visible branding is stable.
+This is the final low-risk step before the Vite config extraction spike.
