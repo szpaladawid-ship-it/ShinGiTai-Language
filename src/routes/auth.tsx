@@ -4,7 +4,6 @@ import { Sparkles, Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,16 +57,17 @@ function AuthPage() {
   const handleGoogle = async () => {
     setLoading(true);
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/dashboard",
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: window.location.origin + "/dashboard",
+        },
       });
-      if (result.error) {
+
+      if (error) {
         toast.error("Google sign-in failed. Please try again.");
         setLoading(false);
-        return;
       }
-      if (result.redirected) return;
-      navigate({ to: "/dashboard" });
     } catch {
       toast.error("Something went wrong with Google sign-in.");
       setLoading(false);
@@ -89,7 +89,7 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Welcome to LinguaVerse! Your journey begins now.");
+        toast.success("Welcome to ShinGiTai Language! Your journey begins now.");
         navigate({ to: "/dashboard" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
