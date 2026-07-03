@@ -1,6 +1,6 @@
 # ShinGiTai Language - Vite Switch Test Protocol
 
-Status: Batch 5.3 Switch Test
+Status: Batch 5.4A Switch Fix
 Owner: ArticSakuraTech / ShinGiTai Holding Groupe
 Last updated: 2026-07-03
 
@@ -22,25 +22,36 @@ Do not merge it until Dawid confirms local validation.
 
 `vite.config.ts` now uses direct project dependencies instead of the previous generated configuration wrapper.
 
-The new config is intended to preserve:
+The config was updated after the first local test:
 
-- TanStack Start,
-- React,
-- Tailwind,
-- path aliases,
-- custom server entry,
-- dependency dedupe.
+- TanStack Start now runs before React.
+- Vite native tsconfig path resolution is used.
+- `vite-tsconfig-paths` is no longer imported by the active config.
 
-## Local Test Commands
+## Local Build/Dev Test Commands
+
+Use these first:
 
 ```bash
 git fetch
 git checkout vite-config-switch-test
+git pull
 npm install
-npm run lint
 npm run build
 npm run dev
 ```
+
+## Lint Status
+
+`npm run lint` currently reports many existing formatting issues across the codebase.
+
+Those are mostly Prettier formatting problems and should be handled as a separate quality sprint.
+
+For this Vite extraction test, the key validation is:
+
+- build starts and completes,
+- dev server starts,
+- app loads in browser.
 
 ## Manual Checks
 
