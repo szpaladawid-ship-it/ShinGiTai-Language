@@ -73,15 +73,29 @@ Completed in this batch:
 - Updated Supabase missing environment message.
 - Kept Lovable packages installed for now.
 
+Reason: this batch removes safe internal references while avoiding the high-risk Vite config extraction.
+
+## Batch 5.1 — Vite Extraction Audit
+
+Goal: document what the generated Vite/TanStack config currently provides and define the extraction strategy before touching runtime config.
+
+Completed in this batch:
+
+- Added `docs/VITE_EXTRACTION_AUDIT.md`.
+- Documented hidden responsibilities of the current Vite/TanStack config.
+- Documented direct dependencies already available for a project-owned config.
+- Defined server entry, alias, Tailwind, TanStack Start, Nitro and env requirements.
+- Added candidate config direction without switching the project.
+- Added spike and rollback plan.
+
 Not changed yet in this batch:
 
-- Package removal.
-- Vite config replacement.
-- Auth implementation.
-- Supabase runtime behavior.
-- AI Gateway implementation.
+- `vite.config.ts`.
+- package dependencies.
+- build scripts.
+- runtime behavior.
 
-Reason: this batch removes safe internal references while avoiding the high-risk Vite config extraction.
+Reason: this is a high-risk area, so Batch 5.1 is audit-only.
 
 ## Validation
 
@@ -97,8 +111,8 @@ npm run dev
 Planned changes:
 
 - Create a separate spike branch.
-- Replace generated Vite/TanStack config with explicit project-owned config.
+- Add a candidate project-owned Vite config.
 - Preserve TanStack Start, React, Tailwind, Nitro, aliases and server entry behavior.
-- Do not merge unless build and dev are confirmed locally.
+- Test locally before merge.
 
-This is the first high-risk Lovable removal step.
+This is the first actual high-risk Lovable removal step.
