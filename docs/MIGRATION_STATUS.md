@@ -2,7 +2,7 @@
 
 Status: Active  
 Owner: ArticSakuraTech / ShinGiTai Holding Groupe  
-Last updated: 2026-07-02
+Last updated: 2026-07-03
 
 ## Purpose
 
@@ -25,6 +25,24 @@ Completed in this batch:
 - Replaced generator-focused agent instructions with ShinGiTai project rules.
 - Documented migration direction and test commands.
 
+Reason: this batch was intentionally low-risk and should not break the current build.
+
+## Batch 2 — Visible UI Rebrand
+
+Goal: remove visible LinguaVerse identity from the public landing page and replace it with ShinGiTai Language.
+
+Completed in this batch:
+
+- Replaced landing page meta title with ShinGiTai Language.
+- Replaced Open Graph title and description.
+- Rebranded header/logo text to ShinGiTai Language.
+- Rebranded hero copy.
+- Rebranded language section copy.
+- Rebranded final CTA copy.
+- Rebranded footer copyright.
+- Updated image alt text.
+- Kept routes, auth, Supabase and AI logic untouched.
+
 Not changed yet in this batch:
 
 - Lovable runtime dependencies.
@@ -32,21 +50,12 @@ Not changed yet in this batch:
 - Auth implementation.
 - Supabase integration.
 - AI Gateway implementation.
-- Full UI copy cleanup.
+- Final logo asset.
+- Full design-system color update.
 
-Reason: this batch is intentionally low-risk and should not break the current build.
+Reason: this batch focuses only on visible product identity and should remain low-risk.
 
-## Next Batch — Visible UI Rebrand
-
-Planned changes:
-
-- Replace LinguaVerse visible copy with ShinGiTai Language.
-- Update landing page meta title and Open Graph copy.
-- Update footer copyright.
-- Update image alt text.
-- Keep routes and backend untouched.
-
-Validation:
+## Validation
 
 ```bash
 npm install
