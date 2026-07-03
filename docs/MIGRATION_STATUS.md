@@ -58,6 +58,21 @@ Completed in this batch:
 - Identified root metadata and Supabase generated copy as safe cleanup targets.
 - Defined safe phased removal order.
 
+Reason: this batch is a map before the surgery.
+
+## Batch 4 — Safe Internal Runtime Rebrand
+
+Goal: replace low-risk internal Lovable/LinguaVerse references without removing build/runtime packages yet.
+
+Completed in this batch:
+
+- Added `src/lib/error-reporting.ts` as ShinGiTai-owned app error reporting.
+- Replaced root route usage of `reportLovableError` with `reportAppError`.
+- Updated root metadata to ShinGiTai Language.
+- Updated author, Open Graph, Twitter and Apple Web App metadata.
+- Updated Supabase missing environment message.
+- Kept Lovable packages installed for now.
+
 Not changed yet in this batch:
 
 - Package removal.
@@ -66,7 +81,7 @@ Not changed yet in this batch:
 - Supabase runtime behavior.
 - AI Gateway implementation.
 
-Reason: this batch is a map before the surgery.
+Reason: this batch removes safe internal references while avoiding the high-risk Vite config extraction.
 
 ## Validation
 
@@ -77,14 +92,13 @@ npm run build
 npm run dev
 ```
 
-## Next Batch — Safe Internal Runtime Rebrand
+## Next Batch — Vite Config Extraction Spike
 
 Planned changes:
 
-- Create `src/lib/error-reporting.ts`.
-- Replace `reportLovableError` with `reportAppError`.
-- Update root metadata to ShinGiTai Language.
-- Update Supabase missing environment message.
-- Keep Lovable packages installed for now.
+- Create a separate spike branch.
+- Replace generated Vite/TanStack config with explicit project-owned config.
+- Preserve TanStack Start, React, Tailwind, Nitro, aliases and server entry behavior.
+- Do not merge unless build and dev are confirmed locally.
 
-This is the final low-risk step before the Vite config extraction spike.
+This is the first high-risk Lovable removal step.
