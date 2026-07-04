@@ -280,6 +280,36 @@ npm run lint
 npm run build
 ```
 
+### 7.3.5 — Recommendation Completion Pass
+
+Status: Completed in implementation pass.
+
+Scope:
+- Finish the first dashboard recommendation iteration with a safer loading experience.
+- Prevent temporary loading data from looking like a real empty-course recommendation.
+- Keep the work limited to the existing recommendation card and existing dashboard data.
+
+Implemented:
+- Added a dedicated `RecommendationLoadingState` to `ContinueLearningCard`.
+- Replaced the recommendation panel with neutral skeleton UI while course data is still loading.
+- Added `aria-busy` to the loading recommendation panel.
+- Replaced paragraph loading copy with a skeleton line instead of rendering empty-state text too early.
+- Kept all recommendation destinations, backend queries, auth, routes, schema, and dependencies unchanged.
+
+Acceptance:
+- The dashboard no longer briefly shows `Choose language` while course data is still loading.
+- Loading, active-course, and empty-course states are visually distinct.
+- The first recommendation system is now stable enough to move from Sprint 7 productivity work into Sprint 8 learning-experience work.
+- No backend, schema, auth, route, dependency, or cross-repository changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Guardrails
 
 - One coherent objective per commit.
@@ -290,16 +320,16 @@ npm run build
 
 ## Latest Run Summary
 
-Finished `7.3.4 — Recommendation Edge Cases and Safe Defaults` as a bounded dashboard hardening update.
+Finished `7.3.5 — Recommendation Completion Pass` as a bounded dashboard loading-state polish update.
 
 Changed files:
 - `src/components/dashboard/continue-learning-card.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The recommendation card now sanitizes XP, streak, daily goal, language name, flag, and level before rendering or branching.
-- The update prevents weird UI states from bad or incomplete dashboard data without adding backend work.
-- The update stayed frontend-only and did not change backend queries, auth, routing destinations, dependencies, schema, or other repositories.
+- The recommendation card now shows a neutral skeleton recommendation panel while course data loads instead of temporarily rendering the no-course recommendation.
+- This closes the first recommendation pass without adding backend work, schema changes, routes, dependencies, or cross-repository changes.
+- Sprint 7 productivity foundation is now ready to hand off into Sprint 8 learning-experience work after local validation.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -311,4 +341,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.5 — Recommendation Completion Pass` using existing dashboard data only.
+Start Sprint `8.1 — Learning Experience Foundation` with `8.1.1 — AI Teacher Entry UX` using existing routes and data only.
