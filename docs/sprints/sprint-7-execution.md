@@ -37,7 +37,7 @@ npm run build
 
 ### 7.2.2 — Continue Learning Card
 
-Status: In progress.
+Status: Completed in implementation pass.
 
 Scope:
 - Add a dashboard card that tells the user what to continue next.
@@ -47,18 +47,27 @@ Scope:
 Implemented:
 - Added reusable `ContinueLearningCard` component in `src/components/dashboard/continue-learning-card.tsx`.
 - Component supports loading state, empty state, active course state, and a recommended next-step CTA.
+- Wired the component into `src/routes/_authenticated/dashboard.tsx`.
+- Reused the newest active course from the existing `courses` query instead of adding backend work.
+- Updated the remaining dashboard header brand string from `LinguaVerse` to `ShinGiTai Language`.
 - No backend, schema, auth, routing, or dependency changes were made.
-
-Remaining:
-- Wire the component into `src/routes/_authenticated/dashboard.tsx` below the level progress card.
-- Pass the newest active course from the existing `courses` query.
-- Replace the remaining dashboard header brand string with `ShinGiTai Language` during the same small dashboard touch-up.
 
 Acceptance:
 - User can instantly see the next recommended learning action.
 - No backend or schema migration required.
+- Dashboard keeps working for loading, empty-course, and active-course states.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
 
 ### 7.2.3 — Today's Focus
+
+Status: Next.
 
 Scope:
 - Add a focused daily learning block.
@@ -96,11 +105,17 @@ Acceptance:
 
 ## Latest Run Summary
 
-Started 7.2.2 as a bounded dashboard productivity update.
+Finished `7.2.2 — Continue Learning Card` as a bounded dashboard productivity update.
 
 Changed files:
-- `src/components/dashboard/continue-learning-card.tsx`
+- `src/routes/_authenticated/dashboard.tsx`
 - `docs/sprints/sprint-7-execution.md`
+
+Implementation notes:
+- `ContinueLearningCard` now renders under the dashboard hero.
+- It receives the newest active course from the existing `courses` query.
+- The empty state still sends new users toward onboarding.
+- Remaining dashboard header branding now uses `ShinGiTai Language`.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -110,9 +125,6 @@ npm run lint
 npm run build
 ```
 
-Note:
-- The reusable card component is committed, but dashboard integration still needs the next small code update. A direct full-file dashboard update was blocked by the GitHub connector safety layer, so the safer next move is a targeted local patch or a smaller dashboard-only connector update.
-
 ## Next Action
 
-Finish `7.2.2 — Continue Learning Card` by importing `ContinueLearningCard` into `src/routes/_authenticated/dashboard.tsx`, deriving the newest active course from the existing `courses` query, rendering the card below level progress, and updating the remaining dashboard header brand text.
+Start `7.2.3 — Today's Focus` with a small deterministic dashboard block that recommends a simple daily plan without adding backend complexity.
