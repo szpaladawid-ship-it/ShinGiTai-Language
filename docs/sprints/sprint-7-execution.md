@@ -67,17 +67,36 @@ npm run build
 
 ### 7.2.3 — Today's Focus
 
-Status: Next.
+Status: Completed in implementation pass.
 
 Scope:
 - Add a focused daily learning block.
 - Include a compact plan such as lesson, flashcards, and speaking practice.
 - Keep the first version deterministic and stable.
 
+Implemented:
+- Added reusable `TodaysFocusCard` component in `src/components/dashboard/todays-focus-card.tsx`.
+- Added a deterministic three-step daily stack: core lesson, flashcard review, and speaking practice.
+- Wired the card into the dashboard directly below `ContinueLearningCard`.
+- Reused existing dashboard data: active course, daily goal minutes, current streak, and course loading state.
+- Added empty-course CTA toward onboarding without backend or schema changes.
+
 Acceptance:
 - Dashboard answers: "What should I do today?"
+- User sees one clear daily practice stack instead of only a feature launcher.
+- No backend, schema, auth, routing, or dependency changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
 
 ### 7.2.4 — Practice Stack
+
+Status: Next.
 
 Scope:
 - Rework scattered quick actions into an ordered practice stack.
@@ -105,17 +124,18 @@ Acceptance:
 
 ## Latest Run Summary
 
-Finished `7.2.2 — Continue Learning Card` as a bounded dashboard productivity update.
+Finished `7.2.3 — Today's Focus` as a bounded dashboard productivity update.
 
 Changed files:
+- `src/components/dashboard/todays-focus-card.tsx`
 - `src/routes/_authenticated/dashboard.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- `ContinueLearningCard` now renders below the level progress summary.
-- It receives the newest active course from the existing `courses` query.
-- The empty state still sends new users toward onboarding.
-- Remaining dashboard header branding now uses `ShinGiTai Language`.
+- `TodaysFocusCard` gives the user a stable daily plan: lesson, flashcards, speaking practice.
+- The dashboard passes only existing data into the new card.
+- Empty-course users are guided toward onboarding.
+- No database changes, route changes, auth changes, dependency changes, Forge/OpenAI/Hub changes, or broad rewrites were made.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -127,4 +147,4 @@ npm run build
 
 ## Next Action
 
-Start `7.2.3 — Today's Focus` with a small deterministic dashboard block that recommends a simple daily plan without adding backend complexity.
+Start `7.2.4 — Practice Stack` by reordering and renaming quick actions into a guided sequence without changing routes or backend behavior.
