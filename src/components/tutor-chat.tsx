@@ -46,6 +46,10 @@ function lessonPhaseLabel(messageCount: number, isBusy: boolean) {
   return "In progress";
 }
 
+function teacherStarterPrompt(languageLabel: string, level: string) {
+  return `Let's start my ${languageLabel} ${level} lesson. Give me a short explanation, then one small exercise.`;
+}
+
 export function TutorChatWindow({
   conversationId,
   initialMessages,
@@ -109,6 +113,7 @@ export function TutorChatWindow({
   const safeLevel = level.trim() || "A1";
   const languageLabel = formatLanguageCode(languageCode);
   const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
+  const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -205,11 +210,25 @@ export function TutorChatWindow({
       <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl">
           {messages.length === 0 && (
-            <div className="py-10 text-center text-sm text-muted-foreground">
-              {isTeacher
-                ? 'Your teacher is ready. Type "Let\'s start today\'s lesson" to begin a structured lesson.'
-                : "Say hello to start practicing! Try writing a greeting in your target language."}
-            </div>
+            isTeacher ? (
+              <div className="mx-auto max-w-xl py-10 text-center">
+                <p className="text-sm font-semibold text-foreground">Ready for your first step?</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Send the starter message below and the teacher will begin with a short explanation, one small exercise, and corrections after your answer.
+                </p>
+                <div className="mt-5 rounded-2xl border border-border bg-card p-4 text-left shadow-soft">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-primary">Starter message</p>
+                  <p className="mt-2 text-sm text-foreground">{starterPrompt}</p>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  You can also ask for easier examples, slower pacing, or more speaking practice at any time.
+                </p>
+              </div>
+            ) : (
+              <div className="py-10 text-center text-sm text-muted-foreground">
+                Say hello to start practicing! Try writing a greeting in your target language.
+              </div>
+            )
           )}
           {messages.map((m) => {
             const text = textOf(m);
