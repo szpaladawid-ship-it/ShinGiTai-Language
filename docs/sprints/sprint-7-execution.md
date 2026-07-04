@@ -10,10 +10,18 @@ Sprint 7 is intentionally split into small, safe changes so the repository stays
 
 ### 7.2.1 — Rebranding Foundation
 
+Status: Completed in first implementation pass.
+
 Scope:
 - Replace visible `LinguaVerse` branding with `ShinGiTai Language` in small batches.
 - Start with safe identity surfaces: metadata, header/logo text, footer, and hero copy.
 - Avoid changing auth, routing, Supabase, or dependencies.
+
+Implemented:
+- Updated landing-page metadata title and Open Graph title.
+- Updated primary logo text from `LinguaVerse` to `ShinGiTai Language`.
+- Updated hero copy, language-section copy, image alt text, final CTA, and footer copyright.
+- Kept routing, auth, Supabase, pricing structure, dependencies, and feature layout unchanged.
 
 Acceptance:
 - Landing page no longer exposes old brand in primary UI copy.
@@ -74,6 +82,22 @@ Acceptance:
 - Prefer demo/static data before backend complexity.
 - Keep the app buildable after each change.
 
+## Latest Run Summary
+
+Completed 7.2.1 as a bounded landing-page branding update.
+
+Changed files:
+- `src/routes/index.tsx`
+- `docs/sprints/sprint-7-execution.md`
+
+Local validation still required because this run only used the GitHub connector:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Next Action
 
-Start with `7.2.1 — Rebranding Foundation` by updating the smallest visible brand surface first, then run local lint/build checks.
+Start `7.2.2 — Continue Learning Card` by locating the dashboard route/component and adding a UI-only card with static/demo learning-progress data. Do not add backend schema changes yet.
