@@ -143,18 +143,49 @@ npm run lint
 npm run build
 ```
 
+### 8.1.5 — Teacher Lesson Starter Message Copy
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the first empty active-lesson message after a lesson has been created.
+- Keep the change limited to existing chat UI copy and presentation.
+- Avoid backend, schema, auth, route, dependency, and AI prompt changes.
+
+Implemented:
+- Updated `src/components/tutor-chat.tsx` only.
+- Replaced the single-line AI Teacher empty message with a small guided starter panel.
+- Added a dynamic starter message using the current lesson language code and level.
+- Explained what the teacher will do next: short explanation, one small exercise, and corrections after the user answers.
+- Kept conversation practice empty-state copy separate and unchanged.
+- No AI system prompt, chat transport, server function, Supabase schema, auth, routing, dependency, Forge, OpenAI, Hub, or unrelated repository changes were made.
+
+Acceptance:
+- A newly created AI Teacher lesson now gives the user a clear first message to send.
+- The user understands what will happen after sending the starter message.
+- Conversation practice mode is not affected.
+- The change remains UI/copy-only and bounded to the existing chat component.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.4 — Teacher Empty Lesson Starter Prompt` as a bounded AI Teacher empty-state improvement.
+Finished `8.1.5 — Teacher Lesson Starter Message Copy` as a bounded active-lesson empty-state improvement.
 
 Changed files:
-- `src/routes/_authenticated/teacher.index.tsx`
+- `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- The AI Teacher entry screen now includes starter prompt examples for first-use confidence.
-- The update is UI-only and uses static copy, so it does not affect backend behavior or lesson creation.
-- No AI prompt, server function, Supabase schema, auth, routing, dependency, Forge, OpenAI, Hub, or other repository changes were made.
+- New AI Teacher lessons now show a clearer starter panel instead of a single text sentence.
+- The starter message adapts to the selected language code and level already present in the chat route.
+- The update is frontend-only and does not change AI behavior, persistence, routes, schema, auth, dependencies, or any non-Language repository.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -166,4 +197,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.5 — Teacher Lesson Starter Message Copy` using existing chat UI only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.6 — Teacher Input Placeholder and Microcopy` using existing chat UI only.
