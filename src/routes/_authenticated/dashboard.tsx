@@ -32,6 +32,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/notification-bell";
 import { ContinueLearningCard } from "@/components/dashboard/continue-learning-card";
+import { TodaysFocusCard } from "@/components/dashboard/todays-focus-card";
 import dashboardImg from "@/assets/learn-dashboard.jpg";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -134,6 +135,7 @@ function DashboardPage() {
   const xpIntoLevel = xp % 500;
   const goal = profile?.daily_goal_minutes ?? 15;
   const activeCourse = courses?.[0];
+  const activeLanguageName = activeCourse?.languages?.name ?? activeCourse?.language_code;
   const continueLearningCourse = activeCourse
     ? {
         languageName: activeCourse.languages?.name ?? activeCourse.language_code,
@@ -245,6 +247,13 @@ function DashboardPage() {
         </div>
 
         <ContinueLearningCard course={continueLearningCourse} isLoading={coursesLoading} />
+        <TodaysFocusCard
+          activeLanguageName={activeLanguageName}
+          dailyGoalMinutes={goal}
+          streak={stats?.current_streak ?? 0}
+          hasActiveCourse={Boolean(activeCourse)}
+          isLoading={coursesLoading}
+        />
 
         {/* Quick actions */}
         <h2 className="mt-10 text-xl font-bold tracking-tight">Jump back in</h2>
