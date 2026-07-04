@@ -11,13 +11,68 @@ type ContinueLearningCourse = {
   xp?: number;
 };
 
+type NextStepRecommendation = {
+  label: string;
+  description: string;
+  cta: string;
+  to: string;
+};
+
 type ContinueLearningCardProps = {
   course?: ContinueLearningCourse;
+  currentStreak?: number;
+  dailyGoalMinutes?: number;
   isLoading?: boolean;
 };
 
-export function ContinueLearningCard({ course, isLoading }: ContinueLearningCardProps) {
+function getNextStepRecommendation({
+  course,
+  currentStreak = 0,
+  dailyGoalMinutes = 15,
+}: Pick<ContinueLearningCardProps, "course" | "currentStreak" | "dailyGoalMinutes">): NextStepRecommendation {
+  if (!course) {
+    return {
+      label: "Create your path",
+      description: "Add a language first so ShinGiTai Language can build a focused practice loop.",
+      cta: "Choose language",
+      to: "/onboarding",
+    };
+  }
+
+  if ((course.xp ?? 0) < 50) {
+    return {
+      label: "Build the base",
+      description: "Start with AI Teacher to establish your first useful words and patterns.",
+      cta: "Start lesson",
+      to: "/teacher",
+    };
+  }
+
+  if (currentStreak === 0 || dailyGoalMinutes <= 10) {
+    return {
+      label: "Quick review",
+      description: "Protect momentum with a short flashcard session before heavier practice.",
+      cta: "Review flashcards",
+      to: "/flashcards",
+    };
+  }
+
+  return {
+    label: "Use it in speech",
+    description: "You have enough base work for today. Move into tutor conversation and apply it.",
+    cta: "Practice speaking",
+    to: "/tutor",
+  };
+}
+
+export function ContinueLearningCard({
+  course,
+  currentStreak,
+  dailyGoalMinutes,
+  isLoading,
+}: ContinueLearningCardProps) {
   const hasCourse = Boolean(course);
+  const recommendation = getNextStepRecommendation({ course, currentStreak, dailyGoalMinutes });
   const title = hasCourse
     ? `${course?.languageFlag ?? "🌐"} ${course?.languageName ?? "Current language"} · Level ${course?.level ?? "A1"}`
     : "Start your first language path";
@@ -38,13 +93,12 @@ export function ContinueLearningCard({ course, isLoading }: ContinueLearningCard
         </div>
 
         <div className="rounded-2xl border border-border bg-background/60 p-4">
-          <p className="text-sm font-semibold">Recommended next step</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {hasCourse ? "Continue with AI Teacher, then review flashcards." : "Add a language and complete onboarding."}
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">Recommended next step</p>
+          <h3 className="mt-2 font-semibold">{recommendation.label}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{recommendation.description}</p>
           <Button asChild variant="hero" className="mt-4 w-full">
-            <Link to={hasCourse ? "/teacher" : "/onboarding"}>
-              {hasCourse ? "Continue lesson" : "Choose language"}
+            <Link to={recommendation.to}>
+              {recommendation.cta}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
