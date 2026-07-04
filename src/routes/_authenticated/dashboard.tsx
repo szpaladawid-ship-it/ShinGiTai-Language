@@ -31,6 +31,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/notification-bell";
+import { ContinueLearningCard } from "@/components/dashboard/continue-learning-card";
 import dashboardImg from "@/assets/learn-dashboard.jpg";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -132,6 +133,15 @@ function DashboardPage() {
   const level = levelFromXp(xp);
   const xpIntoLevel = xp % 500;
   const goal = profile?.daily_goal_minutes ?? 15;
+  const activeCourse = courses?.[0];
+  const continueLearningCourse = activeCourse
+    ? {
+        languageName: activeCourse.languages?.name ?? activeCourse.language_code,
+        languageFlag: activeCourse.languages?.flag_emoji ?? "🌐",
+        level: activeCourse.level,
+        xp: activeCourse.course_xp,
+      }
+    : undefined;
 
   const STAT_CARDS = [
     { icon: Flame, label: "Day streak", value: stats?.current_streak ?? 0, tone: "text-accent" },
@@ -152,7 +162,6 @@ function DashboardPage() {
     { icon: Crown, title: "Go Pro", desc: "Unlock everything", to: "/premium" },
   ];
 
-
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
@@ -161,7 +170,7 @@ function DashboardPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-brand text-primary-foreground">
               <Sparkles className="h-5 w-5" />
             </div>
-            <span className="text-lg font-bold tracking-tight">LinguaVerse</span>
+            <span className="text-lg font-bold tracking-tight">ShinGiTai Language</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -202,6 +211,7 @@ function DashboardPage() {
           </div>
         </div>
 
+        <ContinueLearningCard course={continueLearningCourse} isLoading={coursesLoading} />
 
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
