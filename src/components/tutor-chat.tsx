@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { Volume2, VolumeX, Square, Loader2, MessageCircle, UserRound } from "lucide-react";
+import { Volume2, VolumeX, Square, Loader2, MessageCircle, UserRound, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -33,6 +33,17 @@ import { useSpeak } from "@/lib/use-speak";
 
 function textOf(m: UIMessage): string {
   return m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
+}
+
+function formatLanguageCode(code: string) {
+  return code.trim().toUpperCase() || "LANGUAGE";
+}
+
+function lessonPhaseLabel(messageCount: number, isBusy: boolean) {
+  if (isBusy) return "Teacher is responding";
+  if (messageCount === 0) return "Ready to begin";
+  if (messageCount < 4) return "Warm-up";
+  return "In progress";
 }
 
 export function TutorChatWindow({
@@ -94,6 +105,10 @@ export function TutorChatWindow({
   });
 
   const isBusy = status === "submitted" || status === "streaming";
+  const safeTitle = title.trim() || (isTeacher ? "Guided lesson" : "Conversation practice");
+  const safeLevel = level.trim() || "A1";
+  const languageLabel = formatLanguageCode(languageCode);
+  const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -124,49 +139,66 @@ export function TutorChatWindow({
 
   return (
     <div className="flex h-full w-full flex-col">
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-        <div className="flex min-w-0 items-center gap-2.5">
-          {isTeacher ? (
-            <TeacherAvatar
-              variant={avatarVariant}
-              speaking={speaking}
-              className="h-11 w-11 shrink-0"
-            />
-          ) : (
-            <HeaderIcon className="h-5 w-5 shrink-0 text-primary" />
-          )}
-          <div className="min-w-0">
-            <h1 className="truncate text-base font-semibold">{title}</h1>
-            <p className="text-xs uppercase text-muted-foreground">
-              {languageCode} · Level {level}
-              {isTeacher ? " · Teacher" : ""}
-            </p>
+      <header className="border-b border-border bg-background/95 px-4 py-3 backdrop-blur">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            {isTeacher ? (
+              <TeacherAvatar
+                variant={avatarVariant}
+                speaking={speaking}
+                className="h-12 w-12 shrink-0"
+              />
+            ) : (
+              <HeaderIcon className="h-5 w-5 shrink-0 text-primary" />
+            )}
+            <div className="min-w-0">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <h1 className="truncate text-base font-semibold">{safeTitle}</h1>
+                {isTeacher && (
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                    <BookOpen className="h-3.5 w-3.5" /> Guided lesson
+                  </span>
+                )}
+              </div>
+              <p className="mt-0.5 text-xs uppercase tracking-wide text-muted-foreground">
+                {languageLabel} · Level {safeLevel} · {phaseLabel}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1.5">
+            {isTeacher && (
+              <TeacherAvatarPicker
+                trigger={
+                  <Button type="button" variant="ghost" size="icon-sm" aria-label="Change teacher avatar">
+                    <UserRound className="h-4 w-4" />
+                  </Button>
+                }
+              />
+            )}
+            <Button
+              type="button"
+              variant={autoSpeak ? "soft" : "ghost"}
+              size="sm"
+              aria-pressed={autoSpeak}
+              onClick={() => {
+                if (autoSpeak) stop();
+                setAutoSpeak((v) => !v);
+              }}
+            >
+              {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+              <span className="hidden sm:inline">{autoSpeak ? "Voice on" : "Voice off"}</span>
+            </Button>
           </div>
         </div>
-        <div className="flex items-center gap-1.5">
-          {isTeacher && (
-            <TeacherAvatarPicker
-              trigger={
-                <Button type="button" variant="ghost" size="icon-sm" aria-label="Change teacher avatar">
-                  <UserRound className="h-4 w-4" />
-                </Button>
-              }
-            />
-          )}
-          <Button
-            type="button"
-            variant={autoSpeak ? "soft" : "ghost"}
-            size="sm"
-            aria-pressed={autoSpeak}
-            onClick={() => {
-              if (autoSpeak) stop();
-              setAutoSpeak((v) => !v);
-            }}
-          >
-            {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-            <span className="hidden sm:inline">{autoSpeak ? "Voice on" : "Voice off"}</span>
-          </Button>
-        </div>
+
+        {isTeacher && (
+          <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+            <span className="rounded-full border border-border bg-card px-2.5 py-1">Follow the teacher prompt</span>
+            <span className="rounded-full border border-border bg-card px-2.5 py-1">Answer in short steps</span>
+            <span className="rounded-full border border-border bg-card px-2.5 py-1">Ask for examples anytime</span>
+          </div>
+        )}
       </header>
 
 
