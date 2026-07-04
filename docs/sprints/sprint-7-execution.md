@@ -125,14 +125,36 @@ npm run build
 
 ### 7.2.5 — UX Cleanup
 
-Status: Next.
+Status: Completed in implementation pass.
 
 Scope:
 - Small spacing, CTA, label, and hierarchy improvements.
 - No broad component rewrites.
 
+Implemented:
+- Tightened dashboard spacing on mobile and desktop with smaller top padding and responsive section spacing.
+- Improved header behavior on narrow screens by preventing the brand and action icons from crowding each other.
+- Added a small `Today’s mission` label to make the hero panel easier to scan.
+- Improved hero copy so it points users toward the focused practice flow instead of generic streak copy.
+- Improved level-progress layout on small screens with stacked text before horizontal layout on larger screens.
+- Changed primary practice card CTA text from `Start` to `Continue` for better learning-product tone.
+- Added visible keyboard focus rings to practice cards, support tools, and add-language buttons.
+- Added helper copy under `Support tools` to clarify that those features are secondary.
+- No database, auth, route, dependency, schema, or cross-repository changes were made.
+
 Acceptance:
 - Dashboard is cleaner and easier to scan.
+- Primary learning path remains visually dominant.
+- Secondary tools are still accessible but lower in hierarchy.
+- Keyboard users get clearer focus states.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
 
 ## Guardrails
 
@@ -144,17 +166,16 @@ Acceptance:
 
 ## Latest Run Summary
 
-Finished `7.2.4 — Practice Stack` as a bounded dashboard productivity update.
+Finished `7.2.5 — UX Cleanup` as a bounded dashboard polish update.
 
 Changed files:
 - `src/routes/_authenticated/dashboard.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The dashboard quick-action area is now a guided learning loop instead of one flat launcher grid.
-- Primary flow: Learn, Review, Speak, Test.
-- Support tools remain visible but lower in hierarchy.
-- No database changes, route changes, auth changes, dependency changes, Forge/OpenAI/Hub changes, or broad rewrites were made.
+- The dashboard now has stronger scan hierarchy, better responsive spacing, clearer CTA language, and visible keyboard focus states.
+- The update stayed UI-only and did not change app behavior, backend queries, routes, auth, dependencies, schema, or other repositories.
+- This completes Sprint 7.2 dashboard productivity foundation.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -166,4 +187,4 @@ npm run build
 
 ## Next Action
 
-Start `7.2.5 — UX Cleanup` by tightening dashboard spacing, CTA labels, and scan hierarchy without changing app behavior.
+Start Sprint `7.3 — Learning Intelligence v1` with `7.3.1 — Next Step Recommendation` using existing dashboard data only.
