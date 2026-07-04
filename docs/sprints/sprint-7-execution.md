@@ -248,6 +248,38 @@ npm run lint
 npm run build
 ```
 
+### 7.3.4 — Recommendation Edge Cases and Safe Defaults
+
+Status: Completed in implementation pass.
+
+Scope:
+- Harden recommendation behavior for incomplete or unexpected dashboard data.
+- Keep the recommendation deterministic and frontend-only.
+- Avoid new backend queries, route changes, schema changes, dependency changes, and broad UI rewrites.
+
+Implemented:
+- Added safe number helpers for positive and non-negative recommendation inputs.
+- Added safe text fallback handling for course language name, flag, and level.
+- Added constants for default daily goal minutes and minimum base XP threshold.
+- Clamped invalid, missing, negative, or non-finite XP/streak/goal values before recommendation branching.
+- Reused sanitized XP in the course summary copy so the card does not display invalid progress values.
+- Kept existing destinations unchanged: onboarding, AI Teacher, flashcards, and tutor conversation.
+
+Acceptance:
+- Missing or malformed course XP no longer breaks recommendation decisions.
+- Invalid daily goal values fall back to a safe 15-minute default.
+- Missing course language, flag, or level falls back to safe visible copy.
+- Recommendation card remains stable for loading, empty-course, early-course, no-streak, short-goal, and ready states.
+- No backend, schema, auth, route, dependency, or cross-repository changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Guardrails
 
 - One coherent objective per commit.
@@ -258,15 +290,15 @@ npm run build
 
 ## Latest Run Summary
 
-Finished `7.3.3 — Recommendation Visual Hierarchy` as a bounded dashboard polish update.
+Finished `7.3.4 — Recommendation Edge Cases and Safe Defaults` as a bounded dashboard hardening update.
 
 Changed files:
 - `src/components/dashboard/continue-learning-card.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The recommendation card now has scan-friendly priority badges and a dedicated `Why this?` explanation panel.
-- The primary CTA is now more prominent without changing destination routes or adding new behavior.
+- The recommendation card now sanitizes XP, streak, daily goal, language name, flag, and level before rendering or branching.
+- The update prevents weird UI states from bad or incomplete dashboard data without adding backend work.
 - The update stayed frontend-only and did not change backend queries, auth, routing destinations, dependencies, schema, or other repositories.
 
 Local validation still required because this run only used the GitHub connector:
@@ -279,4 +311,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.4 — Recommendation Edge Cases and Safe Defaults` using existing dashboard data only.
+Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.5 — Recommendation Completion Pass` using existing dashboard data only.
