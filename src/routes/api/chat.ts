@@ -2,12 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import {
-  createLovableAiGatewayProvider,
-  getLovableAiGatewayResponseHeaders,
-  getLovableAiGatewayRunId,
-  withLovableAiGatewayRunIdHeader,
-} from "@/lib/ai-gateway.server";
+import { createShinGiTaiAiProvider, getShinGiTaiAiModel } from "@/lib/shingitai-ai.server";
 
 type ChatRequestBody = {
   messages?: unknown;
@@ -91,11 +86,6 @@ export const Route = createFileRoute("/api/chat")({
           nativeName = nativeLang?.name ?? nativeName;
         }
 
-        const key = process.env.LOVABLE_API_KEY;
-        if (!key) {
-          return new Response("Missing LOVABLE_API_KEY", { status: 500 });
-        }
-
         const uiMessages = messages as UIMessage[];
         const lastMessage = uiMessages[uiMessages.length - 1];
 
@@ -124,7 +114,7 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
-        const conversationSystem = `You are an expert, encouraging language tutor on LinguaVerse AI.
+        const conversationSystem = `You are an expert, encouraging language tutor on ShinGiTai Language.
 You are helping the learner practice ${languageName} at CEFR level ${level}.
 The learner's native language is ${nativeName}.
 
@@ -137,7 +127,7 @@ Guidelines:
 - Be warm, patient, and motivating. Use occasional emoji sparingly.
 - Format responses with Markdown when it helps (bold key words, short lists for corrections).`;
 
-        const teacherSystem = `You are a structured, professional language teacher on LinguaVerse AI — like a teacher in a real classroom.
+        const teacherSystem = `You are a structured, professional language teacher on ShinGiTai Language — like a teacher in a real classroom.
 You are teaching ${languageName} to a student at CEFR level ${level}.
 The student's native language is ${nativeName}.
 
@@ -154,9 +144,8 @@ Follow a clear teaching method:
         const system = conversation.mode === "teacher" ? teacherSystem : conversationSystem;
 
 
-        const initialRunId = getLovableAiGatewayRunId(request);
-        const gateway = createLovableAiGatewayProvider(key, initialRunId);
-        const model = gateway("google/gemini-3-flash-preview");
+        const provider = createShinGiTaiAiProvider();
+        const model = provider(getShinGiTaiAiModel());
 
         const result = streamText({
           model,
@@ -179,14 +168,9 @@ Follow a clear teaching method:
           },
         });
 
-        const response = result.toUIMessageStreamResponse({
+        return result.toUIMessageStreamResponse({
           originalMessages: uiMessages,
-          headers: getLovableAiGatewayResponseHeaders(undefined, {
-            ...(initialRunId ? { "X-Lovable-AIG-Run-ID": initialRunId } : {}),
-          }),
         });
-
-        return withLovableAiGatewayRunIdHeader(response, gateway);
       },
     },
   },
