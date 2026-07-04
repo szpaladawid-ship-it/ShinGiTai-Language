@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpenCheck, GraduationCap, MessageCircle, Volume2 } from "lucide-react";
+import { BookOpenCheck, GraduationCap, MessageCircle, Sparkles, Volume2 } from "lucide-react";
 
 import { TeacherAvatar } from "@/components/teacher-avatar";
 import { TeacherAvatarPicker, useTeacherAvatar } from "@/components/teacher-avatar-picker";
@@ -26,6 +26,12 @@ const LESSON_PROMISES = [
   },
 ];
 
+const STARTER_PROMPTS = [
+  "Teach me five useful phrases for today.",
+  "Explain one grammar rule, then quiz me.",
+  "Practice a short real-life conversation with me.",
+];
+
 function TeacherEmpty() {
   const avatar = useTeacherAvatar();
 
@@ -50,6 +56,22 @@ function TeacherEmpty() {
               <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-border bg-background/60 p-4 text-left">
+          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+            <Sparkles className="h-4 w-4" /> Starter prompts
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            After creating a lesson, use one of these ideas if you are not sure what to ask first.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            {STARTER_PROMPTS.map((prompt) => (
+              <div key={prompt} className="rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium">
+                “{prompt}”
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
