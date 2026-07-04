@@ -156,6 +156,37 @@ npm run lint
 npm run build
 ```
 
+### 7.3.1 — Next Step Recommendation
+
+Status: Completed in implementation pass.
+
+Scope:
+- Make the dashboard recommendation slightly smarter using existing data only.
+- Avoid database changes, new queries, auth changes, route rewrites, and dependency changes.
+- Keep the first recommendation logic deterministic and easy to replace later.
+
+Implemented:
+- Added `getNextStepRecommendation` inside `src/components/dashboard/continue-learning-card.tsx`.
+- Recommendation now considers whether the user has an active course, course XP, current streak, and daily goal minutes.
+- Recommendation states currently route to existing destinations only: onboarding, AI Teacher, flashcards, and tutor conversation.
+- Wired `currentStreak` and `dailyGoalMinutes` from the dashboard into `ContinueLearningCard`.
+- Reused existing dashboard data instead of adding backend, schema, or Supabase query changes.
+
+Acceptance:
+- User sees a more contextual next step instead of one static recommendation.
+- New users are guided to choose a language.
+- Very early learners are guided to AI Teacher.
+- Low-streak or short-goal sessions are guided to flashcards.
+- Users with enough base progress are guided toward speaking practice.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Guardrails
 
 - One coherent objective per commit.
@@ -166,16 +197,17 @@ npm run build
 
 ## Latest Run Summary
 
-Finished `7.2.5 — UX Cleanup` as a bounded dashboard polish update.
+Finished `7.3.1 — Next Step Recommendation` as a bounded learning-intelligence update.
 
 Changed files:
+- `src/components/dashboard/continue-learning-card.tsx`
 - `src/routes/_authenticated/dashboard.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The dashboard now has stronger scan hierarchy, better responsive spacing, clearer CTA language, and visible keyboard focus states.
-- The update stayed UI-only and did not change app behavior, backend queries, routes, auth, dependencies, schema, or other repositories.
-- This completes Sprint 7.2 dashboard productivity foundation.
+- The dashboard now recommends onboarding, AI Teacher, flashcards, or tutor conversation based on existing dashboard state.
+- The update stayed frontend-only and did not change app behavior outside the dashboard recommendation card.
+- No backend queries, auth, routing destinations, dependencies, schema, or other repositories were changed.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -187,4 +219,4 @@ npm run build
 
 ## Next Action
 
-Start Sprint `7.3 — Learning Intelligence v1` with `7.3.1 — Next Step Recommendation` using existing dashboard data only.
+Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.2 — Recommendation Copy and Empty States` using existing dashboard data only.
