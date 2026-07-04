@@ -1,5 +1,5 @@
 // Server-only helper: generates CEFR-style certification exam questions via the
-// Lovable AI Gateway. Imported only by server functions (filename blocks it from
+// ShinGiTai OpenAI provider. Imported only by server functions (filename blocks it from
 // the client bundle).
 
 export type GeneratedQuestion = {
@@ -45,9 +45,6 @@ export async function generateExamQuestions(
   level: string,
   count: number,
 ): Promise<GeneratedQuestion[]> {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("Missing LOVABLE_API_KEY");
-
   const system =
     "You are an expert CEFR language examiner who writes official-style certification exams. " +
     "You respond ONLY with valid JSON and nothing else.";
@@ -64,14 +61,17 @@ Requirements:
 Return ONLY this JSON shape:
 {"questions":[{"section":"grammar","prompt":"...","options":["...","...","...","..."],"correct_index":0}]}`;
 
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const { getShinGiTaiAiConfig } = await import("@/lib/shingitai-ai.server");
+  const { baseURL, apiKey, model } = getShinGiTaiAiConfig();
+
+  const res = await fetch(`${baseURL}/chat/completions`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${key}`,
+      ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "google/gemini-3-flash-preview",
+      model,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },
