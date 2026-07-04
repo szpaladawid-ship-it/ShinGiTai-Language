@@ -123,6 +123,25 @@ function getNextStepRecommendation({
   };
 }
 
+function RecommendationLoadingState() {
+  return (
+    <div className="rounded-2xl border border-border bg-background/70 p-4 shadow-sm" aria-busy="true">
+      <div className="flex flex-wrap items-center gap-2">
+        <Skeleton className="h-4 w-36" />
+        <Skeleton className="h-7 w-24 rounded-full" />
+      </div>
+      <Skeleton className="mt-4 h-7 w-44" />
+      <Skeleton className="mt-3 h-4 w-full" />
+      <Skeleton className="mt-2 h-4 w-5/6" />
+      <div className="mt-4 rounded-xl border border-border bg-card/80 p-3">
+        <Skeleton className="h-3 w-20" />
+        <Skeleton className="mt-2 h-4 w-32" />
+      </div>
+      <Skeleton className="mt-4 h-11 w-full rounded-md" />
+    </div>
+  );
+}
+
 export function ContinueLearningCard({
   course,
   currentStreak,
@@ -149,34 +168,42 @@ export function ContinueLearningCard({
             {isLoading ? <Skeleton className="h-8 w-72" /> : title}
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            {hasCourse
-              ? `Pick up from your active course with ${courseXp} XP already earned.`
-              : "Choose a language first, then ShinGiTai Language can turn the dashboard into a guided practice path."}
+            {isLoading ? (
+              <Skeleton className="h-5 w-full max-w-xl" />
+            ) : hasCourse ? (
+              `Pick up from your active course with ${courseXp} XP already earned.`
+            ) : (
+              "Choose a language first, then ShinGiTai Language can turn the dashboard into a guided practice path."
+            )}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-background/70 p-4 shadow-sm">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Recommended next step</p>
-            <span className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${priorityBadge.className}`}>
-              {priorityBadge.label}
-            </span>
-          </div>
-          <h3 className="mt-3 text-xl font-bold tracking-tight">{recommendation.label}</h3>
-          <p className="mt-2 text-sm text-muted-foreground">{recommendation.description}</p>
+        {isLoading ? (
+          <RecommendationLoadingState />
+        ) : (
+          <div className="rounded-2xl border border-border bg-background/70 p-4 shadow-sm">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Recommended next step</p>
+              <span className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${priorityBadge.className}`}>
+                {priorityBadge.label}
+              </span>
+            </div>
+            <h3 className="mt-3 text-xl font-bold tracking-tight">{recommendation.label}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{recommendation.description}</p>
 
-          <div className="mt-4 rounded-xl border border-border bg-card/80 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Why this?</p>
-            <p className="mt-1 text-sm font-medium">{recommendation.reason}</p>
-          </div>
+            <div className="mt-4 rounded-xl border border-border bg-card/80 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Why this?</p>
+              <p className="mt-1 text-sm font-medium">{recommendation.reason}</p>
+            </div>
 
-          <Button asChild variant="hero" size="lg" className="mt-4 w-full shadow-soft transition-transform hover:-translate-y-0.5">
-            <Link to={recommendation.to}>
-              {recommendation.cta}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
+            <Button asChild variant="hero" size="lg" className="mt-4 w-full shadow-soft transition-transform hover:-translate-y-0.5">
+              <Link to={recommendation.to}>
+                {recommendation.cta}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
