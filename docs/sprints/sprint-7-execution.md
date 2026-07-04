@@ -218,6 +218,36 @@ npm run lint
 npm run build
 ```
 
+### 7.3.3 — Recommendation Visual Hierarchy
+
+Status: Completed in implementation pass.
+
+Scope:
+- Make the recommendation card easier to scan without changing backend behavior.
+- Add visual priority treatment for the recommended next step.
+- Keep the implementation bounded to existing dashboard recommendation UI.
+
+Implemented:
+- Added a typed `RecommendationPriority` model for `ready`, `recommended`, and `quick-win` states.
+- Added priority badges: `Ready now`, `Recommended`, and `Quick win`.
+- Moved the recommendation reason into a clearer `Why this?` panel.
+- Increased recommendation title prominence and upgraded the CTA to a larger button with a subtle hover lift.
+- Kept existing recommendation routes and data inputs unchanged.
+
+Acceptance:
+- User can identify the priority of the next step at a glance.
+- Recommendation reasoning is visible without overloading the card header.
+- CTA is visually stronger while staying within the existing design system.
+- No backend, schema, auth, route, dependency, or cross-repository changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Guardrails
 
 - One coherent objective per commit.
@@ -228,16 +258,15 @@ npm run build
 
 ## Latest Run Summary
 
-Finished `7.3.2 — Recommendation Copy and Empty States` as a bounded UX and learning-guidance update.
+Finished `7.3.3 — Recommendation Visual Hierarchy` as a bounded dashboard polish update.
 
 Changed files:
 - `src/components/dashboard/continue-learning-card.tsx`
-- `src/components/dashboard/todays-focus-card.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The dashboard recommendation now shows a short reason for the suggested next step.
-- Empty states now guide a new user toward choosing one language and setting up a daily rhythm.
+- The recommendation card now has scan-friendly priority badges and a dedicated `Why this?` explanation panel.
+- The primary CTA is now more prominent without changing destination routes or adding new behavior.
 - The update stayed frontend-only and did not change backend queries, auth, routing destinations, dependencies, schema, or other repositories.
 
 Local validation still required because this run only used the GitHub connector:
@@ -250,4 +279,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.3 — Recommendation Visual Hierarchy` using existing dashboard data only.
+Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.4 — Recommendation Edge Cases and Safe Defaults` using existing dashboard data only.
