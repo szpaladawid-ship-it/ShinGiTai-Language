@@ -187,6 +187,37 @@ npm run lint
 npm run build
 ```
 
+### 7.3.2 — Recommendation Copy and Empty States
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve recommendation wording so the user understands why a step is recommended.
+- Improve empty-state copy for users without an active language course.
+- Keep the work UI-only and reuse existing dashboard data.
+
+Implemented:
+- Added a `reason` field to dashboard next-step recommendations.
+- Added visible recommendation reasons such as `No active course yet`, `Early course progress`, `No active streak yet`, and `Ready for active practice`.
+- Split streak recovery and short-session flashcard recommendations into clearer copy states.
+- Improved the no-course copy in `ContinueLearningCard` so setup feels like the first guided step rather than a dead end.
+- Added separate empty-state focus steps in `TodaysFocusCard`: choose language, set rhythm, unlock practice flow.
+- Kept existing routes, queries, auth, schema, dependencies, and backend behavior unchanged.
+
+Acceptance:
+- Recommendation card explains both the next action and the reason behind it.
+- Empty dashboard state gives the user a clear setup path.
+- Active-course daily focus behavior remains unchanged except for safer copy structure.
+- No backend, schema, auth, route, dependency, or cross-repository changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Guardrails
 
 - One coherent objective per commit.
@@ -197,17 +228,17 @@ npm run build
 
 ## Latest Run Summary
 
-Finished `7.3.1 — Next Step Recommendation` as a bounded learning-intelligence update.
+Finished `7.3.2 — Recommendation Copy and Empty States` as a bounded UX and learning-guidance update.
 
 Changed files:
 - `src/components/dashboard/continue-learning-card.tsx`
-- `src/routes/_authenticated/dashboard.tsx`
+- `src/components/dashboard/todays-focus-card.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- The dashboard now recommends onboarding, AI Teacher, flashcards, or tutor conversation based on existing dashboard state.
-- The update stayed frontend-only and did not change app behavior outside the dashboard recommendation card.
-- No backend queries, auth, routing destinations, dependencies, schema, or other repositories were changed.
+- The dashboard recommendation now shows a short reason for the suggested next step.
+- Empty states now guide a new user toward choosing one language and setting up a daily rhythm.
+- The update stayed frontend-only and did not change backend queries, auth, routing destinations, dependencies, schema, or other repositories.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -219,4 +250,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.2 — Recommendation Copy and Empty States` using existing dashboard data only.
+Continue Sprint `7.3 — Learning Intelligence v1` with `7.3.3 — Recommendation Visual Hierarchy` using existing dashboard data only.
