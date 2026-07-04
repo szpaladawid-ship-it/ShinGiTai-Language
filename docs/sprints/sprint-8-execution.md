@@ -82,18 +82,49 @@ npm run lint
 npm run build
 ```
 
+### 8.1.3 — Teacher Lesson Session Header
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the active teacher lesson header so users understand the session context immediately.
+- Keep the change limited to existing lesson session UI and existing conversation data.
+- Avoid backend, schema, auth, route, dependency, and AI behavior changes.
+
+Implemented:
+- Updated `src/components/tutor-chat.tsx` only.
+- Added safe header fallbacks for missing title, language code, and level.
+- Added a `Guided lesson` badge for AI Teacher sessions.
+- Added a lightweight lesson phase label based on existing message count and streaming state: ready, warm-up, in progress, or teacher responding.
+- Added three compact session guidance chips: follow the teacher prompt, answer in short steps, and ask for examples anytime.
+- Kept the existing avatar picker, voice toggle, message flow, chat transport, and conversation persistence unchanged.
+
+Acceptance:
+- Active AI Teacher sessions now show clearer context at the top of the lesson.
+- Users can tell whether the lesson is ready, warming up, in progress, or waiting for the teacher response.
+- Conversation practice mode remains compatible because the extra lesson guidance only appears in teacher mode.
+- No backend, schema, auth, route, dependency, Forge, OpenAI, Hub, or unrelated repository changes were made.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.2 — New Lesson Dialog Guidance` as a bounded AI Teacher dialog improvement.
+Finished `8.1.3 — Teacher Lesson Session Header` as a bounded active lesson UX improvement.
 
 Changed files:
-- `src/routes/_authenticated/teacher.tsx`
+- `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- The `New lesson` dialog now explains how to pick a level and what will happen after starting.
-- The dialog now handles language loading and empty active-language states more safely.
-- The update stayed frontend-only and did not touch backend logic, Supabase schema, auth, dependencies, Forge, OpenAI, Hub, or other repositories.
+- The AI Teacher session header now communicates lesson type, level, language, and current phase more clearly.
+- The change uses existing session data only and stays frontend-only.
+- No AI prompt, server function, Supabase schema, auth, routing, dependency, Forge, OpenAI, Hub, or other repository changes were made.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -105,4 +136,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.3 — Teacher Lesson Session Header` using existing lesson session data only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.4 — Teacher Empty Lesson Starter Prompt` using existing chat UI only.
