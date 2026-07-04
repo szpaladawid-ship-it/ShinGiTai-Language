@@ -50,17 +50,50 @@ npm run lint
 npm run build
 ```
 
+### 8.1.2 — New Lesson Dialog Guidance
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the new lesson dialog so users know what language and level to choose.
+- Keep the existing lesson creation flow, backend behavior, and routes unchanged.
+- Add safe loading and empty-state handling for language selection.
+
+Implemented:
+- Updated `src/routes/_authenticated/teacher.tsx` only.
+- Added a short guidance panel inside the `New lesson` dialog.
+- Added level-specific helper copy for A1 through C2.
+- Added a loading placeholder for languages while active languages are being fetched.
+- Disabled the language selector and start button when active languages are still loading or unavailable.
+- Added an explicit no-active-languages message instead of allowing a confusing empty selector.
+- Kept `createConversation`, `listConversations`, `deleteConversation`, routing, schema, auth, dependencies, and Supabase tables unchanged.
+
+Acceptance:
+- Users get guidance before starting a lesson.
+- Beginners are nudged toward A1 without hiding advanced levels.
+- The dialog handles loading and missing-language states safely.
+- Existing teacher lesson creation behavior remains intact.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.1 — AI Teacher Entry UX` as a bounded learning-experience entry update.
+Finished `8.1.2 — New Lesson Dialog Guidance` as a bounded AI Teacher dialog improvement.
 
 Changed files:
-- `src/routes/_authenticated/teacher.index.tsx`
+- `src/routes/_authenticated/teacher.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- The Teacher empty state now feels more like a guided learning product instead of a plain placeholder.
-- The change did not touch backend logic, teacher conversations, Supabase, auth, dependencies, schema, Forge, OpenAI, Hub, or other repositories.
+- The `New lesson` dialog now explains how to pick a level and what will happen after starting.
+- The dialog now handles language loading and empty active-language states more safely.
+- The update stayed frontend-only and did not touch backend logic, Supabase schema, auth, dependencies, Forge, OpenAI, Hub, or other repositories.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -72,4 +105,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.2 — New Lesson Dialog Guidance` using existing lesson creation behavior only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.3 — Teacher Lesson Session Header` using existing lesson session data only.
