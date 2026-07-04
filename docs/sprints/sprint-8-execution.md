@@ -113,17 +113,47 @@ npm run lint
 npm run build
 ```
 
+### 8.1.4 — Teacher Empty Lesson Starter Prompt
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the AI Teacher empty state with concrete starter prompt examples.
+- Keep the change limited to the existing teacher index route.
+- Avoid backend, schema, auth, route, dependency, and AI behavior changes.
+
+Implemented:
+- Updated `src/routes/_authenticated/teacher.index.tsx` only.
+- Added a `Starter prompts` panel below the AI Teacher benefit cards.
+- Added three beginner-friendly prompt examples for phrases, grammar practice, and real-life conversation.
+- Kept the existing `New lesson` creation flow and avatar picker unchanged.
+- No Supabase query, server function, AI prompt, chat transport, auth, routing, dependency, schema, or cross-repository changes were made.
+
+Acceptance:
+- Empty AI Teacher state now gives users concrete ideas for what to do first.
+- Users are less likely to freeze after opening the AI Teacher area.
+- Existing lesson creation and active lesson behavior remain unchanged.
+- The change stays frontend-only and bounded to the teacher entry screen.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.3 — Teacher Lesson Session Header` as a bounded active lesson UX improvement.
+Finished `8.1.4 — Teacher Empty Lesson Starter Prompt` as a bounded AI Teacher empty-state improvement.
 
 Changed files:
-- `src/components/tutor-chat.tsx`
+- `src/routes/_authenticated/teacher.index.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- The AI Teacher session header now communicates lesson type, level, language, and current phase more clearly.
-- The change uses existing session data only and stays frontend-only.
+- The AI Teacher entry screen now includes starter prompt examples for first-use confidence.
+- The update is UI-only and uses static copy, so it does not affect backend behavior or lesson creation.
 - No AI prompt, server function, Supabase schema, auth, routing, dependency, Forge, OpenAI, Hub, or other repository changes were made.
 
 Local validation still required because this run only used the GitHub connector:
@@ -136,4 +166,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.4 — Teacher Empty Lesson Starter Prompt` using existing chat UI only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.5 — Teacher Lesson Starter Message Copy` using existing chat UI only.
