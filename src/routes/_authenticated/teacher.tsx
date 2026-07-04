@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus, GraduationCap, Trash2, ArrowLeft, Loader2 } from "lucide-react";
+import { Plus, GraduationCap, Trash2, ArrowLeft, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -42,6 +42,15 @@ export const Route = createFileRoute("/_authenticated/teacher")({
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"] as const;
 
+const LEVEL_HINTS: Record<string, string> = {
+  A1: "Start here for first words, simple phrases, and basic confidence.",
+  A2: "Use this when you know the basics and want everyday sentences.",
+  B1: "Good for independent practice, opinions, and longer answers.",
+  B2: "Choose this for more natural conversation and advanced corrections.",
+  C1: "Best for fluent expression, nuance, and precision.",
+  C2: "Use this for near-native polish and demanding topics.",
+};
+
 type Conversation = {
   id: string;
   title: string;
@@ -71,7 +80,7 @@ function TeacherLayout() {
     queryFn: () => listFn({ data: { mode: "teacher" } }) as Promise<Conversation[]>,
   });
 
-  const { data: languages } = useQuery({
+  const { data: languages, isLoading: languagesLoading } = useQuery({
     queryKey: ["languages-active"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -83,6 +92,8 @@ function TeacherLayout() {
       return data ?? [];
     },
   });
+
+  const hasLanguages = Boolean(languages?.length);
 
   const handleCreate = async () => {
     if (!lang) {
@@ -198,15 +209,24 @@ function TeacherLayout() {
           <DialogHeader>
             <DialogTitle>New lesson</DialogTitle>
             <DialogDescription>
-              Choose a language and your level. The teacher follows a structured curriculum.
+              Choose the language and level. The teacher will turn that into a structured lesson with explanation, practice, and corrections.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
+            <div className="rounded-2xl border border-border bg-primary/5 p-4 text-sm">
+              <div className="flex items-center gap-2 font-semibold text-primary">
+                <Sparkles className="h-4 w-4" /> Start simple, then level up
+              </div>
+              <p className="mt-2 text-muted-foreground">
+                Not sure where to begin? Pick A1 for a fresh start, or choose the level where you can answer short questions without guessing every word.
+              </p>
+            </div>
+
             <div className="space-y-1.5">
               <label className="text-sm font-medium">Language</label>
-              <Select value={lang} onValueChange={setLang}>
+              <Select value={lang} onValueChange={setLang} disabled={languagesLoading || !hasLanguages}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a language" />
+                  <SelectValue placeholder={languagesLoading ? "Loading languages..." : "Select a language"} />
                 </SelectTrigger>
                 <SelectContent>
                   {(languages ?? []).map((l) => (
@@ -216,6 +236,9 @@ function TeacherLayout() {
                   ))}
                 </SelectContent>
               </Select>
+              {!languagesLoading && !hasLanguages && (
+                <p className="text-xs text-destructive">No active languages are available yet.</p>
+              )}
             </div>
             <div className="space-y-1.5">
               <label className="text-sm font-medium">Level</label>
@@ -231,13 +254,14 @@ function TeacherLayout() {
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground">{LEVEL_HINTS[level] ?? LEVEL_HINTS.A1}</p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setDialogOpen(false)}>
               Cancel
             </Button>
-            <Button variant="hero" onClick={handleCreate} disabled={creating}>
+            <Button variant="hero" onClick={handleCreate} disabled={creating || languagesLoading || !hasLanguages}>
               {creating && <Loader2 className="h-4 w-4 animate-spin" />}
               Start lesson
             </Button>
