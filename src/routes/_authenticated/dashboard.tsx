@@ -134,6 +134,7 @@ function DashboardPage() {
   const level = levelFromXp(xp);
   const xpIntoLevel = xp % 500;
   const goal = profile?.daily_goal_minutes ?? 15;
+  const currentStreak = stats?.current_streak ?? 0;
   const activeCourse = courses?.[0];
   const activeLanguageName = activeCourse?.languages?.name ?? activeCourse?.language_code;
   const continueLearningCourse = activeCourse
@@ -146,7 +147,7 @@ function DashboardPage() {
     : undefined;
 
   const STAT_CARDS = [
-    { icon: Flame, label: "Day streak", value: stats?.current_streak ?? 0, tone: "text-accent" },
+    { icon: Flame, label: "Day streak", value: currentStreak, tone: "text-accent" },
     { icon: Trophy, label: "Total XP", value: xp, tone: "text-gold" },
     { icon: Heart, label: "Hearts", value: stats?.hearts ?? 5, tone: "text-destructive" },
     { icon: Gem, label: "Gems", value: stats?.gems ?? 0, tone: "text-primary" },
@@ -272,11 +273,16 @@ function DashboardPage() {
           <Progress value={(xpIntoLevel / 500) * 100} className="mt-4 h-2.5" />
         </div>
 
-        <ContinueLearningCard course={continueLearningCourse} isLoading={coursesLoading} />
+        <ContinueLearningCard
+          course={continueLearningCourse}
+          currentStreak={currentStreak}
+          dailyGoalMinutes={goal}
+          isLoading={coursesLoading}
+        />
         <TodaysFocusCard
           activeLanguageName={activeLanguageName}
           dailyGoalMinutes={goal}
-          streak={stats?.current_streak ?? 0}
+          streak={currentStreak}
           hasActiveCourse={Boolean(activeCourse)}
           isLoading={coursesLoading}
         />
