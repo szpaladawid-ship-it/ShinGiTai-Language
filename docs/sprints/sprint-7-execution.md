@@ -112,7 +112,7 @@ Changed files:
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- `ContinueLearningCard` now renders under the dashboard hero.
+- `ContinueLearningCard` now renders below the level progress summary.
 - It receives the newest active course from the existing `courses` query.
 - The empty state still sends new users toward onboarding.
 - Remaining dashboard header branding now uses `ShinGiTai Language`.
