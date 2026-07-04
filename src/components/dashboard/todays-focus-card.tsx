@@ -12,7 +12,7 @@ type TodaysFocusCardProps = {
   isLoading?: boolean;
 };
 
-const FOCUS_STEPS = [
+const ACTIVE_FOCUS_STEPS = [
   {
     icon: BookOpen,
     title: "Core lesson",
@@ -30,6 +30,24 @@ const FOCUS_STEPS = [
   },
 ];
 
+const EMPTY_FOCUS_STEPS = [
+  {
+    icon: BookOpen,
+    title: "Choose one language",
+    description: "Start with a single path so progress and recommendations stay focused.",
+  },
+  {
+    icon: Layers,
+    title: "Set a daily rhythm",
+    description: "Use a small daily goal first. Consistency beats heroic chaos.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Unlock practice flow",
+    description: "Lessons, flashcards, and speaking practice become easier to follow after setup.",
+  },
+];
+
 export function TodaysFocusCard({
   activeLanguageName,
   dailyGoalMinutes,
@@ -37,9 +55,16 @@ export function TodaysFocusCard({
   hasActiveCourse,
   isLoading,
 }: TodaysFocusCardProps) {
+  const focusSteps = hasActiveCourse ? ACTIVE_FOCUS_STEPS : EMPTY_FOCUS_STEPS;
   const focusTitle = hasActiveCourse
     ? `Today's focus: ${activeLanguageName ?? "your active language"}`
     : "Today's focus: choose your first path";
+  const focusDescription = hasActiveCourse
+    ? `A simple ${dailyGoalMinutes}-minute stack to protect your ${streak}-day streak and keep progress moving.`
+    : "Choose one language first. The app will then turn this area into a daily practice stack instead of a blank dashboard.";
+  const footerCopy = hasActiveCourse
+    ? "One focused session is better than opening five features and finishing none."
+    : "Setup is the first win. After that, ShinGiTai Language can guide the next useful action.";
 
   return (
     <section className="mt-6 rounded-3xl border border-border bg-card p-6 shadow-soft">
@@ -49,11 +74,7 @@ export function TodaysFocusCard({
           <h2 className="mt-2 text-2xl font-bold tracking-tight">
             {isLoading ? <Skeleton className="h-8 w-80" /> : focusTitle}
           </h2>
-          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            {hasActiveCourse
-              ? `A simple ${dailyGoalMinutes}-minute stack to protect your ${streak}-day streak and keep progress moving.`
-              : "Start with one language so ShinGiTai Language can build a daily practice stack around your goals."}
-          </p>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{focusDescription}</p>
         </div>
 
         <Button asChild variant="outline" className="shrink-0">
@@ -64,7 +85,7 @@ export function TodaysFocusCard({
       </div>
 
       <div className="mt-5 grid gap-3 md:grid-cols-3">
-        {FOCUS_STEPS.map((step, index) => (
+        {focusSteps.map((step, index) => (
           <div key={step.title} className="rounded-2xl border border-border bg-background/60 p-4">
             <div className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -82,7 +103,7 @@ export function TodaysFocusCard({
 
       <div className="mt-5 flex items-center gap-2 rounded-2xl bg-primary/5 px-4 py-3 text-sm text-muted-foreground">
         <CheckCircle2 className="h-4 w-4 text-primary" />
-        <span>One focused session is better than opening five features and finishing none.</span>
+        <span>{footerCopy}</span>
       </div>
     </section>
   );
