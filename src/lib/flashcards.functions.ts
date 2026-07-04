@@ -284,15 +284,12 @@ export const generateFlashcards = createServerFn({ method: "POST" })
     const languageName = language?.name ?? deck.language_code;
     const nativeName = await getNativeName(supabase, userId);
 
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("Missing LOVABLE_API_KEY");
-
-    const { createLovableAiGatewayProvider } = await import("@/lib/ai-gateway.server");
+    const { createShinGiTaiAiProvider, getShinGiTaiAiModel } = await import("@/lib/shingitai-ai.server");
     const { generateText, Output } = await import("ai");
     const { z: zod } = await import("zod");
 
-    const gateway = createLovableAiGatewayProvider(key);
-    const model = gateway("google/gemini-3-flash-preview");
+    const gateway = createShinGiTaiAiProvider();
+    const model = gateway(getShinGiTaiAiModel());
 
     const { output } = await generateText({
       model,
@@ -382,15 +379,12 @@ export const createStarterDeck = createServerFn({ method: "POST" })
       deckId = row.id;
     }
 
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("Missing LOVABLE_API_KEY");
-
-    const { createLovableAiGatewayProvider } = await import("@/lib/ai-gateway.server");
+    const { createShinGiTaiAiProvider, getShinGiTaiAiModel } = await import("@/lib/shingitai-ai.server");
     const { generateText, Output } = await import("ai");
     const { z: zod } = await import("zod");
 
-    const gateway = createLovableAiGatewayProvider(key);
-    const model = gateway("google/gemini-3-flash-preview");
+    const gateway = createShinGiTaiAiProvider();
+    const model = gateway(getShinGiTaiAiModel());
     const topics = STARTER_TOPICS[data.level] ?? STARTER_TOPICS.A1;
 
     const { output } = await generateText({
