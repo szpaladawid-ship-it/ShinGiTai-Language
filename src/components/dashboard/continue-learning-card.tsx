@@ -29,6 +29,9 @@ type ContinueLearningCardProps = {
   isLoading?: boolean;
 };
 
+const DEFAULT_DAILY_GOAL_MINUTES = 15;
+const MIN_BASE_XP_FOR_REVIEW = 50;
+
 const PRIORITY_BADGES: Record<RecommendationPriority, { label: string; className: string }> = {
   ready: {
     label: "Ready now",
@@ -44,11 +47,28 @@ const PRIORITY_BADGES: Record<RecommendationPriority, { label: string; className
   },
 };
 
+function safePositiveNumber(value: number | undefined, fallback: number) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : fallback;
+}
+
+function safeNonNegativeNumber(value: number | undefined, fallback = 0) {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : fallback;
+}
+
+function safeText(value: string | undefined, fallback: string) {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : fallback;
+}
+
 function getNextStepRecommendation({
   course,
-  currentStreak = 0,
-  dailyGoalMinutes = 15,
+  currentStreak,
+  dailyGoalMinutes,
 }: Pick<ContinueLearningCardProps, "course" | "currentStreak" | "dailyGoalMinutes">): NextStepRecommendation {
+  const safeCourseXp = safeNonNegativeNumber(course?.xp);
+  const safeCurrentStreak = safeNonNegativeNumber(currentStreak);
+  const safeDailyGoalMinutes = safePositiveNumber(dailyGoalMinutes, DEFAULT_DAILY_GOAL_MINUTES);
+
   if (!course) {
     return {
       label: "Create your path",
@@ -60,7 +80,7 @@ function getNextStepRecommendation({
     };
   }
 
-  if ((course.xp ?? 0) < 50) {
+  if (safeCourseXp < MIN_BASE_XP_FOR_REVIEW) {
     return {
       label: "Build the base",
       description: "Start with AI Teacher to establish the first useful words and patterns for this course.",
@@ -71,7 +91,7 @@ function getNextStepRecommendation({
     };
   }
 
-  if (currentStreak === 0) {
+  if (safeCurrentStreak === 0) {
     return {
       label: "Restart momentum",
       description: "Use a short flashcard review to make the next session easy to finish and easy to repeat tomorrow.",
@@ -82,11 +102,11 @@ function getNextStepRecommendation({
     };
   }
 
-  if (dailyGoalMinutes <= 10) {
+  if (safeDailyGoalMinutes <= 10) {
     return {
       label: "Win the short session",
       description: "Keep today lightweight with flashcards before moving into a longer lesson or conversation.",
-      reason: `${dailyGoalMinutes}-minute daily goal`,
+      reason: `${safeDailyGoalMinutes}-minute daily goal`,
       priority: "quick-win",
       cta: "Review flashcards",
       to: "/flashcards",
@@ -112,8 +132,12 @@ export function ContinueLearningCard({
   const hasCourse = Boolean(course);
   const recommendation = getNextStepRecommendation({ course, currentStreak, dailyGoalMinutes });
   const priorityBadge = PRIORITY_BADGES[recommendation.priority];
+  const courseLanguageName = safeText(course?.languageName, "Current language");
+  const courseLanguageFlag = safeText(course?.languageFlag, "🌐");
+  const courseLevel = safeText(course?.level, "A1");
+  const courseXp = safeNonNegativeNumber(course?.xp);
   const title = hasCourse
-    ? `${course?.languageFlag ?? "🌐"} ${course?.languageName ?? "Current language"} · Level ${course?.level ?? "A1"}`
+    ? `${courseLanguageFlag} ${courseLanguageName} · Level ${courseLevel}`
     : "Start your first language path";
 
   return (
@@ -126,7 +150,7 @@ export function ContinueLearningCard({
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             {hasCourse
-              ? `Pick up from your active course with ${course?.xp ?? 0} XP already earned.`
+              ? `Pick up from your active course with ${courseXp} XP already earned.`
               : "Choose a language first, then ShinGiTai Language can turn the dashboard into a guided practice path."}
           </p>
         </div>
