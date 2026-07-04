@@ -43,8 +43,10 @@ export const Route = createFileRoute("/api/tts")({
           return new Response("Unauthorized", { status: 401 });
         }
 
-        const key = process.env.LOVABLE_API_KEY;
-        if (!key) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) {
+          return new Response("Missing OPENAI_API_KEY", { status: 500 });
+        }
 
         const voice =
           typeof body.voice === "string" && ALLOWED_VOICES.has(body.voice)
@@ -52,14 +54,14 @@ export const Route = createFileRoute("/api/tts")({
             : "alloy";
         const input = text.slice(0, 3000);
 
-        const upstream = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+        const upstream = await fetch("https://api.openai.com/v1/audio/speech", {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${key}`,
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "openai/gpt-4o-mini-tts",
+            model: "gpt-4o-mini-tts",
             input,
             voice,
             response_format: "mp3",
