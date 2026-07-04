@@ -140,13 +140,13 @@ const PRICING = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "LinguaVerse AI — Learn Any Language With Your AI Tutor" },
+      { title: "ShinGiTai Language — Learn Any Language With Your AI Tutor" },
       {
         name: "description",
         content:
           "Master 28+ languages with AI conversation practice, smart flashcards, grammar lessons and personalized learning paths. Meet your personal AI tutor.",
       },
-      { property: "og:title", content: "LinguaVerse AI — Learn Any Language With Your AI Tutor" },
+      { property: "og:title", content: "ShinGiTai Language — Learn Any Language With Your AI Tutor" },
       {
         property: "og:description",
         content:
@@ -183,7 +183,7 @@ function Logo() {
         <Globe className="h-5 w-5" />
       </span>
       <span className="text-lg font-bold tracking-tight font-display">
-        Lingua<span className="text-gradient">Verse</span>
+        ShinGiTai <span className="text-gradient">Language</span>
       </span>
     </Link>
   );
@@ -234,7 +234,7 @@ function Hero() {
             <span className="text-gradient">actually talking</span>.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            LinguaVerse AI blends conversation practice, smart flashcards, grammar and
+            ShinGiTai Language blends conversation practice, smart flashcards, grammar and
             quizzes into one adaptive path — guided by a tutor you design yourself.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -271,7 +271,7 @@ function Hero() {
           <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-card shadow-elegant">
             <img
               src={heroTutor}
-              alt="LinguaVerse AI tutor character surrounded by language speech bubbles"
+              alt="ShinGiTai Language AI tutor character surrounded by language speech bubbles"
               width={1024}
               height={1024}
               className="h-full w-full object-cover"
@@ -372,7 +372,7 @@ function Languages() {
         <SectionHeading
           eyebrow="28+ languages"
           title={<>Learn any language, from any language</>}
-          subtitle="Pick your native tongue and your target — LinguaVerse adapts the entire experience to you."
+          subtitle="Pick your native tongue and your target — ShinGiTai Language adapts the entire experience to you."
         />
         <div className="mt-14 flex flex-wrap justify-center gap-3">
           {LANGUAGES.map((l) => (
@@ -571,7 +571,7 @@ function FinalCta() {
           Your next language is one conversation away
         </h2>
         <p className="relative mx-auto mt-4 max-w-xl text-primary-foreground/80">
-          Join LinguaVerse AI and start speaking from day one.
+          Join ShinGiTai Language and start speaking from day one.
         </p>
         <div className="relative mt-8 flex justify-center">
           <Button asChild variant="coral" size="xl">
@@ -592,7 +592,7 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-10 sm:flex-row">
         <Logo />
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} LinguaVerse AI. Learn boldly.
+          © {new Date().getFullYear()} ShinGiTai Language. Learn boldly.
         </p>
         <div className="flex gap-6 text-sm text-muted-foreground">
           <a href="#features" className="hover:text-foreground">Features</a>
