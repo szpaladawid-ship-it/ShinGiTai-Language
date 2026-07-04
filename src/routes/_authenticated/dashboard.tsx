@@ -211,8 +211,6 @@ function DashboardPage() {
           </div>
         </div>
 
-        <ContinueLearningCard course={continueLearningCourse} isLoading={coursesLoading} />
-
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {STAT_CARDS.map((s) => (
@@ -245,6 +243,8 @@ function DashboardPage() {
           </div>
           <Progress value={(xpIntoLevel / 500) * 100} className="mt-4 h-2.5" />
         </div>
+
+        <ContinueLearningCard course={continueLearningCourse} isLoading={coursesLoading} />
 
         {/* Quick actions */}
         <h2 className="mt-10 text-xl font-bold tracking-tight">Jump back in</h2>
