@@ -96,16 +96,36 @@ npm run build
 
 ### 7.2.4 — Practice Stack
 
-Status: Next.
+Status: Completed in implementation pass.
 
 Scope:
 - Rework scattered quick actions into an ordered practice stack.
 - Prioritize learning flow: lesson → flashcards → speaking → review.
+- Keep routes and backend behavior unchanged.
+
+Implemented:
+- Replaced the generic `QUICK_ACTIONS` launcher with `PRACTICE_STACK` and `SUPPORT_ACTIONS` groups.
+- Main dashboard action order is now: Learn → Review → Speak → Test.
+- Secondary actions are still available as support tools: Grammar, Exams, Leaderboard, Achievements, and Go Pro.
+- Updated dashboard section copy from `Jump back in` to `Practice Stack` with a short learning-loop explanation.
+- No routes, auth, Supabase queries, schema, dependency, or cross-repository changes were made.
 
 Acceptance:
 - Dashboard feels more like a guided system than a launcher.
+- User sees the recommended order before optional support tools.
+- Existing navigation destinations remain intact.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
 
 ### 7.2.5 — UX Cleanup
+
+Status: Next.
 
 Scope:
 - Small spacing, CTA, label, and hierarchy improvements.
@@ -124,17 +144,16 @@ Acceptance:
 
 ## Latest Run Summary
 
-Finished `7.2.3 — Today's Focus` as a bounded dashboard productivity update.
+Finished `7.2.4 — Practice Stack` as a bounded dashboard productivity update.
 
 Changed files:
-- `src/components/dashboard/todays-focus-card.tsx`
 - `src/routes/_authenticated/dashboard.tsx`
 - `docs/sprints/sprint-7-execution.md`
 
 Implementation notes:
-- `TodaysFocusCard` gives the user a stable daily plan: lesson, flashcards, speaking practice.
-- The dashboard passes only existing data into the new card.
-- Empty-course users are guided toward onboarding.
+- The dashboard quick-action area is now a guided learning loop instead of one flat launcher grid.
+- Primary flow: Learn, Review, Speak, Test.
+- Support tools remain visible but lower in hierarchy.
 - No database changes, route changes, auth changes, dependency changes, Forge/OpenAI/Hub changes, or broad rewrites were made.
 
 Local validation still required because this run only used the GitHub connector:
@@ -147,4 +166,4 @@ npm run build
 
 ## Next Action
 
-Start `7.2.4 — Practice Stack` by reordering and renaming quick actions into a guided sequence without changing routes or backend behavior.
+Start `7.2.5 — UX Cleanup` by tightening dashboard spacing, CTA labels, and scan hierarchy without changing app behavior.
