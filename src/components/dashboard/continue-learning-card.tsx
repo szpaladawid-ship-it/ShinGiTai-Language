@@ -14,6 +14,7 @@ type ContinueLearningCourse = {
 type NextStepRecommendation = {
   label: string;
   description: string;
+  reason: string;
   cta: string;
   to: string;
 };
@@ -33,7 +34,8 @@ function getNextStepRecommendation({
   if (!course) {
     return {
       label: "Create your path",
-      description: "Add a language first so ShinGiTai Language can build a focused practice loop.",
+      description: "Pick one language first. After that, your dashboard can guide lessons, review, and practice in order.",
+      reason: "No active course yet",
       cta: "Choose language",
       to: "/onboarding",
     };
@@ -42,16 +44,28 @@ function getNextStepRecommendation({
   if ((course.xp ?? 0) < 50) {
     return {
       label: "Build the base",
-      description: "Start with AI Teacher to establish your first useful words and patterns.",
+      description: "Start with AI Teacher to establish the first useful words and patterns for this course.",
+      reason: "Early course progress",
       cta: "Start lesson",
       to: "/teacher",
     };
   }
 
-  if (currentStreak === 0 || dailyGoalMinutes <= 10) {
+  if (currentStreak === 0) {
     return {
-      label: "Quick review",
-      description: "Protect momentum with a short flashcard session before heavier practice.",
+      label: "Restart momentum",
+      description: "Use a short flashcard review to make the next session easy to finish and easy to repeat tomorrow.",
+      reason: "No active streak yet",
+      cta: "Review flashcards",
+      to: "/flashcards",
+    };
+  }
+
+  if (dailyGoalMinutes <= 10) {
+    return {
+      label: "Win the short session",
+      description: "Keep today lightweight with flashcards before moving into a longer lesson or conversation.",
+      reason: `${dailyGoalMinutes}-minute daily goal`,
       cta: "Review flashcards",
       to: "/flashcards",
     };
@@ -59,7 +73,8 @@ function getNextStepRecommendation({
 
   return {
     label: "Use it in speech",
-    description: "You have enough base work for today. Move into tutor conversation and apply it.",
+    description: "You have enough base work for today. Move into tutor conversation and make the language usable.",
+    reason: "Ready for active practice",
     cta: "Practice speaking",
     to: "/tutor",
   };
@@ -88,12 +103,17 @@ export function ContinueLearningCard({
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             {hasCourse
               ? `Pick up from your active course with ${course?.xp ?? 0} XP already earned.`
-              : "Choose a language first, then ShinGiTai Language can guide your next lesson, review, and practice session."}
+              : "Choose a language first, then ShinGiTai Language can turn the dashboard into a guided practice path."}
           </p>
         </div>
 
         <div className="rounded-2xl border border-border bg-background/60 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">Recommended next step</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Recommended next step</p>
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+              {recommendation.reason}
+            </span>
+          </div>
           <h3 className="mt-2 font-semibold">{recommendation.label}</h3>
           <p className="mt-1 text-sm text-muted-foreground">{recommendation.description}</p>
           <Button asChild variant="hero" className="mt-4 w-full">
