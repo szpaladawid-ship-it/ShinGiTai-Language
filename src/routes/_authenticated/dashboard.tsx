@@ -152,13 +152,36 @@ function DashboardPage() {
     { icon: Gem, label: "Gems", value: stats?.gems ?? 0, tone: "text-primary" },
   ];
 
-  const QUICK_ACTIONS = [
-    { icon: School, title: "AI Teacher", desc: "Structured lessons with voice", to: "/teacher" },
-    { icon: MessageCircle, title: "AI Conversation", desc: "Chat with your tutor", to: "/tutor" },
-    { icon: ScrollText, title: "Certification Exams", desc: "Earn CEFR certificates", to: "/exams" },
-    { icon: Layers, title: "Flashcards", desc: "Review your deck", to: "/flashcards" },
-    { icon: BookOpen, title: "Grammar Lesson", desc: "Learn the rules", to: "/grammar" },
-    { icon: GraduationCap, title: "Quizzes", desc: "Test your skills", to: "/quizzes" },
+  const PRACTICE_STACK = [
+    {
+      icon: School,
+      title: "1. Learn",
+      desc: "Start with a structured AI Teacher lesson.",
+      to: "/teacher",
+    },
+    {
+      icon: Layers,
+      title: "2. Review",
+      desc: "Lock today’s words with flashcards.",
+      to: "/flashcards",
+    },
+    {
+      icon: MessageCircle,
+      title: "3. Speak",
+      desc: "Use the new words in tutor conversation.",
+      to: "/tutor",
+    },
+    {
+      icon: GraduationCap,
+      title: "4. Test",
+      desc: "Finish the loop with a short quiz.",
+      to: "/quizzes",
+    },
+  ];
+
+  const SUPPORT_ACTIONS = [
+    { icon: BookOpen, title: "Grammar", desc: "Explain the rules", to: "/grammar" },
+    { icon: ScrollText, title: "Exams", desc: "Certification practice", to: "/exams" },
     { icon: Trophy, title: "Leaderboard", desc: "See the rankings", to: "/leaderboard" },
     { icon: Award, title: "Achievements", desc: "Unlock badges", to: "/achievements" },
     { icon: Crown, title: "Go Pro", desc: "Unlock everything", to: "/premium" },
@@ -255,10 +278,15 @@ function DashboardPage() {
           isLoading={coursesLoading}
         />
 
-        {/* Quick actions */}
-        <h2 className="mt-10 text-xl font-bold tracking-tight">Jump back in</h2>
+        {/* Practice stack */}
+        <div className="mt-10 flex flex-col gap-1">
+          <h2 className="text-xl font-bold tracking-tight">Practice Stack</h2>
+          <p className="text-sm text-muted-foreground">
+            Follow this order when you want a complete learning loop.
+          </p>
+        </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {QUICK_ACTIONS.map((a) => (
+          {PRACTICE_STACK.map((a) => (
             <Link
               key={a.title}
               to={a.to}
@@ -272,6 +300,27 @@ function DashboardPage() {
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
                 Start <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-col gap-1">
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            Support tools
+          </h3>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {SUPPORT_ACTIONS.map((a) => (
+            <Link
+              key={a.title}
+              to={a.to}
+              className="group rounded-2xl border border-border bg-card/70 p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-elegant"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-secondary-foreground">
+                <a.icon className="h-5 w-5" />
+              </div>
+              <p className="mt-3 font-semibold">{a.title}</p>
+              <p className="text-xs text-muted-foreground">{a.desc}</p>
             </Link>
           ))}
         </div>
