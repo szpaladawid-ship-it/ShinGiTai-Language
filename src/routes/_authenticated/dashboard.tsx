@@ -190,15 +190,15 @@ function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-brand text-primary-foreground">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
+          <Link to="/dashboard" className="flex min-w-0 items-center gap-2">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-brand text-primary-foreground">
               <Sparkles className="h-5 w-5" />
             </div>
-            <span className="text-lg font-bold tracking-tight">ShinGiTai Language</span>
+            <span className="truncate text-base font-bold tracking-tight sm:text-lg">ShinGiTai Language</span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <NotificationBell />
             <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -216,14 +216,17 @@ function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
         <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex flex-col gap-1 p-6">
-              <h1 className="text-3xl font-bold tracking-tight">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-2 p-5 sm:p-6">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Today’s mission</p>
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
                 {profileLoading ? <Skeleton className="h-9 w-64" /> : `Welcome back, ${name}!`}
               </h1>
-              <p className="text-muted-foreground">Keep your streak alive and level up today.</p>
+              <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+                Keep your streak alive and use the focused practice flow below.
+              </p>
             </div>
             <img
               src={dashboardImg}
@@ -231,13 +234,13 @@ function DashboardPage() {
               loading="lazy"
               width={1280}
               height={640}
-              className="hidden h-32 w-56 shrink-0 object-cover sm:block"
+              className="hidden h-36 w-60 shrink-0 object-cover sm:block"
             />
           </div>
         </div>
 
         {/* Stats */}
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-4">
           {STAT_CARDS.map((s) => (
             <div
               key={s.label}
@@ -252,7 +255,7 @@ function DashboardPage() {
 
         {/* Level progress */}
         <div className="mt-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-warm text-accent-foreground">
                 <GraduationCap className="h-6 w-6" />
@@ -279,9 +282,9 @@ function DashboardPage() {
         />
 
         {/* Practice stack */}
-        <div className="mt-10 flex flex-col gap-1">
+        <div className="mt-8 flex flex-col gap-1 sm:mt-10">
           <h2 className="text-xl font-bold tracking-tight">Practice Stack</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="max-w-2xl text-sm text-muted-foreground">
             Follow this order when you want a complete learning loop.
           </p>
         </div>
@@ -290,7 +293,7 @@ function DashboardPage() {
             <Link
               key={a.title}
               to={a.to}
-              className="group rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-elegant"
+              className="group rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <a.icon className="h-6 w-6" />
@@ -298,23 +301,24 @@ function DashboardPage() {
               <p className="mt-4 font-semibold">{a.title}</p>
               <p className="text-sm text-muted-foreground">{a.desc}</p>
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                Start <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                Continue <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
           ))}
         </div>
 
-        <div className="mt-6 flex flex-col gap-1">
+        <div className="mt-7 flex flex-col gap-1">
           <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Support tools
           </h3>
+          <p className="text-sm text-muted-foreground">Use these when you need extra practice or review.</p>
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {SUPPORT_ACTIONS.map((a) => (
             <Link
               key={a.title}
               to={a.to}
-              className="group rounded-2xl border border-border bg-card/70 p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-elegant"
+              className="group rounded-2xl border border-border bg-card/70 p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-secondary-foreground">
                 <a.icon className="h-5 w-5" />
@@ -401,7 +405,7 @@ function AddLanguageCard({ userId, onAdded }: { userId: string; onAdded: () => v
           <button
             key={l.code}
             onClick={() => enroll(l.code)}
-            className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary hover:bg-primary/5"
+            className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:border-primary hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <span>{l.flag_emoji}</span>
             <span>{l.name}</span>
