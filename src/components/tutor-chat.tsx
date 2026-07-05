@@ -126,6 +126,17 @@ function teacherErrorRecoveryCopy(errorMessage: string) {
   };
 }
 
+function teacherMessageContentClass(role: UIMessage["role"]) {
+  if (role === "assistant") {
+    return "w-full rounded-2xl border border-border bg-card px-4 py-3 shadow-soft";
+  }
+
+  return "max-w-[88%] leading-6";
+}
+
+const teacherMessageResponseClass =
+  "leading-7 [&_li]:my-1 [&_ol]:my-2 [&_p]:my-2 [&_ul]:my-2";
+
 export function TutorChatWindow({
   conversationId,
   initialMessages,
@@ -331,9 +342,9 @@ export function TutorChatWindow({
           {messages.map((m) => {
             const text = textOf(m);
             return (
-              <Message from={m.role} key={m.id}>
-                <MessageContent>
-                  <MessageResponse>{text}</MessageResponse>
+              <Message from={m.role} key={m.id} className={isTeacher ? "max-w-full" : undefined}>
+                <MessageContent className={isTeacher ? teacherMessageContentClass(m.role) : undefined}>
+                  <MessageResponse className={isTeacher ? teacherMessageResponseClass : undefined}>{text}</MessageResponse>
                 </MessageContent>
                 {m.role === "assistant" && text && (
                   <MessageActions>
