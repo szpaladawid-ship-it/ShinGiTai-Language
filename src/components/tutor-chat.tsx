@@ -46,6 +46,34 @@ function lessonPhaseLabel(messageCount: number, isBusy: boolean) {
   return "In progress";
 }
 
+function teacherFlowHint(messageCount: number, isBusy: boolean) {
+  if (isBusy) {
+    return {
+      label: "Teacher turn",
+      body: "Wait for the response before sending the next answer.",
+    };
+  }
+
+  if (messageCount === 0) {
+    return {
+      label: "Step 1",
+      body: "Send the starter message to begin the guided lesson.",
+    };
+  }
+
+  if (messageCount < 4) {
+    return {
+      label: "Step 2",
+      body: "Answer briefly, then let the teacher correct one thing at a time.",
+    };
+  }
+
+  return {
+    label: "Step 3",
+    body: "Continue practice or ask for a recap when you feel ready.",
+  };
+}
+
 function teacherStarterPrompt(languageLabel: string, level: string) {
   return `Let's start my ${languageLabel} ${level} lesson. Give me a short explanation, then one small exercise.`;
 }
@@ -161,6 +189,7 @@ export function TutorChatWindow({
   const safeLevel = level.trim() || "A1";
   const languageLabel = formatLanguageCode(languageCode);
   const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
+  const lessonFlowHint = teacherFlowHint(messages.length, isBusy);
   const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
   const reviewPrompt = teacherReviewPrompt(languageLabel, safeLevel);
   const lastMessage = messages[messages.length - 1];
@@ -260,6 +289,10 @@ export function TutorChatWindow({
 
         {isTeacher && (
           <>
+            <div className="mt-3 rounded-2xl border border-border bg-card/80 px-3 py-2 text-xs shadow-soft">
+              <p className="font-semibold text-foreground">{lessonFlowHint.label}</p>
+              <p className="mt-0.5 text-muted-foreground">{lessonFlowHint.body}</p>
+            </div>
             <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
               <span className="rounded-full border border-border bg-card px-2.5 py-1">Follow the teacher prompt</span>
               <span className="rounded-full border border-border bg-card px-2.5 py-1">Answer in short steps</span>
