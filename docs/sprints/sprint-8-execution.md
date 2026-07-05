@@ -174,17 +174,47 @@ npm run lint
 npm run build
 ```
 
+### 8.1.6 — Teacher Input Placeholder and Microcopy
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the chat input placeholder and small helper text for AI Teacher lessons.
+- Keep the change limited to the existing chat component.
+- Avoid AI prompt, backend, schema, auth, route, dependency, and persistence changes.
+
+Implemented:
+- Updated `src/components/tutor-chat.tsx` only.
+- Added dynamic AI Teacher input placeholders for empty lessons, warm-up messages, ongoing lessons, and teacher-response loading.
+- Added short helper microcopy below the input in teacher mode.
+- Kept conversation-practice placeholder behavior separate and unchanged.
+- Kept message submission, chat transport, Supabase auth session usage, voice controls, avatar picker, routes, and persistence unchanged.
+
+Acceptance:
+- The input field now guides the learner based on the current lesson state.
+- New users get a clearer nudge to paste the starter message or ask what to learn first.
+- Early lesson users are nudged toward short answers instead of overthinking.
+- Existing conversation mode remains unaffected.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.5 — Teacher Lesson Starter Message Copy` as a bounded active-lesson empty-state improvement.
+Finished `8.1.6 — Teacher Input Placeholder and Microcopy` as a bounded chat-input guidance update.
 
 Changed files:
 - `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- New AI Teacher lessons now show a clearer starter panel instead of a single text sentence.
-- The starter message adapts to the selected language code and level already present in the chat route.
+- AI Teacher input now adapts its placeholder to the current lesson state.
+- Teacher mode gets one line of helper copy under the input; conversation mode keeps the simpler generic input.
 - The update is frontend-only and does not change AI behavior, persistence, routes, schema, auth, dependencies, or any non-Language repository.
 
 Local validation still required because this run only used the GitHub connector:
@@ -197,4 +227,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.6 — Teacher Input Placeholder and Microcopy` using existing chat UI only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.7 — Teacher Response Error Recovery Copy` using existing chat UI only.
