@@ -50,6 +50,10 @@ function teacherStarterPrompt(languageLabel: string, level: string) {
   return `Let's start my ${languageLabel} ${level} lesson. Give me a short explanation, then one small exercise.`;
 }
 
+function teacherReviewPrompt(languageLabel: string, level: string) {
+  return `Review my ${languageLabel} ${level} lesson. Summarize what I did well, correct my biggest mistake, and give me one next step.`;
+}
+
 function teacherInputPlaceholder(messageCount: number, isBusy: boolean) {
   if (isBusy) return "Wait for the teacher response…";
   if (messageCount === 0) return "Paste the starter message or ask what to learn first…";
@@ -158,6 +162,8 @@ export function TutorChatWindow({
   const languageLabel = formatLanguageCode(languageCode);
   const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
   const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
+  const reviewPrompt = teacherReviewPrompt(languageLabel, safeLevel);
+  const shouldShowReviewPrompt = isTeacher && messages.length >= 6 && status === "ready";
   const inputPlaceholder = isTeacher
     ? teacherInputPlaceholder(messages.length, isBusy)
     : "Type your message…";
@@ -314,6 +320,15 @@ export function TutorChatWindow({
               </Message>
             );
           })}
+          {shouldShowReviewPrompt && (
+            <div className="mx-auto my-5 max-w-xl rounded-2xl border border-border bg-card p-4 text-left shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Ready for a lesson review?</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Ask the teacher to close the loop before you finish. This helps turn the chat into a clear next action.
+              </p>
+              <p className="mt-3 rounded-xl bg-muted px-3 py-2 text-sm text-foreground">{reviewPrompt}</p>
+            </div>
+          )}
           {status === "submitted" && (
             <Message from="assistant">
               <MessageContent>
