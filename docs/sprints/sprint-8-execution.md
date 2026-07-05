@@ -204,17 +204,48 @@ npm run lint
 npm run build
 ```
 
+### 8.1.7 — Teacher Response Error Recovery Copy
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the visible error state when an AI Teacher response fails.
+- Keep the change limited to existing chat UI and copy.
+- Avoid retry mechanics, backend changes, AI prompt changes, schema changes, auth changes, route changes, and dependency changes.
+
+Implemented:
+- Updated `src/components/tutor-chat.tsx` only.
+- Added teacher-specific recovery copy for generic response failures.
+- Added clearer handling copy for rate-limit style errors and AI-credit style errors.
+- Replaced the one-line teacher error message with a small accessible `role="alert"` recovery panel.
+- Kept conversation practice mode on the simpler existing error message.
+- Kept `useChat`, chat transport, Supabase auth session usage, persistence, voice controls, avatar picker, routes, schema, and dependencies unchanged.
+
+Acceptance:
+- AI Teacher users now understand what happened when a response fails.
+- Users are told that their lesson is not cleared and can retry with the same answer.
+- Rate-limit and credit-related failures have more specific guidance.
+- Conversation mode remains unaffected by the richer teacher recovery panel.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.6 — Teacher Input Placeholder and Microcopy` as a bounded chat-input guidance update.
+Finished `8.1.7 — Teacher Response Error Recovery Copy` as a bounded chat-error UX update.
 
 Changed files:
 - `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- AI Teacher input now adapts its placeholder to the current lesson state.
-- Teacher mode gets one line of helper copy under the input; conversation mode keeps the simpler generic input.
+- AI Teacher now shows a structured recovery panel when a response fails.
+- Error copy gives the learner practical next steps instead of a dead-end generic message.
 - The update is frontend-only and does not change AI behavior, persistence, routes, schema, auth, dependencies, or any non-Language repository.
 
 Local validation still required because this run only used the GitHub connector:
@@ -227,4 +258,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.7 — Teacher Response Error Recovery Copy` using existing chat UI only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.8 — Teacher Voice Control Microcopy` using existing chat UI only.
