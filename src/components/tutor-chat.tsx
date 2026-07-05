@@ -63,6 +63,13 @@ function teacherInputHint(messageCount: number) {
   return "You can ask for pronunciation help, grammar notes, or a quick recap anytime.";
 }
 
+function teacherVoiceHelper(autoSpeak: boolean, speaking: boolean, loading: boolean) {
+  if (loading) return "Preparing the teacher voice…";
+  if (speaking) return "Teacher is speaking. You can stop playback anytime.";
+  if (autoSpeak) return "Voice is on. New teacher replies will play automatically.";
+  return "Voice is off. Use Listen on any teacher reply when you want audio.";
+}
+
 function teacherErrorRecoveryCopy(errorMessage: string) {
   if (errorMessage.includes("429")) {
     return {
@@ -182,6 +189,8 @@ export function TutorChatWindow({
   };
 
   const speaking = activeId !== null;
+  const voiceLoading = loadingId !== null;
+  const voiceHelper = teacherVoiceHelper(autoSpeak, speaking, voiceLoading);
   const HeaderIcon = MessageCircle;
 
   return (
@@ -227,7 +236,9 @@ export function TutorChatWindow({
               type="button"
               variant={autoSpeak ? "soft" : "ghost"}
               size="sm"
+              aria-label={autoSpeak ? "Turn teacher voice off" : "Turn teacher voice on"}
               aria-pressed={autoSpeak}
+              title={voiceHelper}
               onClick={() => {
                 if (autoSpeak) stop();
                 setAutoSpeak((v) => !v);
@@ -240,11 +251,16 @@ export function TutorChatWindow({
         </div>
 
         {isTeacher && (
-          <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-            <span className="rounded-full border border-border bg-card px-2.5 py-1">Follow the teacher prompt</span>
-            <span className="rounded-full border border-border bg-card px-2.5 py-1">Answer in short steps</span>
-            <span className="rounded-full border border-border bg-card px-2.5 py-1">Ask for examples anytime</span>
-          </div>
+          <>
+            <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
+              <span className="rounded-full border border-border bg-card px-2.5 py-1">Follow the teacher prompt</span>
+              <span className="rounded-full border border-border bg-card px-2.5 py-1">Answer in short steps</span>
+              <span className="rounded-full border border-border bg-card px-2.5 py-1">Ask for examples anytime</span>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
+              {voiceHelper}
+            </p>
+          </>
         )}
       </header>
 
@@ -282,7 +298,7 @@ export function TutorChatWindow({
                 {m.role === "assistant" && text && (
                   <MessageActions>
                     <MessageAction
-                      tooltip={activeId === m.id ? "Stop" : "Listen"}
+                      tooltip={activeId === m.id ? "Stop teacher voice" : "Listen to teacher reply"}
                       onClick={() => (activeId === m.id ? stop() : speak(m.id, text))}
                     >
                       {loadingId === m.id ? (
