@@ -163,7 +163,9 @@ export function TutorChatWindow({
   const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
   const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
   const reviewPrompt = teacherReviewPrompt(languageLabel, safeLevel);
-  const shouldShowReviewPrompt = isTeacher && messages.length >= 6 && status === "ready";
+  const lastMessage = messages[messages.length - 1];
+  const lastMessageIsAssistant = lastMessage?.role === "assistant";
+  const shouldShowReviewPrompt = isTeacher && messages.length >= 6 && status === "ready" && lastMessageIsAssistant;
   const inputPlaceholder = isTeacher
     ? teacherInputPlaceholder(messages.length, isBusy)
     : "Type your message…";
@@ -270,7 +272,6 @@ export function TutorChatWindow({
         )}
       </header>
 
-
       <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl">
           {messages.length === 0 && (
@@ -324,7 +325,7 @@ export function TutorChatWindow({
             <div className="mx-auto my-5 max-w-xl rounded-2xl border border-border bg-card p-4 text-left shadow-soft">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">Ready for a lesson review?</p>
               <p className="mt-2 text-sm text-muted-foreground">
-                Ask the teacher to close the loop before you finish. This helps turn the chat into a clear next action.
+                The teacher has enough context now. Ask for a recap while the latest correction is still fresh.
               </p>
               <p className="mt-3 rounded-xl bg-muted px-3 py-2 text-sm text-foreground">{reviewPrompt}</p>
             </div>
