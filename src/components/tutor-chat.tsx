@@ -82,6 +82,10 @@ function teacherReviewPrompt(languageLabel: string, level: string) {
   return `Review my ${languageLabel} ${level} lesson. Summarize what I did well, correct my biggest mistake, and give me one next step.`;
 }
 
+function teacherExercisePrompt(languageLabel: string, level: string) {
+  return `Give me one ${languageLabel} ${level} exercise now. Keep it short, then wait for my answer before correcting it.`;
+}
+
 function teacherInputPlaceholder(messageCount: number, isBusy: boolean) {
   if (isBusy) return "Wait for the teacher response…";
   if (messageCount === 0) return "Paste the starter message or ask what to learn first…";
@@ -203,8 +207,10 @@ export function TutorChatWindow({
   const lessonFlowHint = teacherFlowHint(messages.length, isBusy);
   const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
   const reviewPrompt = teacherReviewPrompt(languageLabel, safeLevel);
+  const exercisePrompt = teacherExercisePrompt(languageLabel, safeLevel);
   const lastMessage = messages[messages.length - 1];
   const lastMessageIsAssistant = lastMessage?.role === "assistant";
+  const shouldShowExercisePrompt = isTeacher && messages.length >= 2 && messages.length < 6 && status === "ready" && lastMessageIsAssistant;
   const shouldShowReviewPrompt = isTeacher && messages.length >= 6 && status === "ready" && lastMessageIsAssistant;
   const inputPlaceholder = isTeacher
     ? teacherInputPlaceholder(messages.length, isBusy)
@@ -365,6 +371,15 @@ export function TutorChatWindow({
               </Message>
             );
           })}
+          {shouldShowExercisePrompt && (
+            <div className="mx-auto my-5 max-w-xl rounded-2xl border border-border bg-card p-4 text-left shadow-soft">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Need the next exercise?</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Use this when the explanation is clear and you want one focused task instead of more theory.
+              </p>
+              <p className="mt-3 rounded-xl bg-muted px-3 py-2 text-sm text-foreground">{exercisePrompt}</p>
+            </div>
+          )}
           {shouldShowReviewPrompt && (
             <div className="mx-auto my-5 max-w-xl rounded-2xl border border-border bg-card p-4 text-left shadow-soft">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">Ready for a lesson review?</p>
