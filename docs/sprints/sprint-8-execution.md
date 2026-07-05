@@ -264,20 +264,74 @@ npm run lint
 npm run build
 ```
 
+### 8.1.9 — Teacher Lesson Completion Nudge
+
+Status: Completed in separate run note.
+
+Scope:
+- Add a small completion-oriented nudge to help learners finish lessons with a recap, correction review, or next-step request.
+- Keep the change limited to existing AI Teacher UI.
+- Avoid backend, AI prompt, schema, auth, dependency, and routing changes.
+
+Implemented:
+- Added a `Finish strong` style nudge in the AI Teacher entry/completion flow.
+- Added prompt ideas for recap, mistakes, and next step.
+- Added separate documentation for the run because the main Sprint 8 log update was blocked in that pass.
+
+Acceptance:
+- Learners have a clearer way to close a lesson intentionally instead of drifting away.
+- Existing lesson creation, chat transport, persistence, auth, routes, and conversation mode remain unchanged.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
+### 8.1.10 — Teacher Lesson Review Prompt Polish
+
+Status: Prepared; code write blocked by connector safety check during this run.
+
+Scope:
+- Add a lightweight review prompt after a lesson has enough conversation context.
+- Keep it UI/copy-only inside the existing AI Teacher chat component.
+- Avoid backend, AI prompt, schema, auth, dependency, route, and persistence changes.
+
+Prepared implementation notes:
+- Intended file: `src/components/tutor-chat.tsx`.
+- Add a `teacherReviewPrompt(languageLabel, level)` helper.
+- Show a small `Ready for a lesson review?` nudge only in teacher mode after several messages and when the chat status is ready.
+- Suggested prompt copy: `Review my LANGUAGE LEVEL lesson. Summarize what I did well, correct my biggest mistake, and give me one next step.`
+- Also fix the empty voice helper paragraph so `{voiceHelper}` renders inside the existing `aria-live="polite"` line.
+
+Blocked:
+- The GitHub connector safety layer blocked the full-file code update for `src/components/tutor-chat.tsx`.
+- No code commit was created for this item in this run.
+- Repository scope was respected: only ShinGiTai Language documentation was updated.
+
+Recommended local checks after the code patch is applied:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.8 — Teacher Voice Control Microcopy` as a bounded AI Teacher voice UX update.
+Prepared `8.1.10 — Teacher Lesson Review Prompt Polish` and recorded the exact intended bounded implementation.
 
 Changed files:
-- `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
-Implementation notes:
-- AI Teacher now explains voice state directly in the lesson header area.
-- The main voice toggle and per-message listen action use clearer labels.
-- No speech engine, backend, AI prompt, schema, auth, route, dependency, Forge, OpenAI, Hub, or unrelated repository changes were made.
+Implementation status:
+- Documentation updated.
+- Code patch was attempted but blocked by the GitHub connector safety check.
+- No Forge, OpenAI, Hub, backend, schema, auth, route, dependency, or unrelated repository changes were made.
 
-Local validation still required because this run only used the GitHub connector:
+Local validation still required after code changes are applied:
 
 ```bash
 npm install
@@ -287,4 +341,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.9 — Teacher Lesson Completion Nudge` using existing chat UI only.
+Retry `8.1.10 — Teacher Lesson Review Prompt Polish` with a smaller code patch path or local/manual patch, then continue to the next Sprint 8 Learning Experience item.
