@@ -50,6 +50,19 @@ function teacherStarterPrompt(languageLabel: string, level: string) {
   return `Let's start my ${languageLabel} ${level} lesson. Give me a short explanation, then one small exercise.`;
 }
 
+function teacherInputPlaceholder(messageCount: number, isBusy: boolean) {
+  if (isBusy) return "Wait for the teacher response…";
+  if (messageCount === 0) return "Paste the starter message or ask what to learn first…";
+  if (messageCount < 4) return "Answer in one or two short sentences…";
+  return "Reply, ask for examples, or request a harder exercise…";
+}
+
+function teacherInputHint(messageCount: number) {
+  if (messageCount === 0) return "Start simple. The teacher will adjust after your first answer.";
+  if (messageCount < 4) return "Short answers are okay — corrections come after each step.";
+  return "You can ask for pronunciation help, grammar notes, or a quick recap anytime.";
+}
+
 export function TutorChatWindow({
   conversationId,
   initialMessages,
@@ -114,6 +127,10 @@ export function TutorChatWindow({
   const languageLabel = formatLanguageCode(languageCode);
   const phaseLabel = lessonPhaseLabel(messages.length, isBusy);
   const starterPrompt = teacherStarterPrompt(languageLabel, safeLevel);
+  const inputPlaceholder = isTeacher
+    ? teacherInputPlaceholder(messages.length, isBusy)
+    : "Type your message…";
+  const inputHint = teacherInputHint(messages.length);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -271,10 +288,13 @@ export function TutorChatWindow({
         <PromptInput onSubmit={handleSubmit} className="mx-auto max-w-3xl">
           <PromptInputTextarea
             ref={inputRef}
-            placeholder={isTeacher ? "Answer your teacher or ask a question…" : "Type your message…"}
+            placeholder={inputPlaceholder}
             disabled={isBusy}
           />
-          <PromptInputFooter className="justify-end">
+          <PromptInputFooter className="items-center justify-between gap-3">
+            {isTeacher && (
+              <p className="min-w-0 text-xs text-muted-foreground">{inputHint}</p>
+            )}
             <PromptInputSubmit status={status} disabled={isBusy} />
           </PromptInputFooter>
         </PromptInput>
