@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { Volume2, VolumeX, Square, Loader2, MessageCircle, UserRound, BookOpen } from "lucide-react";
+import { AlertCircle, Volume2, VolumeX, Square, Loader2, MessageCircle, UserRound, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -61,6 +61,30 @@ function teacherInputHint(messageCount: number) {
   if (messageCount === 0) return "Start simple. The teacher will adjust after your first answer.";
   if (messageCount < 4) return "Short answers are okay — corrections come after each step.";
   return "You can ask for pronunciation help, grammar notes, or a quick recap anytime.";
+}
+
+function teacherErrorRecoveryCopy(errorMessage: string) {
+  if (errorMessage.includes("429")) {
+    return {
+      title: "Teacher is cooling down",
+      body: "Too many requests were sent at once. Wait a moment, then send the same answer again.",
+      tip: "Small retry tip: keep your next message short so the lesson can recover quickly.",
+    };
+  }
+
+  if (errorMessage.includes("402")) {
+    return {
+      title: "AI credits need attention",
+      body: "The teacher could not continue because AI credits appear to be exhausted.",
+      tip: "Your lesson is still here, so you can continue after credits are restored.",
+    };
+  }
+
+  return {
+    title: "Teacher response failed",
+    body: "The lesson did not get a response. Your chat was not cleared, so you can try again with the same answer.",
+    tip: "If it happens twice, ask for a shorter explanation or a simpler exercise.",
+  };
 }
 
 export function TutorChatWindow({
@@ -131,6 +155,7 @@ export function TutorChatWindow({
     ? teacherInputPlaceholder(messages.length, isBusy)
     : "Type your message…";
   const inputHint = teacherInputHint(messages.length);
+  const recoveryCopy = teacherErrorRecoveryCopy(error?.message ?? "");
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -299,9 +324,23 @@ export function TutorChatWindow({
           </PromptInputFooter>
         </PromptInput>
         {error && (
-          <p className="mx-auto mt-2 max-w-3xl text-center text-xs text-destructive">
-            Failed to get a response. Please try again.
-          </p>
+          isTeacher ? (
+            <div
+              role="alert"
+              className="mx-auto mt-3 flex max-w-3xl gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-3 text-left"
+            >
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-destructive">{recoveryCopy.title}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{recoveryCopy.body}</p>
+                <p className="mt-2 text-xs font-medium text-foreground">{recoveryCopy.tip}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="mx-auto mt-2 max-w-3xl text-center text-xs text-destructive" role="alert">
+              Failed to get a response. Please try again.
+            </p>
+          )
         )}
       </div>
     </div>
