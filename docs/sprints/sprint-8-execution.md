@@ -218,8 +218,6 @@ Implemented:
 - Added teacher-specific recovery copy for generic response failures.
 - Added clearer handling copy for rate-limit style errors and AI-credit style errors.
 - Replaced the one-line teacher error message with a small accessible `role="alert"` recovery panel.
-- Kept conversation practice mode on the simpler existing error message.
-- Kept `useChat`, chat transport, Supabase auth session usage, persistence, voice controls, avatar picker, routes, schema, and dependencies unchanged.
 
 Acceptance:
 - AI Teacher users now understand what happened when a response fails.
@@ -235,18 +233,49 @@ npm run lint
 npm run build
 ```
 
+### 8.1.8 — Teacher Voice Control Microcopy
+
+Status: Completed in implementation pass.
+
+Scope:
+- Improve the voice-control copy around AI Teacher lessons.
+- Keep the change limited to existing chat UI and existing voice behavior.
+- Avoid speech engine changes, backend changes, AI prompt changes, schema changes, auth changes, route changes, and dependency changes.
+
+Implemented:
+- Updated `src/components/tutor-chat.tsx` only.
+- Added `teacherVoiceHelper` to explain voice-off, voice-on, loading, and active speaking states.
+- Added a small `aria-live="polite"` voice helper under the AI Teacher session chips.
+- Added clearer `aria-label` and `title` copy to the voice toggle.
+- Updated assistant-message action tooltip from generic `Listen` / `Stop` to teacher-specific listening copy.
+- Kept `useSpeak`, auto-speak behavior, avatar picker, chat transport, persistence, routes, schema, auth, dependencies, and conversation mode behavior unchanged.
+
+Acceptance:
+- AI Teacher users understand what the voice toggle does.
+- Users get a clearer status when voice is preparing or currently speaking.
+- The listening action on teacher replies is easier to understand.
+- The change remains frontend-only and bounded to chat UI microcopy.
+
+Recommended local checks:
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
 ## Latest Run Summary
 
-Finished `8.1.7 — Teacher Response Error Recovery Copy` as a bounded chat-error UX update.
+Finished `8.1.8 — Teacher Voice Control Microcopy` as a bounded AI Teacher voice UX update.
 
 Changed files:
 - `src/components/tutor-chat.tsx`
 - `docs/sprints/sprint-8-execution.md`
 
 Implementation notes:
-- AI Teacher now shows a structured recovery panel when a response fails.
-- Error copy gives the learner practical next steps instead of a dead-end generic message.
-- The update is frontend-only and does not change AI behavior, persistence, routes, schema, auth, dependencies, or any non-Language repository.
+- AI Teacher now explains voice state directly in the lesson header area.
+- The main voice toggle and per-message listen action use clearer labels.
+- No speech engine, backend, AI prompt, schema, auth, route, dependency, Forge, OpenAI, Hub, or unrelated repository changes were made.
 
 Local validation still required because this run only used the GitHub connector:
 
@@ -258,4 +287,4 @@ npm run build
 
 ## Next Action
 
-Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.8 — Teacher Voice Control Microcopy` using existing chat UI only.
+Continue Sprint `8.1 — Learning Experience Foundation` with `8.1.9 — Teacher Lesson Completion Nudge` using existing chat UI only.
