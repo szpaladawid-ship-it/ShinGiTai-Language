@@ -32,6 +32,12 @@ const STARTER_PROMPTS = [
   "Practice a short real-life conversation with me.",
 ];
 
+const COMPLETION_PROMPTS = [
+  "Recap what I learned in this lesson.",
+  "Show my mistakes and corrected examples.",
+  "Give me one next step for tomorrow.",
+];
+
 function TeacherEmpty() {
   const avatar = useTeacherAvatar();
 
@@ -68,6 +74,22 @@ function TeacherEmpty() {
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
             {STARTER_PROMPTS.map((prompt) => (
               <div key={prompt} className="rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium">
+                “{prompt}”
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-left">
+          <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+            <BookOpenCheck className="h-4 w-4" /> Finish strong
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Before leaving a lesson, ask the teacher to turn the session into a short review plan.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            {COMPLETION_PROMPTS.map((prompt) => (
+              <div key={prompt} className="rounded-xl border border-primary/20 bg-background/80 px-3 py-2 text-sm font-medium text-foreground">
                 “{prompt}”
               </div>
             ))}
