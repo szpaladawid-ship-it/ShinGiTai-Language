@@ -59,7 +59,7 @@ function OnboardingPage() {
 
   const totalSteps = 4;
   const canNext =
-    (step === 0) ||
+    step === 0 ||
     (step === 1 && !!nativeLang) ||
     (step === 2 && !!targetLang && targetLang !== nativeLang) ||
     (step === 3 && !!goal);
@@ -127,7 +127,6 @@ function OnboardingPage() {
               />
             </div>
           )}
-
 
           {step === 1 && (
             <div className="animate-fade-up">
@@ -223,7 +222,12 @@ function OnboardingPage() {
               Continue <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button variant="hero" size="lg" disabled={!canNext || submitting} onClick={handleFinish}>
+            <Button
+              variant="hero"
+              size="lg"
+              disabled={!canNext || submitting}
+              onClick={handleFinish}
+            >
               {submitting ? "Setting up…" : "Start learning"} <ArrowRight className="h-4 w-4" />
             </Button>
           )}

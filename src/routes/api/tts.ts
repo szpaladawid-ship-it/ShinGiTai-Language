@@ -49,9 +49,7 @@ export const Route = createFileRoute("/api/tts")({
         }
 
         const voice =
-          typeof body.voice === "string" && ALLOWED_VOICES.has(body.voice)
-            ? body.voice
-            : "alloy";
+          typeof body.voice === "string" && ALLOWED_VOICES.has(body.voice) ? body.voice : "alloy";
         const input = text.slice(0, 3000);
 
         const upstream = await fetch("https://api.openai.com/v1/audio/speech", {

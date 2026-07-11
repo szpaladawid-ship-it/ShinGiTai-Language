@@ -61,35 +61,15 @@ Requirements:
 Return ONLY this JSON shape:
 {"questions":[{"section":"grammar","prompt":"...","options":["...","...","...","..."],"correct_index":0}]}`;
 
-  const { getShinGiTaiAiConfig } = await import("@/lib/shingitai-ai.server");
-  const { baseURL, apiKey, model } = getShinGiTaiAiConfig();
-
-  const res = await fetch(`${baseURL}/chat/completions`, {
-    method: "POST",
-    headers: {
-      ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
-      ],
-      temperature: 0.7,
-      response_format: { type: "json_object" },
-    }),
+  const { completeLanguageAi } = await import("@/integrations/shingitai-openai");
+  const { text: content } = await completeLanguageAi({
+    mode: "teacher",
+    targetLanguageCode: languageName,
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: user },
+    ],
   });
-
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    throw new Error(`Exam generation failed: ${res.status} ${detail}`.trim());
-  }
-
-  const data = (await res.json()) as {
-    choices?: { message?: { content?: string } }[];
-  };
-  const content = data.choices?.[0]?.message?.content ?? "";
 
   let parsed: unknown;
   try {

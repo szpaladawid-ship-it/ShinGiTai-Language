@@ -143,7 +143,12 @@ function DashboardPage() {
   const QUICK_ACTIONS = [
     { icon: School, title: "AI Teacher", desc: "Structured lessons with voice", to: "/teacher" },
     { icon: MessageCircle, title: "AI Conversation", desc: "Chat with your tutor", to: "/tutor" },
-    { icon: ScrollText, title: "Certification Exams", desc: "Earn CEFR certificates", to: "/exams" },
+    {
+      icon: ScrollText,
+      title: "Certification Exams",
+      desc: "Earn CEFR certificates",
+      to: "/exams",
+    },
     { icon: Layers, title: "Flashcards", desc: "Review your deck", to: "/flashcards" },
     { icon: BookOpen, title: "Grammar Lesson", desc: "Learn the rules", to: "/grammar" },
     { icon: GraduationCap, title: "Quizzes", desc: "Test your skills", to: "/quizzes" },
@@ -151,7 +156,6 @@ function DashboardPage() {
     { icon: Award, title: "Achievements", desc: "Unlock badges", to: "/achievements" },
     { icon: Crown, title: "Go Pro", desc: "Unlock everything", to: "/premium" },
   ];
-
 
   return (
     <div className="min-h-screen bg-background">
@@ -202,14 +206,10 @@ function DashboardPage() {
           </div>
         </div>
 
-
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {STAT_CARDS.map((s) => (
-            <div
-              key={s.label}
-              className="rounded-2xl border border-border bg-card p-4 shadow-soft"
-            >
+            <div key={s.label} className="rounded-2xl border border-border bg-card p-4 shadow-soft">
               <s.icon className={`h-5 w-5 ${s.tone}`} />
               <p className="mt-3 text-2xl font-bold tabular-nums">{s.value}</p>
               <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -251,7 +251,8 @@ function DashboardPage() {
               <p className="mt-4 font-semibold">{a.title}</p>
               <p className="text-sm text-muted-foreground">{a.desc}</p>
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                Start <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                Start{" "}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
           ))}
@@ -270,10 +271,7 @@ function DashboardPage() {
             </>
           ) : courses && courses.length > 0 ? (
             courses.map((c) => (
-              <div
-                key={c.id}
-                className="rounded-2xl border border-border bg-card p-5 shadow-soft"
-              >
+              <div key={c.id} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{c.languages?.flag_emoji ?? "🌐"}</span>
                   <div>
@@ -286,10 +284,16 @@ function DashboardPage() {
               </div>
             ))
           ) : (
-            <AddLanguageCard userId={user!.id} onAdded={() => queryClient.invalidateQueries({ queryKey: ["courses", user?.id] })} />
+            <AddLanguageCard
+              userId={user!.id}
+              onAdded={() => queryClient.invalidateQueries({ queryKey: ["courses", user?.id] })}
+            />
           )}
           {courses && courses.length > 0 && (
-            <AddLanguageCard userId={user!.id} onAdded={() => queryClient.invalidateQueries({ queryKey: ["courses", user?.id] })} />
+            <AddLanguageCard
+              userId={user!.id}
+              onAdded={() => queryClient.invalidateQueries({ queryKey: ["courses", user?.id] })}
+            />
           )}
         </div>
       </main>
@@ -316,7 +320,9 @@ function AddLanguageCard({ userId, onAdded }: { userId: string; onAdded: () => v
       .from("user_courses")
       .insert({ user_id: userId, language_code: code });
     if (error) {
-      toast.error(error.message.includes("duplicate") ? "Already learning that language." : error.message);
+      toast.error(
+        error.message.includes("duplicate") ? "Already learning that language." : error.message,
+      );
       return;
     }
     toast.success("Language added! Let's learn.");

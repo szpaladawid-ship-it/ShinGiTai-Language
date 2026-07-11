@@ -147,7 +147,12 @@ export function TutorChatWindow({
           {isTeacher && (
             <TeacherAvatarPicker
               trigger={
-                <Button type="button" variant="ghost" size="icon-sm" aria-label="Change teacher avatar">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Change teacher avatar"
+                >
                   <UserRound className="h-4 w-4" />
                 </Button>
               }
@@ -169,13 +174,12 @@ export function TutorChatWindow({
         </div>
       </header>
 
-
       <Conversation className="flex-1">
         <ConversationContent className="mx-auto w-full max-w-3xl">
           {messages.length === 0 && (
             <div className="py-10 text-center text-sm text-muted-foreground">
               {isTeacher
-                ? 'Your teacher is ready. Type "Let\'s start today\'s lesson" to begin a structured lesson.'
+                ? "Your teacher is ready. Type \"Let's start today's lesson\" to begin a structured lesson."
                 : "Say hello to start practicing! Try writing a greeting in your target language."}
             </div>
           )}
@@ -220,7 +224,9 @@ export function TutorChatWindow({
         <PromptInput onSubmit={handleSubmit} className="mx-auto max-w-3xl">
           <PromptInputTextarea
             ref={inputRef}
-            placeholder={isTeacher ? "Answer your teacher or ask a question…" : "Type your message…"}
+            placeholder={
+              isTeacher ? "Answer your teacher or ask a question…" : "Type your message…"
+            }
             disabled={isBusy}
           />
           <PromptInputFooter className="justify-end">

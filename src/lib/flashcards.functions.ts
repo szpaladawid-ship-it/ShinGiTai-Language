@@ -1,14 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
 
 const CefrLevel = z.enum(["A1", "A2", "B1", "B2", "C1", "C2"]);
 
 // Resolve the learner's native language name (defaults to English).
-async function getNativeName(
-  supabase: { from: (t: string) => any },
-  userId: string,
-): Promise<string> {
+async function getNativeName(supabase: SupabaseClient<Database>, userId: string): Promise<string> {
   const { data: profile } = await supabase
     .from("profiles")
     .select("native_language_code")
@@ -32,7 +31,6 @@ const STARTER_TOPICS: Record<string, string> = {
   C1: "advanced vocabulary: politics, economics, science, idioms, formal register and precise synonyms",
   C2: "near-native mastery: rare idioms, literary and academic vocabulary, subtle connotations and collocations",
 };
-
 
 export const listDecks = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -226,7 +224,10 @@ export const reviewCard = createServerFn({ method: "POST" })
     }
     ease_factor =
       Math.round(
-        (Math.max(1.3, Number(ease_factor) + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))) +
+        (Math.max(
+          1.3,
+          Number(ease_factor) + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)),
+        ) +
           Number.EPSILON) *
           100,
       ) / 100;
@@ -284,33 +285,22 @@ export const generateFlashcards = createServerFn({ method: "POST" })
     const languageName = language?.name ?? deck.language_code;
     const nativeName = await getNativeName(supabase, userId);
 
-    const { createShinGiTaiAiProvider, getShinGiTaiAiModel } = await import("@/lib/shingitai-ai.server");
-    const { generateText, Output } = await import("ai");
-    const { z: zod } = await import("zod");
-
-    const gateway = createShinGiTaiAiProvider();
-    const model = gateway(getShinGiTaiAiModel());
-
-    const { output } = await generateText({
-      model,
-      output: Output.object({
-        schema: zod.object({
-          cards: zod
-            .array(
-              zod.object({
-                front: zod.string(),
-                back: zod.string(),
-                example: zod.string(),
-                emoji: zod.string(),
-              }),
-            )
-            .max(15),
-        }),
-      }),
-      prompt: `Generate ${data.count} vocabulary flashcards for a ${nativeName}-speaking learner of ${languageName} at CEFR level ${data.level}, on the topic "${data.topic}".
+    const { completeLanguageAi } = await import("@/integrations/shingitai-openai");
+    const { text } = await completeLanguageAi({
+      mode: "teacher",
+      targetLanguageCode: deck.language_code,
+      messages: [
+        {
+          role: "user",
+          content: `Generate ${data.count} vocabulary flashcards for a ${nativeName}-speaking learner of ${languageName} at CEFR level ${data.level}, on the topic "${data.topic}".
 Each card: "front" is a word or short phrase in ${languageName}, "back" is the translation into ${nativeName} (the learner's native language, NOT English unless ${nativeName} is English), "example" is a short natural example sentence in ${languageName}, "emoji" is a single emoji that visually represents the word to aid memory (use a neutral one like ✨ only if nothing fits).
-Keep them appropriate for level ${data.level}. Return only the cards.`,
+Keep them appropriate for level ${data.level}. Return only JSON: {"cards":[{"front":"","back":"","example":"","emoji":""}]}.`,
+        },
+      ],
     });
+    const output = JSON.parse(text.replace(/^```(?:json)?\s*|\s*```$/gi, "")) as {
+      cards?: Array<{ front: string; back: string; example: string; emoji: string }>;
+    };
 
     const cards = (output?.cards ?? []).slice(0, data.count).filter((c) => c.front && c.back);
     if (cards.length === 0) throw new Error("No cards generated");
@@ -326,7 +316,6 @@ Keep them appropriate for level ${data.level}. Return only the cards.`,
       })),
     );
     if (insErr) throw new Error(insErr.message);
-
 
     return { inserted: cards.length };
   });
@@ -379,35 +368,24 @@ export const createStarterDeck = createServerFn({ method: "POST" })
       deckId = row.id;
     }
 
-    const { createShinGiTaiAiProvider, getShinGiTaiAiModel } = await import("@/lib/shingitai-ai.server");
-    const { generateText, Output } = await import("ai");
-    const { z: zod } = await import("zod");
-
-    const gateway = createShinGiTaiAiProvider();
-    const model = gateway(getShinGiTaiAiModel());
+    const { completeLanguageAi } = await import("@/integrations/shingitai-openai");
     const topics = STARTER_TOPICS[data.level] ?? STARTER_TOPICS.A1;
-
-    const { output } = await generateText({
-      model,
-      output: Output.object({
-        schema: zod.object({
-          cards: zod
-            .array(
-              zod.object({
-                front: zod.string(),
-                back: zod.string(),
-                example: zod.string(),
-                emoji: zod.string(),
-              }),
-            )
-            .max(15),
-        }),
-      }),
-      prompt: `Generate 14 high-frequency vocabulary flashcards for a ${nativeName}-speaking learner of ${languageName} at CEFR level ${data.level}.
+    const { text } = await completeLanguageAi({
+      mode: "teacher",
+      targetLanguageCode: data.language_code,
+      messages: [
+        {
+          role: "user",
+          content: `Generate 14 high-frequency vocabulary flashcards for a ${nativeName}-speaking learner of ${languageName} at CEFR level ${data.level}.
 Cover a good spread of ${topics}.
 Each card: "front" is a word or short phrase in ${languageName}, "back" is the translation into ${nativeName} (the learner's native language, NOT English unless ${nativeName} is English), "example" is a short natural example sentence in ${languageName}, "emoji" is a single emoji that visually represents the word to aid memory (use ✨ only if nothing fits).
-Keep them appropriate for level ${data.level} and avoid duplicates. Return only the cards.`,
+Keep them appropriate for level ${data.level} and avoid duplicates. Return only JSON: {"cards":[{"front":"","back":"","example":"","emoji":""}]}.`,
+        },
+      ],
     });
+    const output = JSON.parse(text.replace(/^```(?:json)?\s*|\s*```$/gi, "")) as {
+      cards?: Array<{ front: string; back: string; example: string; emoji: string }>;
+    };
 
     const cards = (output?.cards ?? []).filter((c) => c.front && c.back);
     if (cards.length === 0) throw new Error("No cards generated");
@@ -424,16 +402,10 @@ Keep them appropriate for level ${data.level} and avoid duplicates. Return only 
     );
     if (insErr) throw new Error(insErr.message);
 
-
     return { deck_id: deckId, inserted: cards.length };
   });
 
-
-async function bumpXp(
-  supabase: { from: (t: string) => any },
-  userId: string,
-  amount: number,
-) {
+async function bumpXp(supabase: SupabaseClient<Database>, userId: string, amount: number) {
   const { data: stats } = await supabase
     .from("user_stats")
     .select("total_xp")
@@ -442,6 +414,9 @@ async function bumpXp(
   const current = stats?.total_xp ?? 0;
   await supabase
     .from("user_stats")
-    .update({ total_xp: current + amount, last_activity_date: new Date().toISOString().slice(0, 10) })
+    .update({
+      total_xp: current + amount,
+      last_activity_date: new Date().toISOString().slice(0, 10),
+    })
     .eq("user_id", userId);
 }

@@ -9,12 +9,15 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.51",
     "@ai-sdk/react": "^3.0.210",
     "@hookform/resolvers": "^5.2.2",
+    "@shingitai/openai-sdk": "file:vendor/shingitai-openai-sdk/shingitai-openai-sdk-0.1.0-alpha.0.tgz",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.8",

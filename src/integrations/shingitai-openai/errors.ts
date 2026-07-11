@@ -1,0 +1,12 @@
+export class AuthenticationRequiredError extends Error {}
+export class ConversationNotFoundError extends Error {}
+export class ConversationAccessDeniedError extends Error {}
+export class LanguageConfigurationError extends Error {}
+export class ShinGiTaiConfigurationError extends Error {}
+export class ShinGiTaiAuthenticationError extends Error {}
+export class ShinGiTaiUnavailableError extends Error {}
+export class ShinGiTaiTimeoutError extends Error {}
+export class ShinGiTaiRateLimitError extends Error {}
+export class InvalidAiResponseError extends Error {}
+export class MemoryReadError extends Error {}
+export class MemoryWriteError extends Error {}
