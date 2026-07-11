@@ -28,7 +28,7 @@ The project is being migrated from a generated prototype into a ShinGiTai-owned 
 Current priorities:
 
 1. Rebrand visible identity to ShinGiTai Language.
-2. Remove generator-specific/Lovable-specific dependencies.
+2. Remove generator-specific/legacy generator-specific dependencies.
 3. Stabilize Supabase and auth.
 4. Refactor AI access through a provider-neutral gateway.
 5. Prepare future desktop/mobile packaging only after the web app is stable.

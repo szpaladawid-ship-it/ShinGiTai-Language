@@ -45,16 +45,16 @@ Completed in this batch:
 
 Reason: this batch focuses only on visible product identity and should remain low-risk.
 
-## Batch 3 — Lovable Runtime Audit
+## Batch 3 — legacy generator Runtime Audit
 
-Goal: map all confirmed Lovable-related build/runtime touchpoints before removing anything dangerous.
+Goal: map all confirmed legacy generator-related build/runtime touchpoints before removing anything dangerous.
 
 Completed in this batch:
 
-- Added `docs/LOVABLE_REMOVAL_PLAN.md`.
-- Classified Lovable packages by risk.
+- Added `docs/LEGACY_GENERATOR_REMOVAL_PLAN.md`.
+- Classified legacy generator packages by risk.
 - Identified Vite/TanStack config as the highest-risk dependency.
-- Identified Lovable-specific error reporting as a low-risk replacement target.
+- Identified legacy generator-specific error reporting as a low-risk replacement target.
 - Identified root metadata and Supabase generated copy as safe cleanup targets.
 - Defined safe phased removal order.
 
@@ -62,16 +62,16 @@ Reason: this batch is a map before the surgery.
 
 ## Batch 4 — Safe Internal Runtime Rebrand
 
-Goal: replace low-risk internal Lovable/LinguaVerse references without removing build/runtime packages yet.
+Goal: replace low-risk internal legacy generator/LinguaVerse references without removing build/runtime packages yet.
 
 Completed in this batch:
 
 - Added `src/lib/error-reporting.ts` as ShinGiTai-owned app error reporting.
-- Replaced root route usage of `reportLovableError` with `reportAppError`.
+- Replaced root route usage of `reportlegacy generatorError` with `reportAppError`.
 - Updated root metadata to ShinGiTai Language.
 - Updated author, Open Graph, Twitter and Apple Web App metadata.
 - Updated Supabase missing environment message.
-- Kept Lovable packages installed for now.
+- Kept legacy generator packages installed for now.
 
 Reason: this batch removes safe internal references while avoiding the high-risk Vite config extraction.
 
@@ -115,4 +115,4 @@ Planned changes:
 - Preserve TanStack Start, React, Tailwind, Nitro, aliases and server entry behavior.
 - Test locally before merge.
 
-This is the first actual high-risk Lovable removal step.
+This is the first actual high-risk legacy generator removal step.

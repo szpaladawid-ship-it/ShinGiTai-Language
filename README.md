@@ -55,7 +55,7 @@ The project is being migrated from a generated prototype into a ShinGiTai-owned 
 Current priorities:
 
 1. Rebrand user-facing identity from LinguaVerse to ShinGiTai Language.
-2. Remove Lovable-specific dependencies and configuration.
+2. Remove legacy generator-specific dependencies and configuration.
 3. Stabilize authentication and Supabase integration.
 4. Refactor the AI gateway into a provider-neutral ShinGiTai AI Gateway layer.
 5. Prepare desktop/mobile release strategy after the web version is stable.

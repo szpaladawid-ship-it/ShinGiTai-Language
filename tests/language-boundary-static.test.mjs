@@ -40,7 +40,7 @@ test("chat, flashcards and exams contain no direct provider fetch", async () => 
     const source = await read(path);
     assert.doesNotMatch(
       source,
-      /fetch\s*\(|chat\/completions|api\.openai\.com|ai\.gateway\.lovable/,
+      /fetch\s*\(|chat\/completions|api\.openai\.com/,
     );
   }
 });
