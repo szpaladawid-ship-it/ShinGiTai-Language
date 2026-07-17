@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  Sparkles,
   Moon,
   Sun,
   LogOut,
@@ -24,6 +23,7 @@ import { getMyAccount } from "@/lib/account.functions";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/notification-bell";
 import { cn } from "@/lib/utils";
+import { BrandLogo } from "@/components/brand-logo";
 
 const NAV = [
   { to: "/dashboard", label: "Home", icon: Home },
@@ -61,10 +61,10 @@ export function AppHeader() {
     <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
         <Link to="/dashboard" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-brand text-primary-foreground">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <span className="hidden text-lg font-bold tracking-tight sm:inline">LinguaVerse</span>
+          <BrandLogo priority className="h-11 w-11 rounded-xl" />
+          <span className="hidden text-lg font-bold tracking-tight sm:inline">
+            ShinGiTai Language
+          </span>
         </Link>
 
         <nav className="flex items-center gap-1 overflow-x-auto">

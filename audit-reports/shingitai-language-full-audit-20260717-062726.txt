@@ -1,0 +1,1565 @@
+
+================================================================================
+SHINGITAI LANGUAGE — FULL APPLICATION AUDIT
+================================================================================
+Project: /Users/dawidszpala/Projects/shingitai-language
+Timestamp: Fri Jul 17 06:27:26 CEST 2026
+Report: /Users/dawidszpala/Projects/shingitai-language/audit-reports/shingitai-language-full-audit-20260717-062726.txt
+User: dawidszpala
+Shell: /bin/zsh
+Platform: Darwin MacBook-Air-Dawid.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:19 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8122 arm64
+
+================================================================================
+1. ENVIRONMENT
+================================================================================
+[PASS] git: /usr/bin/git
+[PASS] node: /usr/local/bin/node
+[PASS] npm: /usr/local/bin/npm
+[PASS] npx: /usr/local/bin/npx
+[PASS] grep: /usr/bin/grep
+[PASS] sed: /usr/bin/sed
+[PASS] find: /usr/bin/find
+[PASS] sort: /usr/bin/sort
+[PASS] awk: /usr/bin/awk
+[INFO] Node: v24.18.0
+[INFO] npm: 11.16.0
+[INFO] Git: git version 2.50.1 (Apple Git-155)
+
+================================================================================
+2. PROJECT STRUCTURE
+================================================================================
+[PASS] Istnieje: package.json
+[PASS] Istnieje: package-lock.json
+[PASS] Istnieje: src
+[PASS] Istnieje: src/routes
+[PASS] Istnieje: src/components
+[PASS] Istnieje: src/integrations
+[PASS] Istnieje: src/integrations/supabase
+[PASS] Istnieje: src/integrations/shingitai-openai
+[PASS] Istnieje: tests
+[PASS] Istnieje: public
+
+--- package.json ---
+{
+  "name": "shingitai-language",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.51",
+    "@ai-sdk/react": "^3.0.210",
+    "@hookform/resolvers": "^5.2.2",
+    "@shingitai/openai-sdk": "file:vendor/shingitai-openai-sdk/shingitai-openai-sdk-0.1.0-alpha.0.tgz",
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-aspect-ratio": "^1.1.8",
+    "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-checkbox": "^1.3.3",
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-context-menu": "^2.2.16",
+    "@radix-ui/react-dialog": "^1.1.17",
+    "@radix-ui/react-dropdown-menu": "^2.1.18",
+    "@radix-ui/react-hover-card": "^1.1.17",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-menubar": "^1.1.16",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@radix-ui/react-popover": "^1.1.15",
+    "@radix-ui/react-progress": "^1.1.8",
+    "@radix-ui/react-radio-group": "^1.3.8",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-select": "^2.3.1",
+    "@radix-ui/react-separator": "^1.1.10",
+    "@radix-ui/react-slider": "^1.3.6",
+    "@radix-ui/react-slot": "^1.3.0",
+    "@radix-ui/react-switch": "^1.2.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@radix-ui/react-toggle-group": "^1.1.11",
+    "@radix-ui/react-tooltip": "^1.2.10",
+    "@streamdown/cjk": "^1.0.3",
+    "@streamdown/code": "^1.1.1",
+    "@streamdown/math": "^1.0.2",
+    "@streamdown/mermaid": "^1.0.2",
+    "@supabase/supabase-js": "^2.108.2",
+    "@tailwindcss/vite": "^4.2.1",
+    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-router": "^1.168.25",
+    "@tanstack/react-start": "^1.167.50",
+    "@tanstack/router-plugin": "^1.167.28",
+    "ai": "^6.0.208",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.6.0",
+    "input-otp": "^1.4.2",
+    "lucide-react": "^1.21.0",
+    "motion": "^12.40.0",
+    "nanoid": "^5.1.15",
+    "react": "^19.2.0",
+    "react-day-picker": "^9.14.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.2",
+    "react-markdown": "^10.1.0",
+    "react-resizable-panels": "^4.6.5",
+    "recharts": "^2.15.4",
+    "sonner": "^2.0.7",
+    "streamdown": "^2.5.0",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.1",
+    "tw-animate-css": "^1.3.4",
+    "use-stick-to-bottom": "^1.1.6",
+    "vaul": "^1.1.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/node": "^22.16.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^15.15.0",
+    "nitro": "3.0.260603-beta",
+    "prettier": "^3.7.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^8.0.16"
+  }
+}
+
+================================================================================
+3. GIT STATE
+================================================================================
+[PASS] Repozytorium Git wykryte.
+
+Branch:
+checkpoint/language-ai-foundation-20260711
+
+HEAD:
+31f0b88 Remove all Lovable dependencies and references
+
+Remote:
+origin	https://github.com/szpaladawid-ship-it/ShinGiTai-Language (fetch)
+origin	https://github.com/szpaladawid-ship-it/ShinGiTai-Language (push)
+
+Working tree:
+ M src/components/app-header.tsx
+ M src/routes/auth.tsx
+ M src/routes/index.tsx
+?? audit-reports/
+?? src/assets/shingitai-language-login-hero.png
+?? src/assets/shingitai-language-logo-transparent.png
+?? src/assets/shingitai-language-logo.png
+?? src/components/brand-logo.tsx
+?? tmp/
+[WARN] Working tree zawiera niezapisane zmiany.
+
+================================================================================
+4. NPM SCRIPTS
+================================================================================
+[PASS] npm script lint: eslint .
+[PASS] npm script typecheck: tsc --noEmit
+[PASS] npm script test: node --experimental-strip-types --test tests/*.test.mjs
+[PASS] npm script build: vite build
+[PASS] Podstawowe skrypty jakości są skonfigurowane.
+
+================================================================================
+5. LOVABLE REMOVAL AUDIT
+================================================================================
+[PASS] Nie znaleziono aktywnych odwołań do Lovable.
+
+================================================================================
+6. SHINGITAI OPENAI BOUNDARY
+================================================================================
+[PASS] Warstwa integracyjna ShinGiTai OpenAI istnieje.
+src/integrations/shingitai-openai/client.server.ts
+src/integrations/shingitai-openai/errors.ts
+src/integrations/shingitai-openai/index.ts
+src/integrations/shingitai-openai/language-ai.policy.ts
+src/integrations/shingitai-openai/language-ai.service.ts
+src/integrations/shingitai-openai/language-ai.types.ts
+src/integrations/shingitai-openai/language-context-builder.ts
+src/integrations/shingitai-openai/language-core-projects.ts
+src/integrations/shingitai-openai/language-models.ts
+src/integrations/shingitai-openai/prompts/conversation.ts
+src/integrations/shingitai-openai/prompts/shared.ts
+src/integrations/shingitai-openai/prompts/teacher.ts
+[WARN] Znaleziono potencjalne bezpośrednie odwołania do providerów:
+src/integrations/shingitai-openai/client.server.ts:17:  const apiKey = process.env.SHINGITAI_OPENAI_API_KEY?.trim();
+src/routes/api/tts.ts:46:        const apiKey = process.env.OPENAI_API_KEY;
+src/routes/api/tts.ts:48:          return new Response("Missing OPENAI_API_KEY", { status: 500 });
+src/routes/api/tts.ts:55:        const upstream = await fetch("https://api.openai.com/v1/audio/speech", {
+[WARN] Sprawdź miejsca potencjalnie przyjmujące model/system prompt od klienta:
+src/routes/api/chat.ts:5:import { buildLanguageSystemPrompt, completeLanguageAi } from "@/integrations/shingitai-openai";
+src/routes/api/chat.ts:124:        const system = buildLanguageSystemPrompt(mode, {
+[PASS] API lub funkcje serwerowe korzystają z warstwy ShinGiTai OpenAI.
+
+================================================================================
+7. AUTHENTICATION ROUTES AND UI
+================================================================================
+[PASS] Znaleziono pliki routingu uwierzytelniania:
+src/routes/auth.tsx
+src/routes/reset-password.tsx
+[PASS] Wykryto mechanizm auth: signInWithPassword|signIn
+Binary file src/assets/shingitai-language-login-hero.png matches
+src/routes/auth.tsx:18:type Mode = "signin" | "signup";
+src/routes/auth.tsx:46:  const [mode, setMode] = useState<Mode>("signin");
+src/routes/auth.tsx:63:      const { error } = await supabase.auth.signInWithOAuth({
+src/routes/auth.tsx:98:        const { error } = await supabase.auth.signInWithPassword({ email, password });
+src/routes/auth.tsx:168:                {mode === "signin" ? "Welcome back" : "Create your account"}
+src/routes/auth.tsx:171:                {mode === "signin"
+src/routes/auth.tsx:210:                  {mode === "signin" && (
+src/routes/auth.tsx:229:                    autoComplete={mode === "signin" ? "current-password" : "new-password"}
+src/routes/auth.tsx:242:              {mode === "signin" && (
+src/routes/auth.tsx:261:                {mode === "signin" ? "Sign in" : "Create account"}
+src/routes/auth.tsx:296:              {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
+src/routes/auth.tsx:299:                onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+src/routes/auth.tsx:302:                {mode === "signin" ? "Sign up" : "Sign in"}
+[PASS] Wykryto mechanizm auth: signUp
+src/routes/auth.tsx:18:type Mode = "signin" | "signup";
+src/routes/auth.tsx:85:      if (mode === "signup") {
+src/routes/auth.tsx:86:        const { error } = await supabase.auth.signUp({
+src/routes/auth.tsx:178:              {mode === "signup" && (
+src/routes/auth.tsx:299:                onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+[PASS] Wykryto mechanizm auth: resetPasswordForEmail
+src/routes/reset-password.tsx:38:      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+[PASS] Wykryto mechanizm auth: updateUser
+src/routes/reset-password.tsx:55:      const { error } = await supabase.auth.updateUser({ password });
+[PASS] Wykryto mechanizm auth: signOut
+src/components/app-header.tsx:41:  const { user, signOut } = useAuth();
+src/components/app-header.tsx:53:  const handleSignOut = async () => {
+src/components/app-header.tsx:56:    await signOut();
+src/components/app-header.tsx:104:          <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
+src/lib/auth.tsx:9:  signOut: () => Promise<void>;
+src/lib/auth.tsx:38:  const signOut = async () => {
+src/lib/auth.tsx:39:    await supabase.auth.signOut();
+src/lib/auth.tsx:43:    <AuthContext.Provider value={{ user, session, loading, signOut }}>
+src/routes/_authenticated/dashboard.tsx:69:  const { user, signOut } = useAuth();
+src/routes/_authenticated/dashboard.tsx:123:  const handleSignOut = async () => {
+src/routes/_authenticated/dashboard.tsx:126:    await signOut();
+src/routes/_authenticated/dashboard.tsx:182:            <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
+[PASS] Wykryto mechanizm auth: getUser|getSession
+src/integrations/supabase/auth-attacher.ts:9:    const { data } = await supabase.auth.getSession();
+src/components/tutor-chat.tsx:67:          const { data } = await supabase.auth.getSession();
+src/lib/auth.tsx:29:    supabase.auth.getSession().then(({ data }) => {
+src/lib/use-speak.ts:45:        const { data } = await supabase.auth.getSession();
+src/routes/_authenticated/route.tsx:8:    const { data, error } = await supabase.auth.getUser();
+src/routes/api/chat.ts:43:        const { data: userData, error: userError } = await supabase.auth.getUser();
+src/routes/api/tts.ts:41:        const { data: userData, error: userError } = await supabase.auth.getUser();
+[PASS] Znaleziono pola hasła.
+src/routes/reset-password.tsx:100:                  type="password"
+src/routes/reset-password.tsx:106:                  autoComplete="new-password"
+[PASS] Znaleziono pola e-mail.
+src/routes/auth.tsx:198:                  type="email"
+src/routes/auth.tsx:203:                  autoComplete="email"
+src/routes/reset-password.tsx:125:                  type="email"
+src/routes/reset-password.tsx:130:                  autoComplete="email"
+
+================================================================================
+8. SUPABASE AUTH SECURITY
+================================================================================
+[PASS] Integracja Supabase istnieje.
+[FAIL] Potencjalne ujawnienie Supabase service role:
+src/integrations/supabase/client.server.ts:37:  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+src/integrations/supabase/client.server.ts:39:  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+src/integrations/supabase/client.server.ts:42:      ...(!SUPABASE_SERVICE_ROLE_KEY ? ["SUPABASE_SERVICE_ROLE_KEY"] : []),
+src/integrations/supabase/client.server.ts:49:  return createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+src/integrations/supabase/client.server.ts:51:      fetch: createSupabaseFetch(SUPABASE_SERVICE_ROLE_KEY),
+[PASS] Nie znaleziono oczywistych sekretów eksportowanych do klienta.
+[PASS] Nie znaleziono ręcznego zapisu tokenów auth do localStorage/sessionStorage.
+[WARN] Znaleziono użycie raw HTML — wymaga sprawdzenia sanitizacji:
+src/components/ui/chart.tsx:73:      dangerouslySetInnerHTML={{
+
+================================================================================
+9. ROUTING AND PROTECTED APPLICATION AREA
+================================================================================
+[INFO] Liczba plików routingu: 31
+[PASS] Istnieje wydzielona przestrzeń routingu chronionego.
+[PASS] Znaleziono mechanizmy ochrony routingu/sesji.
+src/routes/_authenticated/route.tsx:7:  beforeLoad: async () => {
+src/routes/_authenticated/route.tsx:8:    const { data, error } = await supabase.auth.getUser();
+src/routes/_authenticated/route.tsx:10:      throw redirect({ to: "/auth" });
+src/routes/api/chat.ts:43:        const { data: userData, error: userError } = await supabase.auth.getUser();
+src/routes/api/tts.ts:41:        const { data: userData, error: userError } = await supabase.auth.getUser();
+src/integrations/supabase/auth-attacher.ts:9:    const { data } = await supabase.auth.getSession();
+src/lib/auth.tsx:29:    supabase.auth.getSession().then(({ data }) => {
+src/lib/use-speak.ts:45:        const { data } = await supabase.auth.getSession();
+
+================================================================================
+10. LANDING PAGE AND BRANDING
+================================================================================
+[PASS] Główna strona istnieje: src/routes/index.tsx.
+[PASS] Branding/content obecny: ShinGiTai Language
+[PASS] Branding/content obecny: Powered by ShinGiTai OpenAI
+[PASS] Branding/content obecny: Start Learning
+[PASS] Branding/content obecny: Watch Demo
+[PASS] Branding/content obecny: Created by ShinGiTai Holding Groupe
+[PASS] Branding/content obecny: All Rights Reserved
+[PASS] Znaleziono assety logo/brand:
+src/assets/shingitai-language-logo-transparent.png
+src/assets/shingitai-language-logo.png
+src/components/brand-logo.tsx
+[PASS] Znaleziono asset hero/landing:
+src/assets/hero-tutor.jpg
+src/assets/shingitai-language-login-hero.png
+
+================================================================================
+11. RESPONSIVENESS
+================================================================================
+[INFO] Liczba dopasowań breakpointów Tailwind: 57
+[PASS] Kod zawiera istotne użycie breakpointów responsywnych.
+[WARN] Potencjalne problemy z overflow na telefonach:
+src/routes/auth.tsx:124:      <div className="relative mx-auto grid min-h-screen max-w-[1600px] items-center gap-10 px-5 py-8 lg:grid-cols-[1.15fr_.85fr] lg:px-10 xl:px-16">
+
+================================================================================
+12. MOBILE / DESKTOP APP READINESS
+================================================================================
+[WARN] Brak: public/manifest.json
+[PASS] Istnieje: public/manifest.webmanifest
+[WARN] Brak: public/favicon.ico
+[WARN] Brak: public/favicon.svg
+[WARN] Brak: public/apple-touch-icon.png
+
+Manifest:
+{
+  "name": "LinguaVerse AI",
+  "short_name": "LinguaVerse",
+  "description": "Learn any language with your personal AI tutor — conversations, flashcards, grammar, and quizzes.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#14b8a6",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+[PASS] Wykryto konfigurację viewport.
+src/components/ui/scroll-area.tsx:15:    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+src/components/ui/scroll-area.tsx:17:    </ScrollAreaPrimitive.Viewport>
+src/components/ui/navigation-menu.tsx:18:    <NavigationMenuViewport />
+src/components/ui/navigation-menu.tsx:76:const NavigationMenuViewport = React.forwardRef<
+src/components/ui/navigation-menu.tsx:77:  React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
+src/components/ui/navigation-menu.tsx:78:  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
+src/components/ui/navigation-menu.tsx:81:    <NavigationMenuPrimitive.Viewport
+src/components/ui/navigation-menu.tsx:83:        "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]",
+src/components/ui/navigation-menu.tsx:91:NavigationMenuViewport.displayName = NavigationMenuPrimitive.Viewport.displayName;
+src/components/ui/navigation-menu.tsx:119:  NavigationMenuViewport,
+src/components/ui/select.tsx:80:      <SelectPrimitive.Viewport
+src/components/ui/select.tsx:88:      </SelectPrimitive.Viewport>
+src/lib/error-page.ts:7:    <meta name="viewport" content="width=device-width, initial-scale=1" />
+src/routes/index.tsx:183:                viewport={{ once: true }}
+src/routes/__root.tsx:88:        name: "viewport",
+src/routes/__root.tsx:89:        content: "width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5",
+
+================================================================================
+13. SEO AND METADATA
+================================================================================
+[PASS] SEO/meta wykryte: <title>|title:
+[PASS] SEO/meta wykryte: description
+[PASS] SEO/meta wykryte: og:title|property=["']og:
+[PASS] SEO/meta wykryte: twitter:card
+[WARN] Brak lub nie wykryto: canonical
+[WARN] Brak lub nie wykryto: robots
+[PASS] SEO/meta wykryte: sitemap
+
+================================================================================
+14. ACCESSIBILITY
+================================================================================
+[WARN] Potencjalne obrazy bez alt:
+src/components/brand-logo.tsx:12:    <img
+src/routes/index.tsx:164:              <img
+src/routes/auth.tsx:113:      <img
+src/routes/_authenticated/dashboard.tsx:198:            <img
+src/routes/_authenticated/grammar.tsx:43:          <img
+src/routes/_authenticated/onboarding.tsx:109:              <img
+src/routes/_authenticated/tutor.index.tsx:12:      <img
+[WARN] Przyciski bez jawnego type mogą przypadkowo submitować formularz:
+src/components/ui/input-group.tsx:103:    <Button
+src/components/ui/calendar.tsx:153:    <Button
+src/components/ui/sidebar.tsx:267:    <Button
+src/components/ui/sidebar.tsx:291:      <button
+src/components/ui/carousel.tsx:182:      <Button
+src/components/ui/carousel.tsx:210:      <Button
+src/components/notification-bell.tsx:76:        <Button variant="ghost" size="icon" aria-label="Notifications" className="relative">
+src/components/notification-bell.tsx:89:            <button
+src/components/notification-bell.tsx:113:                    <button
+src/components/tutor-chat.tsx:150:                <Button
+src/components/tutor-chat.tsx:161:          <Button
+src/components/ai-elements/conversation.tsx:76:      <Button
+src/components/ai-elements/conversation.tsx:137:    <Button
+src/components/ai-elements/message.tsx:222:    <Button
+src/components/ai-elements/message.tsx:242:    <Button
+src/components/teacher-avatar-picker.tsx:63:          <Button variant="soft" size="sm">
+src/components/teacher-avatar-picker.tsx:80:              <button
+src/components/app-header.tsx:89:          <Button asChild variant="ghost" size="icon" aria-label="Premium">
+src/components/app-header.tsx:95:            <Button asChild variant="ghost" size="icon" aria-label="Admin">
+src/components/app-header.tsx:101:          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+src/components/app-header.tsx:104:          <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
+src/lib/error-page.ts:24:        <button class="primary" onclick="location.reload()">Try again</button>
+src/routes/index.tsx:75:            <button
+src/routes/index.tsx:81:            <button
+src/routes/index.tsx:88:            <Button
+src/routes/index.tsx:125:              <Button
+src/routes/index.tsx:134:              <Button
+src/routes/index.tsx:218:          <Button
+src/routes/__root.tsx:62:          <button
+src/routes/auth.tsx:231:                  <button
+src/routes/auth.tsx:254:              <Button
+src/routes/auth.tsx:273:              <Button
+src/routes/auth.tsx:283:              <Button
+src/routes/auth.tsx:297:              <button
+src/routes/_authenticated/grammar.$lessonId.tsx:77:            <Button
+src/routes/_authenticated/quizzes.$quizId.tsx:130:              <Button variant="hero" className="mt-6 w-full">
+src/routes/_authenticated/quizzes.$quizId.tsx:152:                      <button
+src/routes/_authenticated/quizzes.$quizId.tsx:170:            <Button
+src/routes/_authenticated/dashboard.tsx:173:            <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+src/routes/_authenticated/dashboard.tsx:182:            <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sign out">
+src/routes/_authenticated/dashboard.tsx:339:          <button
+src/routes/_authenticated/teacher.tsx:126:          <Button className="w-full" variant="hero" onClick={() => setDialogOpen(true)}>
+src/routes/_authenticated/teacher.tsx:164:                <button
+src/routes/_authenticated/teacher.tsx:227:            <Button variant="ghost" onClick={() => setDialogOpen(false)}>
+src/routes/_authenticated/teacher.tsx:230:            <Button variant="hero" onClick={handleCreate} disabled={creating}>
+src/routes/_authenticated/flashcards.$deckId.tsx:162:            <Button variant="soft" onClick={() => setGenOpen(true)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:165:            <Button variant="hero" onClick={() => setReviewing(true)} disabled={cards.length === 0}>
+src/routes/_authenticated/flashcards.$deckId.tsx:183:            <Button onClick={handleAdd}>
+src/routes/_authenticated/flashcards.$deckId.tsx:207:                <button
+src/routes/_authenticated/flashcards.$deckId.tsx:270:            <Button variant="ghost" onClick={() => setGenOpen(false)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:273:            <Button variant="hero" onClick={handleGenerate} disabled={generating}>
+src/routes/_authenticated/flashcards.$deckId.tsx:320:        <button
+src/routes/_authenticated/flashcards.$deckId.tsx:338:            <Button variant="hero" className="mt-5" onClick={onExit}>
+src/routes/_authenticated/flashcards.$deckId.tsx:347:            <button
+src/routes/_authenticated/flashcards.$deckId.tsx:367:                <Button variant="outline" onClick={() => rate(0)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:370:                <Button variant="outline" onClick={() => rate(1)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:373:                <Button variant="outline" onClick={() => rate(2)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:376:                <Button variant="hero" onClick={() => rate(3)}>
+src/routes/_authenticated/flashcards.$deckId.tsx:381:              <Button variant="hero" className="mt-4 w-full" onClick={() => setFlipped(true)}>
+src/routes/_authenticated/flashcards.tsx:149:          <Button variant="hero" onClick={() => setOpen(true)}>
+[PASS] W kodzie występują atrybuty ARIA.
+[PASS] Wykryto style stanów focus.
+
+================================================================================
+15. PRIVACY, TERMS AND LEGAL
+================================================================================
+[PASS] Wykryto treść/link prawny: Privacy Policy|Privacy
+[PASS] Wykryto treść/link prawny: Terms of Service|Terms
+[PASS] Wykryto treść/link prawny: Cookies|Cookie
+[PASS] Wykryto treść/link prawny: Contact
+[PASS] Wykryto treść/link prawny: All Rights Reserved
+
+================================================================================
+16. AUTH UX STATES
+================================================================================
+[PASS] Wykryto mechanizm formularza: loading|isLoading|pending|isPending|submitting
+[PASS] Wykryto mechanizm formularza: disabled=
+[PASS] Wykryto mechanizm formularza: toast\.error|setError|errorMessage|FormMessage
+[PASS] Wykryto mechanizm formularza: required
+[PASS] Wykryto mechanizm formularza: autocomplete|autoComplete
+
+================================================================================
+17. DEPRECATED TANSTACK API
+================================================================================
+[WARN] Znaleziono 24 użyć deprecated inputValidator():
+src/lib/account.functions.ts:11:  .inputValidator((input: unknown) =>
+src/lib/account.functions.ts:31:  .inputValidator((input: unknown) =>
+src/lib/account.functions.ts:157:  .inputValidator((input: unknown) => z.object({ tier: z.enum(["free", "pro"]) }).parse(input))
+src/lib/notifications.functions.ts:35:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid().optional() }).parse(input))
+src/lib/tutor.functions.ts:10:  .inputValidator((input: unknown) => z.object({ mode: Mode.optional() }).parse(input ?? {}))
+src/lib/tutor.functions.ts:25:  .inputValidator((input: unknown) =>
+src/lib/tutor.functions.ts:54:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/tutor.functions.ts:86:  .inputValidator((input: unknown) =>
+src/lib/tutor.functions.ts:102:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/exam.functions.ts:17:  .inputValidator((input: unknown) =>
+src/lib/exam.functions.ts:89:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/exam.functions.ts:132:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/exam.functions.ts:157:  .inputValidator((input: unknown) =>
+src/lib/flashcards.functions.ts:68:  .inputValidator((input: unknown) =>
+src/lib/flashcards.functions.ts:95:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/flashcards.functions.ts:109:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/flashcards.functions.ts:134:  .inputValidator((input: unknown) =>
+src/lib/flashcards.functions.ts:159:  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+src/lib/flashcards.functions.ts:173:  .inputValidator((input: unknown) => z.object({ deckId: z.string().uuid() }).parse(input))
+src/lib/flashcards.functions.ts:194:  .inputValidator((input: unknown) =>
+src/lib/flashcards.functions.ts:260:  .inputValidator((input: unknown) =>
+src/lib/flashcards.functions.ts:327:  .inputValidator((input: unknown) =>
+src/lib/study.functions.ts:8:  .inputValidator((input: unknown) => z.object({ lesson_id: z.string().uuid() }).parse(input))
+src/lib/study.functions.ts:41:  .inputValidator((input: unknown) =>
+
+================================================================================
+18. CODE QUALITY STATIC CHECKS
+================================================================================
+[WARN] Znaleziono jawne użycia any:
+src/routeTree.gen.ts:46:} as any)
+src/routeTree.gen.ts:51:} as any)
+src/routeTree.gen.ts:56:} as any)
+src/routeTree.gen.ts:60:} as any)
+src/routeTree.gen.ts:65:} as any)
+src/routeTree.gen.ts:70:} as any)
+src/routeTree.gen.ts:75:} as any)
+src/routeTree.gen.ts:80:} as any)
+src/routeTree.gen.ts:85:} as any)
+src/routeTree.gen.ts:90:} as any)
+src/routeTree.gen.ts:95:} as any)
+src/routeTree.gen.ts:100:} as any)
+src/routeTree.gen.ts:106:  } as any)
+src/routeTree.gen.ts:111:} as any)
+src/routeTree.gen.ts:116:} as any)
+src/routeTree.gen.ts:121:} as any)
+src/routeTree.gen.ts:126:} as any)
+src/routeTree.gen.ts:131:} as any)
+src/routeTree.gen.ts:137:  } as any)
+src/routeTree.gen.ts:142:} as any)
+src/routeTree.gen.ts:148:  } as any)
+src/routeTree.gen.ts:153:} as any)
+src/routeTree.gen.ts:159:  } as any)
+src/routeTree.gen.ts:165:  } as any)
+src/routeTree.gen.ts:171:  } as any)
+src/routeTree.gen.ts:177:  } as any)
+src/routeTree.gen.ts:183:  } as any)
+src/routeTree.gen.ts:189:  } as any)
+src/routeTree.gen.ts:195:  } as any)
+[WARN] Znaleziono wywołania console.*:
+src/start.ts:13:    console.error(error);
+src/integrations/supabase/auth-middleware.ts:45:      console.error(`[Supabase] ${message}`);
+src/integrations/supabase/client.ts:46:    console.error(`[Supabase] ${message}`);
+src/integrations/supabase/client.server.ts:45:    console.error(`[Supabase] ${message}`);
+src/lib/error-reporting.ts:50:    console.warn("[ShinGiTai Language]", payload);
+src/lib/error-reporting.ts:59:  console.error("[ShinGiTai Language]", payload);
+src/server.ts:33:  console.error(consumeLastCapturedError() ?? new Error(`h3 swallowed SSR error: ${body}`));
+src/server.ts:47:      console.error(error);
+src/routes/__root.tsx:42:  console.error(error);
+src/routes/api/chat.ts:117:          console.warn(
+src/routes/api/chat.ts:158:            if (error) console.error("[Tutor history] Assistant message persistence failed");
+[WARN] Znaleziono otwarte markery techniczne:
+Binary file src/assets/shingitai-language-logo.png matches
+Binary file src/assets/shingitai-language-login-hero.png matches
+Binary file src/assets/shingitai-language-logo-transparent.png matches
+
+================================================================================
+19. TEST COVERAGE INVENTORY
+================================================================================
+[INFO] Liczba plików testowych: 7
+tests/language-ai-policy.test.mjs
+tests/language-boundary-static.test.mjs
+tests/language-gateway-errors.test.mjs
+tests/language-memory-repository.test.mjs
+tests/language-memory.test.mjs
+tests/language-prompts.test.mjs
+tests/verified-learning-outcomes.test.mjs
+[PASS] Repozytorium ma podstawowy zestaw testów.
+[PASS] Znaleziono testy związane z auth/sesją.
+tests/language-boundary-static.test.mjs:13:test("chat userId comes from authenticated Supabase user", async () => {
+tests/language-gateway-errors.test.mjs:5:  AuthenticationError,
+tests/language-gateway-errors.test.mjs:22:  const mapped = mapGatewayError(new AuthenticationError({ message: "raw secret", status: 401 }));
+tests/language-gateway-errors.test.mjs:23:  assert.equal(mapped.constructor.name, "ShinGiTaiAuthenticationError");
+tests/language-gateway-errors.test.mjs:47:  const mapped = mapGatewayError(new AuthenticationError({ message: secret, status: 401 }));
+tests/verified-learning-outcomes.test.mjs:37:    authenticatedUserId: "user-a",
+tests/verified-learning-outcomes.test.mjs:64:      authenticatedUserId: "user-b",
+tests/verified-learning-outcomes.test.mjs:76:      authenticatedUserId: "user-a",
+tests/verified-learning-outcomes.test.mjs:88:      authenticatedUserId: "user-a",
+
+================================================================================
+20. DEPENDENCY SECURITY
+================================================================================
+found 0 vulnerabilities
+
+================================================================================
+21. LINT
+================================================================================
+
+> lint
+> eslint .
+
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ai-elements/conversation.tsx
+  110:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ai-elements/prompt-input.tsx
+  188:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  201:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  345:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  369:14  warning  Fast refresh only works when a file only exports components. Move your React context(s) to a separate file                      react-refresh/only-export-components
+  371:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/teacher-avatar-picker.tsx
+  22:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/teacher-avatar.tsx
+  16:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  73:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/badge.tsx
+  32:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/button-group.tsx
+  78:62  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/button.tsx
+  55:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/form.tsx
+  163:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/navigation-menu.tsx
+  111:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/sidebar.tsx
+  743:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/components/ui/toggle.tsx
+  42:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/lib/auth.tsx
+  49:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/src/lib/theme.tsx
+  47:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/dawidszpala/Projects/shingitai-language/tests/language-boundary-static.test.mjs
+  41:25  error  Replace `⏎······source,⏎······/fetch\s*\(|chat\/completions|api\.openai\.com/,⏎····` with `source,·/fetch\s*\(|chat\/completions|api\.openai\.com/`  prettier/prettier
+
+✖ 19 problems (1 error, 18 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
+[FAIL] ESLint zakończony błędem.
+
+================================================================================
+22. TYPECHECK
+================================================================================
+
+> typecheck
+> tsc --noEmit
+
+[PASS] TypeScript typecheck zakończony poprawnie.
+
+================================================================================
+23. AUTOMATED TESTS
+================================================================================
+
+> test
+> node --experimental-strip-types --test tests/*.test.mjs
+
+✔ model is always selected server-side (1.6635ms)
+✔ core projects use an explicit language allowlist (0.520041ms)
+✔ english maps to core_languages_english (0.169459ms)
+✔ en maps to core_languages_english (0.122917ms)
+✔ norwegian maps to core_languages_norwegian (0.093667ms)
+✔ no maps to core_languages_norwegian (0.15075ms)
+✔ nb maps to core_languages_norwegian (0.091833ms)
+✔ nn maps to core_languages_norwegian (0.076541ms)
+✔ japanese maps to core_languages_japanese (0.089584ms)
+✔ ja maps to core_languages_japanese (0.148209ms)
+✔ polish maps to core_languages_polish (0.084209ms)
+✔ pl maps to core_languages_polish (0.065959ms)
+✔ chat ignores client model and system prompt fields (11.680709ms)
+✔ chat userId comes from authenticated Supabase user (14.038ms)
+✔ conversation ownership is constrained by user_id (11.938791ms)
+✔ chat, flashcards and exams use the shared boundary (5.379ms)
+✔ chat, flashcards and exams contain no direct provider fetch (17.335125ms)
+✔ memory read failure is caught before AI execution (6.719833ms)
+✔ assistant-memory persistence cannot block the streamed response (3.413291ms)
+✔ missing API key returns a controlled configuration error (0.741125ms)
+✔ 401 is normalized without raw provider text (0.173084ms)
+✔ 429 is normalized (0.080791ms)
+✔ timeout is normalized (0.072959ms)
+✔ 500 is normalized as unavailable (0.078833ms)
+✔ normalized errors never contain an API key (0.061291ms)
+✔ memory reads are isolated by user (1.4415ms)
+✔ memory reads are isolated by target language (0.114625ms)
+✔ repository caps memory reads at ten (0.082958ms)
+✔ clear memory scopes deactivation to user and language (2.327541ms)
+✔ memory types and secrets are rejected (1.82075ms)
+✔ memory context is limited and marked untrusted (0.841375ms)
+✔ instruction-shaped keys and transcript are removed (1.144333ms)
+✔ teacher prompt contains language, native language and level (0.4575ms)
+✔ conversation prompt remains language-learning scoped (0.079084ms)
+✔ valid verified outcome is accepted (5.298208ms)
+✔ invalid memory type is rejected (0.166583ms)
+✔ secret-like outcome is rejected (0.077208ms)
+✔ oversized outcome payload is rejected (0.068333ms)
+✔ outcome cannot target another user (0.887167ms)
+✔ outcome cannot mix another profile language (0.084083ms)
+✔ write failure is normalized without leaking database details (0.10875ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.588375
+[PASS] Testy automatyczne zakończone poprawnie.
+
+================================================================================
+24. PRODUCTION BUILD
+================================================================================
+
+> build
+> vite build
+
+vite v8.1.0 building client environment for production...
+[2Ktransforming...[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts:6:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts:39:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/notifications.functions.ts:33:38 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:15:26 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:87:31 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:130:30 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:155:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:66:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:93:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:107:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:132:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:157:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:171:28 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:192:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:258:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:325:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:9:36 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:29:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:155:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:8:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:23:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:52:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:84:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:client] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:100:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+✓ 3157 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/assets/learn-grammar-BelJw9Fi.jpg                           42.73 kB
+dist/client/assets/learn-onboarding-fMCPkjhv.jpg                        45.42 kB
+dist/client/assets/learn-dashboard-CtVz1Nhg.jpg                         54.60 kB
+dist/client/assets/hero-tutor-Da0G4isC.jpg                              64.00 kB
+dist/client/assets/shingitai-language-logo-transparent-D93lem6t.png    951.64 kB
+dist/client/assets/shingitai-language-login-hero-0qLaLM01.png        2,351.88 kB
+dist/client/assets/styles-CjWDQ6_9.css                                 119.28 kB │ gzip:  18.89 kB
+dist/client/assets/mermaid-GHXKKRXX-BGRuNEAy.js                          0.06 kB │ gzip:   0.08 kB
+dist/client/assets/shingitai-language-login-hero-BBaFi6IZ.js             0.07 kB │ gzip:   0.09 kB
+dist/client/assets/array-BifhSqXX.js                                     0.10 kB │ gzip:   0.11 kB
+dist/client/assets/channel-DH5Wi5Je.js                                   0.11 kB │ gzip:   0.12 kB
+dist/client/assets/pie-RZYD4A2V-PkFU-bPn.js                              0.12 kB │ gzip:   0.13 kB
+dist/client/assets/info-DKCQHKI2-Bl38Fj3j.js                             0.12 kB │ gzip:   0.13 kB
+dist/client/assets/check-TtOjy2VR.js                                     0.12 kB │ gzip:   0.14 kB
+dist/client/assets/radar-I7S5WNFK-B81Z3YBB.js                            0.12 kB │ gzip:   0.13 kB
+dist/client/assets/packet-7NZHBO7P-T4lAduMm.js                           0.12 kB │ gzip:   0.13 kB
+dist/client/assets/cynefin-VYW2F7L2-DoinQn0D.js                          0.12 kB │ gzip:   0.13 kB
+dist/client/assets/treemap-6X3UGDF4--qxhxuHr.js                          0.12 kB │ gzip:   0.13 kB
+dist/client/assets/wardley-OPB4EBWU-bhXUcdfp.js                          0.12 kB │ gzip:   0.13 kB
+dist/client/assets/gitGraph-TEB2WS4Q-BGCZyOxp.js                         0.12 kB │ gzip:   0.13 kB
+dist/client/assets/railroad-3IZDKUUU-Cj88uDU4.js                         0.12 kB │ gzip:   0.13 kB
+dist/client/assets/treeView-QDETBFTQ-lsQHBBKO.js                         0.12 kB │ gzip:   0.13 kB
+dist/client/assets/railroad-peg-LSFZ7HO6-bfsPSY52.js                     0.13 kB │ gzip:   0.13 kB
+dist/client/assets/architecture-TIHT7OUA-2N9v5W1b.js                     0.13 kB │ gzip:   0.13 kB
+dist/client/assets/railroad-abnf-AHOZXSZD-Bl5UdO_M.js                    0.13 kB │ gzip:   0.13 kB
+dist/client/assets/railroad-ebnf-EBAXGLYW-ChgKbxDy.js                    0.13 kB │ gzip:   0.13 kB
+dist/client/assets/eventmodeling-45OFAUF4-DD3pjl-X.js                    0.13 kB │ gzip:   0.13 kB
+dist/client/assets/exams-DCcxkzD2.js                                     0.14 kB │ gzip:   0.13 kB
+dist/client/assets/loader-circle-Dfvf2Z6j.js                             0.14 kB │ gzip:   0.15 kB
+dist/client/assets/init-D6jRqBbL.js                                      0.14 kB │ gzip:   0.12 kB
+dist/client/assets/plus-Ddp9h6rz.js                                      0.15 kB │ gzip:   0.15 kB
+dist/client/assets/x-DlzbP4vZ.js                                         0.15 kB │ gzip:   0.15 kB
+dist/client/assets/chunk-Y2CYZVJY-DsF7k-Jl.js                            0.15 kB │ gzip:   0.14 kB
+dist/client/assets/arrow-left-84YSX5c3.js                                0.16 kB │ gzip:   0.16 kB
+dist/client/assets/arrow-right-DEbLkBQ7.js                               0.16 kB │ gzip:   0.16 kB
+dist/client/assets/play-DxcBIMyO.js                                      0.19 kB │ gzip:   0.18 kB
+dist/client/assets/chunk-2Q5K7J3B-C1jixKkw.js                            0.19 kB │ gzip:   0.16 kB
+dist/client/assets/chunk-JWPE2WC7-DVXcaiue.js                            0.22 kB │ gzip:   0.17 kB
+dist/client/assets/message-circle-BftV0rpn.js                            0.24 kB │ gzip:   0.21 kB
+dist/client/assets/useRouter-vvfA8exh.js                                 0.24 kB │ gzip:   0.19 kB
+dist/client/assets/chunk-XXDRQBXY-DlK_iNGL.js                            0.26 kB │ gzip:   0.22 kB
+dist/client/assets/award-09E6H5i6.js                                     0.27 kB │ gzip:   0.22 kB
+dist/client/assets/house-D2Twz0RM.js                                     0.28 kB │ gzip:   0.21 kB
+dist/client/assets/graduation-cap-GuarmqmW.js                            0.33 kB │ gzip:   0.24 kB
+dist/client/assets/study.functions-Cnyc4Xj-.js                           0.34 kB │ gzip:   0.25 kB
+dist/client/assets/scroll-text-CXl_GPoX.js                               0.34 kB │ gzip:   0.23 kB
+dist/client/assets/chunk-5VM5RSS4-ZNzvKenW.js                            0.36 kB │ gzip:   0.27 kB
+dist/client/assets/brand-logo-D6095853.js                                0.37 kB │ gzip:   0.29 kB
+dist/client/assets/useServerFn-DAyyJszB.js                               0.44 kB │ gzip:   0.29 kB
+dist/client/assets/sparkles-CdchOPjE.js                                  0.49 kB │ gzip:   0.28 kB
+dist/client/assets/codeowners-C8r90Shi.js                                0.54 kB │ gzip:   0.31 kB
+dist/client/assets/skeleton-BfM_dSGQ.js                                  0.54 kB │ gzip:   0.34 kB
+dist/client/assets/textarea-C3dPUiLN.js                                  0.56 kB │ gzip:   0.37 kB
+dist/client/assets/highlighted-body-OFNGDK62-ByfBvt9w.js                 0.57 kB │ gzip:   0.37 kB
+dist/client/assets/flowDiagram-23GEKE2U-BsU5kQYw.js                      0.57 kB │ gzip:   0.31 kB
+dist/client/assets/chunk-VR4S4FIN-DF00hz7D.js                            0.57 kB │ gzip:   0.40 kB
+dist/client/assets/eye-off-N1HWCpQ9.js                                   0.63 kB │ gzip:   0.34 kB
+dist/client/assets/sun-BxBzT9W2.js                                       0.63 kB │ gzip:   0.34 kB
+dist/client/assets/dist-CJFzqriF.js                                      0.64 kB │ gzip:   0.43 kB
+dist/client/assets/infoDiagram-FWYZ7A6U-ipp7TRfm.js                      0.64 kB │ gzip:   0.42 kB
+dist/client/assets/input-C2jHOkWO.js                                     0.66 kB │ gzip:   0.40 kB
+dist/client/assets/label-7ScBUL-w.js                                     0.70 kB │ gzip:   0.43 kB
+dist/client/assets/tutor.functions-BuPzk7wU.js                           0.70 kB │ gzip:   0.40 kB
+dist/client/assets/shellsession-o4Zr-oXZ.js                              0.71 kB │ gzip:   0.42 kB
+dist/client/assets/tsv-sltzmVWM.js                                       0.73 kB │ gzip:   0.33 kB
+dist/client/assets/classDiagram-OUVF2IWQ-CsoVFOg8.js                     0.77 kB │ gzip:   0.45 kB
+dist/client/assets/classDiagram-v2-EOCWNBFH-CsoVFOg8.js                  0.77 kB │ gzip:   0.45 kB
+dist/client/assets/stateDiagram-v2-6OUMAXLB-DMJxUDH2.js                  0.77 kB │ gzip:   0.45 kB
+dist/client/assets/school-87hVx7tm.js                                    0.82 kB │ gzip:   0.40 kB
+dist/client/assets/swimlanesDiagram-G3AALYLV-Dx81oQGW.js                 0.83 kB │ gzip:   0.48 kB
+dist/client/assets/account.functions-BAZPTag8.js                         0.83 kB │ gzip:   0.44 kB
+dist/client/assets/html-derivative-BtSxGMqd.js                           0.84 kB │ gzip:   0.45 kB
+dist/client/assets/sizeCapture-X5ZJPWSS-B0uUizjq.js                      0.87 kB │ gzip:   0.51 kB
+dist/client/assets/rolldown-runtime-CNC7AqOf.js                          0.87 kB │ gzip:   0.50 kB
+dist/client/assets/line-BCBSZs1d.js                                      0.94 kB │ gzip:   0.47 kB
+dist/client/assets/chunk-OGEWGWER-CeisSyL-.js                            0.96 kB │ gzip:   0.59 kB
+dist/client/assets/tutor.index-Dzhfjtnw.js                               0.98 kB │ gzip:   0.56 kB
+dist/client/assets/git-rebase-09-F-Xjy.js                                0.98 kB │ gzip:   0.44 kB
+dist/client/assets/qmldir-DCQb3MpD.js                                    0.99 kB │ gzip:   0.44 kB
+dist/client/assets/exam.functions-Dd12_mxy.js                            1.03 kB │ gzip:   0.55 kB
+dist/client/assets/tutor._conversationId-CGJv732C.js                     1.05 kB │ gzip:   0.54 kB
+dist/client/assets/teacher._conversationId-1oKl_12n.js                   1.10 kB │ gzip:   0.58 kB
+dist/client/assets/csv-Dx-8-gkx.js                                       1.13 kB │ gzip:   0.36 kB
+dist/client/assets/teacher.index-CR4duGeM.js                             1.15 kB │ gzip:   0.62 kB
+dist/client/assets/ordinal-hYBb2elL.js                                   1.17 kB │ gzip:   0.56 kB
+dist/client/assets/git-commit-BSykSTBG.js                                1.22 kB │ gzip:   0.52 kB
+dist/client/assets/flashcards.functions-DvV24-Ch.js                      1.31 kB │ gzip:   0.62 kB
+dist/client/assets/route-CaqGHkez.js                                     1.32 kB │ gzip:   0.71 kB
+dist/client/assets/xsl-Cfl5-n_a.js                                       1.36 kB │ gzip:   0.50 kB
+dist/client/assets/dotenv-_5a1GRtc.js                                    1.41 kB │ gzip:   0.52 kB
+dist/client/assets/createLucideIcon-Cml3-wEV.js                          1.42 kB │ gzip:   0.79 kB
+dist/client/assets/sparql-D_iOobhT.js                                    1.47 kB │ gzip:   0.81 kB
+dist/client/assets/ini-B5eOa1yu.js                                       1.51 kB │ gzip:   0.49 kB
+dist/client/assets/railroadDiagram-RFXS5EU6-BBbUcNbx.js                  1.65 kB │ gzip:   0.78 kB
+dist/client/assets/fortran-fixed-form-DEKoE2YW.js                        1.66 kB │ gzip:   0.68 kB
+dist/client/assets/docker-IyjqRm3v.js                                    1.73 kB │ gzip:   0.59 kB
+dist/client/assets/hxml-B0Qn7Nwc.js                                      1.74 kB │ gzip:   0.87 kB
+dist/client/assets/desktop-Dlh5hvp9.js                                   1.82 kB │ gzip:   0.75 kB
+dist/client/assets/abnfDiagram-VRR7QNED-dYo_NEH-.js                      1.84 kB │ gzip:   0.90 kB
+dist/client/assets/chunk-C7G6YPKG-B7MWhf82.js                            1.84 kB │ gzip:   0.90 kB
+dist/client/assets/chunk-32BRIVSS-DBj_p9TV.js                            1.97 kB │ gzip:   0.89 kB
+dist/client/assets/pegDiagram-2B236MQR-fcuEaFVI.js                       2.00 kB │ gzip:   0.95 kB
+dist/client/assets/ebnfDiagram-CCIWWBDH-B6FGoOCf.js                      2.05 kB │ gzip:   0.89 kB
+dist/client/assets/progress-DVc_SV8a.js                                  2.07 kB │ gzip:   1.01 kB
+dist/client/assets/chunk-7BUUIJ7U-Bb538aSH.js                            2.10 kB │ gzip:   0.82 kB
+dist/client/assets/erb-BbGptYuZ.js                                       2.13 kB │ gzip:   0.62 kB
+dist/client/assets/wenyan-C8pVoKbM.js                                    2.15 kB │ gzip:   1.08 kB
+dist/client/assets/dist-BH9bKIvu.js                                      2.17 kB │ gzip:   0.97 kB
+dist/client/assets/jssm-DXw9l8Rf.js                                      2.23 kB │ gzip:   0.61 kB
+dist/client/assets/edge-CqbqiuPZ.js                                      2.30 kB │ gzip:   0.67 kB
+dist/client/assets/path-BWPyau1x.js                                      2.31 kB │ gzip:   0.99 kB
+dist/client/assets/reg-CRGYupPL.js                                       2.33 kB │ gzip:   0.69 kB
+dist/client/assets/quizzes-5s5q22OO.js                                   2.44 kB │ gzip:   1.06 kB
+dist/client/assets/diff-woXpYk--.js                                      2.56 kB │ gzip:   0.68 kB
+dist/client/assets/gleam-CSRkHgEL.js                                     2.57 kB │ gzip:   0.81 kB
+dist/client/assets/hy-CZbG8q4J.js                                        2.64 kB │ gzip:   1.17 kB
+dist/client/assets/avatar-DPuzjOm2.js                                    2.74 kB │ gzip:   1.22 kB
+dist/client/assets/grammar-W0cQArly.js                                   2.77 kB │ gzip:   1.21 kB
+dist/client/assets/openscad-BUDT5pXO.js                                  2.81 kB │ gzip:   1.00 kB
+dist/client/assets/log-BNLmms1o.js                                       2.84 kB │ gzip:   0.89 kB
+dist/client/assets/json-BNRlFZ-5.js                                      2.89 kB │ gzip:   0.82 kB
+dist/client/assets/cairo-DLTphjLi.js                                     2.93 kB │ gzip:   0.80 kB
+dist/client/assets/berry-DKpUyyne.js                                     2.99 kB │ gzip:   0.80 kB
+dist/client/assets/jsonl-CmCQp5Yx.js                                     3.00 kB │ gzip:   0.78 kB
+dist/client/assets/jsonc-CYpm1nAK.js                                     3.10 kB │ gzip:   0.78 kB
+dist/client/assets/logo-Cluzi2Zq.js                                      3.12 kB │ gzip:   1.46 kB
+dist/client/assets/po-BiJDBrnU.js                                        3.23 kB │ gzip:   0.90 kB
+dist/client/assets/json5-BR5RXkoi.js                                     3.24 kB │ gzip:   0.82 kB
+dist/client/assets/mipsasm-BMqwQI7S.js                                   3.25 kB │ gzip:   1.17 kB
+dist/client/assets/leaderboard-mZBEuSAZ.js                               3.26 kB │ gzip:   1.38 kB
+dist/client/assets/tasl-DMoTqEGO.js                                      3.28 kB │ gzip:   0.84 kB
+dist/client/assets/app-header-D8M8sZKl.js                                3.32 kB │ gzip:   1.46 kB
+dist/client/assets/genie-CV2tkWYe.js                                     3.34 kB │ gzip:   1.20 kB
+dist/client/assets/rel-BtDbiS_P.js                                       3.36 kB │ gzip:   1.10 kB
+dist/client/assets/vala-zf12oZj6.js                                      3.36 kB │ gzip:   1.18 kB
+dist/client/assets/splunk-BC2Px7Mm.js                                    3.42 kB │ gzip:   1.51 kB
+dist/client/assets/arc-C6pGbJrV.js                                       3.47 kB │ gzip:   1.46 kB
+dist/client/assets/hurl-14JhHsIH.js                                      3.51 kB │ gzip:   1.09 kB
+dist/client/assets/fluent-C03EYrpw.js                                    3.60 kB │ gzip:   0.89 kB
+dist/client/assets/ssh-config-BgfXC-Er.js                                3.61 kB │ gzip:   1.59 kB
+dist/client/assets/jsonnet-CJTPZ8u_.js                                   3.61 kB │ gzip:   1.03 kB
+dist/client/assets/kdl-CsD5j6eV.js                                       3.62 kB │ gzip:   1.03 kB
+dist/client/assets/narrat-_X_XdTYD.js                                    3.66 kB │ gzip:   1.09 kB
+dist/client/assets/turtle-ByJddavk.js                                    3.69 kB │ gzip:   0.96 kB
+dist/client/assets/glsl-CNFhMZ3o.js                                      3.69 kB │ gzip:   1.46 kB
+dist/client/assets/zenscript-BnlCZFoB.js                                 3.90 kB │ gzip:   1.28 kB
+dist/client/assets/ron-VUp2lXgN.js                                       3.90 kB │ gzip:   0.97 kB
+dist/client/assets/reset-password-DvTG1Amc.js                            3.95 kB │ gzip:   1.59 kB
+dist/client/assets/gn-ilITqXS6.js                                        3.99 kB │ gzip:   1.47 kB
+dist/client/assets/pascal-4ZHwLPI5.js                                    4.14 kB │ gzip:   1.67 kB
+dist/client/assets/quizzes._quizId-CdgYOP0Z.js                           4.23 kB │ gzip:   1.71 kB
+dist/client/assets/diagram-NH7WQ7WH-BqHrqFFc.js                          4.27 kB │ gzip:   1.85 kB
+dist/client/assets/http-D8fCFQUQ.js                                      4.41 kB │ gzip:   1.06 kB
+dist/client/assets/tcl-CZd0xW_V.js                                       4.42 kB │ gzip:   1.50 kB
+dist/client/assets/nextflow-Bbiyy34d.js                                  4.50 kB │ gzip:   1.16 kB
+dist/client/assets/rosmsg-CAekHB0j.js                                    4.51 kB │ gzip:   1.05 kB
+dist/client/assets/achievements-B6htdzaG.js                              4.56 kB │ gzip:   1.97 kB
+dist/client/assets/defaultLocale-C8Fc0cco.js                             4.64 kB │ gzip:   2.12 kB
+dist/client/assets/polar-C7UOKdEL.js                                     4.66 kB │ gzip:   1.12 kB
+dist/client/assets/button-53f7L6nW.js                                    4.67 kB │ gzip:   2.01 kB
+dist/client/assets/sdbl-bTVj8UrX.js                                      4.69 kB │ gzip:   2.00 kB
+dist/client/assets/fennel-DQxkIbk2.js                                    4.76 kB │ gzip:   1.53 kB
+dist/client/assets/bibtex-Ci_nEsc7.js                                    4.78 kB │ gzip:   0.83 kB
+dist/client/assets/premium-xoBWfOsW.js                                   4.98 kB │ gzip:   1.92 kB
+dist/client/assets/map-DsCK-0Cs.js                                       5.03 kB │ gzip:   2.05 kB
+dist/client/assets/llvm-Cm23YOpf.js                                      5.04 kB │ gzip:   2.01 kB
+dist/client/assets/grammar._lessonId-CfWHFH4x.js                         5.12 kB │ gzip:   2.16 kB
+dist/client/assets/wgsl-BsKzXJz4.js                                      5.13 kB │ gzip:   1.38 kB
+dist/client/assets/teacher-CnWYIT7n.js                                   5.27 kB │ gzip:   2.00 kB
+dist/client/assets/gdresource-C0sCabJj.js                                5.28 kB │ gzip:   1.33 kB
+dist/client/assets/tutor-C3UaUjPe.js                                     5.29 kB │ gzip:   1.98 kB
+dist/client/assets/zig-CMLA9XwU.js                                       5.33 kB │ gzip:   1.55 kB
+dist/client/assets/qml-DGFlbsc_.js                                       5.33 kB │ gzip:   1.38 kB
+dist/client/assets/dax-BkyTk9wS.js                                       5.35 kB │ gzip:   2.21 kB
+dist/client/assets/bicep-CUHmPFLl.js                                     5.37 kB │ gzip:   1.14 kB
+dist/client/assets/useStore-Dh2jxzL0.js                                  5.37 kB │ gzip:   2.26 kB
+dist/client/assets/xml-Dt-VRNGg.js                                       5.44 kB │ gzip:   1.25 kB
+dist/client/assets/awk-BWXHIvNe.js                                       5.45 kB │ gzip:   1.37 kB
+dist/client/assets/linear-BiXMiKrI.js                                    5.52 kB │ gzip:   2.25 kB
+dist/client/assets/coq-BrsZFFmf.js                                       5.54 kB │ gzip:   1.91 kB
+dist/client/assets/jinja-Bm5Qe2Fo.js                                     5.62 kB │ gzip:   1.36 kB
+dist/client/assets/lean-CewbzKMR.js                                      5.77 kB │ gzip:   1.91 kB
+dist/client/assets/chunk-HOUHSVGY-CUaFSQL0.js                            5.83 kB │ gzip:   2.68 kB
+dist/client/assets/moonbit-CaWjb8XO.js                                   5.89 kB │ gzip:   1.67 kB
+dist/client/assets/powerquery-DNMTfnFr.js                                5.89 kB │ gzip:   1.51 kB
+dist/client/assets/diagram-WEI45ONY-CRrZDt--.js                          5.91 kB │ gzip:   2.49 kB
+dist/client/assets/shaderlab-TOUzSsQk.js                                 5.91 kB │ gzip:   2.08 kB
+dist/client/assets/verilog-CiiDBU1e.js                                   5.92 kB │ gzip:   1.89 kB
+dist/client/assets/cypher-ClKdZ_lG.js                                    5.94 kB │ gzip:   1.71 kB
+dist/client/assets/vb-Djn5o6TS.js                                        6.08 kB │ gzip:   2.33 kB
+dist/client/assets/exams.index-3g62jm3a.js                               6.19 kB │ gzip:   2.24 kB
+dist/client/assets/pieDiagram-ENE6RG2P-Ds0swTGD.js                       6.22 kB │ gzip:   2.60 kB
+dist/client/assets/red-CJ3rzSJv.js                                       6.25 kB │ gzip:   1.59 kB
+dist/client/assets/dialog-DrGlVzsl.js                                    6.26 kB │ gzip:   2.24 kB
+dist/client/assets/min-dark-BSWPekZh.js                                  6.28 kB │ gzip:   1.70 kB
+dist/client/assets/gdshader-CBce3t8t.js                                  6.31 kB │ gzip:   1.72 kB
+dist/client/assets/prisma-BsRQq5mF.js                                    6.32 kB │ gzip:   1.38 kB
+dist/client/assets/ara-4CJ0cIlV.js                                       6.35 kB │ gzip:   1.80 kB
+dist/client/assets/clojure-DqKBuwfJ.js                                   6.40 kB │ gzip:   1.41 kB
+dist/client/assets/postcss-BXeXVLqQ.js                                   6.41 kB │ gzip:   1.90 kB
+dist/client/assets/toml-CcmNWLt0.js                                      6.41 kB │ gzip:   1.28 kB
+dist/client/assets/solarized-light-DSh2HLQt.js                           6.47 kB │ gzip:   1.71 kB
+dist/client/assets/proto-DB4EqR-F.js                                     6.54 kB │ gzip:   1.41 kB
+dist/client/assets/smalltalk-B16xEiuN.js                                 6.58 kB │ gzip:   1.61 kB
+dist/client/assets/r-BrtO6otC.js                                         6.60 kB │ gzip:   1.83 kB
+dist/client/assets/teacher-avatar-picker-CNy0SV4o.js                     6.71 kB │ gzip:   2.68 kB
+dist/client/assets/talonscript-CohzipZa.js                               6.75 kB │ gzip:   1.48 kB
+dist/client/assets/solarized-dark-DV17i1UV.js                            6.84 kB │ gzip:   1.78 kB
+dist/client/assets/riscv-Ckw8ddFX.js                                     6.90 kB │ gzip:   1.97 kB
+dist/client/assets/soy-CPNozKlO.js                                       6.92 kB │ gzip:   1.62 kB
+dist/client/assets/min-light-DDpmG2fV.js                                 6.96 kB │ gzip:   1.88 kB
+dist/client/assets/chunk-RYQCIY6F-BvfAtR0h.js                            7.02 kB │ gzip:   2.68 kB
+dist/client/assets/scheme-DQCgrYNe.js                                    7.16 kB │ gzip:   2.04 kB
+dist/client/assets/onboarding-DvOwToQp.js                                7.20 kB │ gzip:   2.50 kB
+dist/client/assets/hlsl-Cvrh5tZx.js                                      7.25 kB │ gzip:   2.18 kB
+dist/client/assets/qss-Fe1Jh2GI.js                                       7.46 kB │ gzip:   2.57 kB
+dist/client/assets/flashcards-BBXQHR0m.js                                7.78 kB │ gzip:   2.73 kB
+dist/client/assets/dart-DkHntEIa.js                                      7.80 kB │ gzip:   1.91 kB
+dist/client/assets/systemd-BxMlprV5.js                                   7.86 kB │ gzip:   2.54 kB
+dist/client/assets/monokai-CdkpiU2Y.js                                   7.88 kB │ gzip:   1.90 kB
+dist/client/assets/jsx-runtime-CaR_m4Xc.js                               7.89 kB │ gzip:   2.99 kB
+dist/client/assets/regexp-DNT4mv-6.js                                    8.05 kB │ gzip:   1.47 kB
+dist/client/assets/exams._sessionId-FXFdCWMJ.js                          8.27 kB │ gzip:   2.69 kB
+dist/client/assets/diagram-OA4YK3LP-fWGWvbCE.js                          8.31 kB │ gzip:   3.71 kB
+dist/client/assets/haml-DQD5gGOL.js                                      8.33 kB │ gzip:   1.85 kB
+dist/client/assets/typst-DI99ib-x.js                                     8.38 kB │ gzip:   1.66 kB
+dist/client/assets/vue-html-Bcgt8jrn.js                                  8.47 kB │ gzip:   1.68 kB
+dist/client/assets/plsql-DGHpHOYJ.js                                     8.50 kB │ gzip:   2.99 kB
+dist/client/assets/horizon-CE9ld1lL.js                                   8.77 kB │ gzip:   1.94 kB
+dist/client/assets/kotlin-DhhofPvG.js                                    8.77 kB │ gzip:   2.12 kB
+dist/client/assets/horizon-bright-Br1oVSNq.js                            8.78 kB │ gzip:   1.96 kB
+dist/client/assets/dagre-VKFMJZFB-BtcjGe4w.js                            8.79 kB │ gzip:   3.41 kB
+dist/client/assets/auth-Btod3SBi.js                                      8.87 kB │ gzip:   3.24 kB
+dist/client/assets/ts-tags-DlxBZo1A.js                                   8.92 kB │ gzip:   1.20 kB
+dist/client/assets/make-Dixweg8N.js                                      8.95 kB │ gzip:   1.76 kB
+dist/client/assets/andromeeda-vGVdxbeo.js                                9.01 kB │ gzip:   2.35 kB
+dist/client/assets/sas-BcBdVQyo.js                                       9.06 kB │ gzip:   3.82 kB
+dist/client/assets/flashcards._deckId-D3hJbAP6.js                        9.09 kB │ gzip:   2.82 kB
+dist/client/assets/dark-plus-Cs2F2srj.js                                 9.09 kB │ gzip:   2.10 kB
+dist/client/assets/slack-dark-DnToyrRv.js                                9.11 kB │ gzip:   1.96 kB
+dist/client/assets/sass-DXrisJhu.js                                      9.28 kB │ gzip:   2.48 kB
+dist/client/assets/plastic-DQwYfKfQ.js                                   9.29 kB │ gzip:   1.96 kB
+dist/client/assets/slack-ochin-B2OO5cIa.js                               9.42 kB │ gzip:   2.08 kB
+dist/client/assets/tex-DtyfcXbs.js                                       9.67 kB │ gzip:   3.06 kB
+dist/client/assets/jison-DsrzMHSA.js                                     9.69 kB │ gzip:   1.86 kB
+dist/client/assets/cmake-Bj61d0ZC.js                                     9.84 kB │ gzip:   3.37 kB
+dist/client/assets/dashboard-CFRhNcve.js                                 9.89 kB │ gzip:   3.45 kB
+dist/client/assets/cynefinDiagram-TSTJHNR4-Du4exSjW.js                   9.90 kB │ gzip:   3.51 kB
+dist/client/assets/light-plus-DVQuIRkW.js                                9.93 kB │ gzip:   2.27 kB
+dist/client/assets/hcl-Dh228itO.js                                      10.04 kB │ gzip:   1.93 kB
+dist/client/assets/admin-TI92JO5Q.js                                    10.23 kB │ gzip:   2.95 kB
+dist/client/assets/rst-Db1i2AX2.js                                      10.31 kB │ gzip:   2.24 kB
+dist/client/assets/pkl-ot-7Btpt.js                                      10.36 kB │ gzip:   1.37 kB
+dist/client/assets/beancount-D-usSTwE.js                                10.36 kB │ gzip:   1.43 kB
+dist/client/assets/nextflow-groovy-Dc_ddanL.js                          10.39 kB │ gzip:   2.12 kB
+dist/client/assets/routes-NdLhKjRS.js                                   10.45 kB │ gzip:   3.59 kB
+dist/client/assets/dream-maker-DW3nJb8Q.js                              10.46 kB │ gzip:   2.25 kB
+dist/client/assets/raku-B3gFvitq.js                                     10.46 kB │ gzip:   2.94 kB
+dist/client/assets/yaml-BFRNvut5.js                                     10.57 kB │ gzip:   2.32 kB
+dist/client/assets/stateDiagram-2N3HPSRC-Gjjg5aS2.js                    10.63 kB │ gzip:   3.74 kB
+dist/client/assets/diagram-FQU43EPY-sWPw00m-.js                         10.65 kB │ gzip:   4.12 kB
+dist/client/assets/just-CtlqdWPS.js                                     10.76 kB │ gzip:   2.60 kB
+dist/client/assets/elm-BfHi1MFa.js                                      10.94 kB │ gzip:   2.10 kB
+dist/client/assets/github-light-EUqPIrTm.js                             11.18 kB │ gzip:   2.49 kB
+dist/client/assets/prolog-iXnhIJG7.js                                   11.34 kB │ gzip:   3.84 kB
+dist/client/assets/terraform-DswuEJGm.js                                11.38 kB │ gzip:   2.51 kB
+dist/client/assets/github-dark-C-LZuMrd.js                              11.40 kB │ gzip:   2.53 kB
+dist/client/assets/puppet-CDv2pdJW.js                                   11.43 kB │ gzip:   2.10 kB
+dist/client/assets/laserwave-C_8bwKvT.js                                11.49 kB │ gzip:   2.57 kB
+dist/client/assets/gherkin-DExj1W_8.js                                  11.93 kB │ gzip:   5.04 kB
+dist/client/assets/wasm-ByWQv1Qj.js                                     12.00 kB │ gzip:   2.17 kB
+dist/client/assets/hjson-CxZEssPk.js                                    12.04 kB │ gzip:   1.64 kB
+dist/client/assets/handlebars-CGggBfPN.js                               12.16 kB │ gzip:   2.38 kB
+dist/client/assets/apache-U0d_L8uA.js                                   12.44 kB │ gzip:   3.71 kB
+dist/client/assets/vesper-D5bVUKB1.js                                   12.68 kB │ gzip:   1.98 kB
+dist/client/assets/bat-Bo4NYOV-.js                                      12.88 kB │ gzip:   3.22 kB
+dist/client/assets/fish-BJitypiv.js                                     13.03 kB │ gzip:   1.73 kB
+dist/client/assets/v-DETTlOr0.js                                        13.20 kB │ gzip:   2.73 kB
+dist/client/assets/vitesse-light-VbXTXTou.js                            13.61 kB │ gzip:   3.03 kB
+dist/client/assets/aurora-x-CDeNXAV0.js                                 13.65 kB │ gzip:   2.28 kB
+dist/client/assets/vitesse-black-fwtXNY1n.js                            13.67 kB │ gzip:   3.05 kB
+dist/client/assets/vitesse-dark-BZCL-v6S.js                             13.75 kB │ gzip:   3.06 kB
+dist/client/assets/pug-DTRvYXy5.js                                      13.84 kB │ gzip:   2.58 kB
+dist/client/assets/luau-CNKltnaQ.js                                     13.95 kB │ gzip:   3.16 kB
+dist/client/assets/synthwave-84-nFMaYfgc.js                             14.03 kB │ gzip:   2.85 kB
+dist/client/assets/github-light-default-BXViO-2h.js                     14.15 kB │ gzip:   3.02 kB
+dist/client/assets/dist-ZvFrY1rd.js                                     14.20 kB │ gzip:   5.29 kB
+dist/client/assets/clarity-SemFz856.js                                  14.26 kB │ gzip:   2.46 kB
+dist/client/assets/github-light-high-contrast-B68TUdTA.js               14.27 kB │ gzip:   3.00 kB
+dist/client/assets/github-dark-dimmed-Bx1FflLF.js                       14.43 kB │ gzip:   3.11 kB
+dist/client/assets/github-dark-default-DXG-b-1a.js                      14.43 kB │ gzip:   3.12 kB
+dist/client/assets/github-dark-high-contrast-B_tTalzw.js                14.59 kB │ gzip:   3.07 kB
+dist/client/assets/gnuplot-7GGW24-e.js                                  14.77 kB │ gzip:   3.27 kB
+dist/client/assets/rust-Cfkwpbl8.js                                     15.06 kB │ gzip:   2.71 kB
+dist/client/assets/kusto-BUv0MjJC.js                                    15.16 kB │ gzip:   3.93 kB
+dist/client/assets/actionscript-3--17pq3dv.js                           15.19 kB │ gzip:   2.67 kB
+dist/client/assets/nix-IvuFDN5E.js                                      15.50 kB │ gzip:   2.47 kB
+dist/client/assets/lua-Bc0cVuDM.js                                      15.60 kB │ gzip:   3.19 kB
+dist/client/assets/chunk-MOJQB5TN-dl8ywN4L.js                           15.64 kB │ gzip:   4.35 kB
+dist/client/assets/diagram-G47NLZAW-DX3GS91-.js                         15.72 kB │ gzip:   5.51 kB
+dist/client/assets/abap-CLvhMVsD.js                                     15.84 kB │ gzip:   5.93 kB
+dist/client/assets/solidity-CKzVLygQ.js                                 16.06 kB │ gzip:   3.09 kB
+dist/client/assets/matlab-D7qyCx1q.js                                   16.07 kB │ gzip:   3.06 kB
+dist/client/assets/cue-CE9AQfxI.js                                      16.19 kB │ gzip:   2.04 kB
+dist/client/assets/elixir-CXhE20Yh.js                                   16.26 kB │ gzip:   2.76 kB
+dist/client/assets/odin-B1RWQWA5.js                                     16.50 kB │ gzip:   2.92 kB
+dist/client/assets/mermaid-parser.core-Ch9o1Zwc.js                      16.58 kB │ gzip:   3.92 kB
+dist/client/assets/bird2-C2hNVINV.js                                    16.96 kB │ gzip:   3.84 kB
+dist/client/assets/kanagawa-wave-CTweb8Dz.js                            17.12 kB │ gzip:   2.90 kB
+dist/client/assets/kanagawa-lotus-BN08jTvb.js                           17.12 kB │ gzip:   2.90 kB
+dist/client/assets/kanagawa-dragon-CXtmUGW6.js                          17.12 kB │ gzip:   2.92 kB
+dist/client/assets/ishikawaDiagram-FXEZZL3T-BamF8mNv.js                 17.33 kB │ gzip:   6.53 kB
+dist/client/assets/move-B1IS1UjX.js                                     17.49 kB │ gzip:   3.06 kB
+dist/client/assets/graphql-Bs_icwQf.js                                  18.08 kB │ gzip:   2.54 kB
+dist/client/assets/liquid-CZHoAeV7.js                                   18.10 kB │ gzip:   3.14 kB
+dist/client/assets/svelte-Bx5wyOi0.js                                   18.24 kB │ gzip:   3.14 kB
+dist/client/assets/material-theme-Bm3Qr25_.js                           18.61 kB │ gzip:   3.10 kB
+dist/client/assets/material-theme-darker-2IIEA8gg.js                    18.62 kB │ gzip:   3.10 kB
+dist/client/assets/material-theme-ocean-CHQ94UKr.js                     18.62 kB │ gzip:   3.12 kB
+dist/client/assets/material-theme-lighter-uhdI0v04.js                   18.63 kB │ gzip:   3.10 kB
+dist/client/assets/material-theme-palenight-B5W6OYN7.js                 18.63 kB │ gzip:   3.11 kB
+dist/client/assets/gdscript-Cp2uCuqX.js                                 18.98 kB │ gzip:   3.75 kB
+dist/client/assets/groovy-CacY0gHj.js                                   19.17 kB │ gzip:   3.59 kB
+dist/client/assets/mdc-ki0z3Xzn.js                                      19.54 kB │ gzip:   6.66 kB
+dist/client/assets/ayu-dark-DluEY0Gj.js                                 20.07 kB │ gzip:   3.93 kB
+dist/client/assets/ayu-mirage-Bqwy1Gya.js                               20.08 kB │ gzip:   3.91 kB
+dist/client/assets/glimmer-js-DYMAj7M5.js                               20.08 kB │ gzip:   2.94 kB
+dist/client/assets/glimmer-ts-KNe6IVYx.js                               20.08 kB │ gzip:   2.93 kB
+dist/client/assets/powershell-DshXNtvi.js                               20.14 kB │ gzip:   4.05 kB
+dist/client/assets/ayu-light-C3h-C4tm.js                                20.14 kB │ gzip:   3.89 kB
+dist/client/assets/kanban-definition-HUTT4EX6-CF9ahiKN.js               20.26 kB │ gzip:   7.15 kB
+dist/client/assets/viml-DvXPmvsu.js                                     20.35 kB │ gzip:   6.73 kB
+dist/client/assets/nushell-DcLAeLz5.js                                  20.40 kB │ gzip:   5.21 kB
+dist/client/assets/snazzy-light-4G7pJPwS.js                             20.77 kB │ gzip:   3.80 kB
+dist/client/assets/twig-CP-N6gGk.js                                     20.90 kB │ gzip:   3.66 kB
+dist/client/assets/dracula-BHWKrbxM.js                                  21.06 kB │ gzip:   3.99 kB
+dist/client/assets/dracula-soft-5eyTD99u.js                             21.07 kB │ gzip:   4.02 kB
+dist/client/assets/wit-DdvCle-K.js                                      21.46 kB │ gzip:   2.87 kB
+dist/client/assets/rose-pine-BthvhNj6.js                                21.74 kB │ gzip:   3.86 kB
+dist/client/assets/rose-pine-moon-hon4tzzS.js                           21.75 kB │ gzip:   3.87 kB
+dist/client/assets/rose-pine-dawn-Dg85fqjY.js                           21.75 kB │ gzip:   3.88 kB
+dist/client/assets/nim-BS2BANbO.js                                      22.45 kB │ gzip:   3.15 kB
+dist/client/assets/common-lisp-Cv5bFMCO.js                              22.57 kB │ gzip:   6.07 kB
+dist/client/assets/surrealql-DZFWP0QQ.js                                22.58 kB │ gzip:   4.31 kB
+dist/client/assets/gruvbox-dark-hard-C820rvS2.js                        22.63 kB │ gzip:   4.15 kB
+dist/client/assets/gruvbox-dark-soft-MrdJrrXF.js                        22.63 kB │ gzip:   4.15 kB
+dist/client/assets/gruvbox-light-hard-BC_s9l72.js                       22.63 kB │ gzip:   4.16 kB
+dist/client/assets/gruvbox-light-soft-BSMLrYjP.js                       22.63 kB │ gzip:   4.16 kB
+dist/client/assets/gruvbox-dark-medium-BPjhmG05.js                      22.63 kB │ gzip:   4.15 kB
+dist/client/assets/gruvbox-light-medium-BAWPOn9u.js                     22.63 kB │ gzip:   4.16 kB
+dist/client/assets/notification-bell-Cys8df8X.js                        22.79 kB │ gzip:   7.58 kB
+dist/client/assets/sankeyDiagram-HTMAVEWB-BohF68Bw.js                   22.82 kB │ gzip:   8.26 kB
+dist/client/assets/journeyDiagram-5HDEW3XC-Bmu2l5Vt.js                  23.20 kB │ gzip:   8.17 kB
+dist/client/assets/select-C2vIEKko.js                                   23.35 kB │ gzip:   7.85 kB
+dist/client/assets/sql-CYgr9Mgi.js                                      23.47 kB │ gzip:   7.49 kB
+dist/client/assets/mindmap-definition-LN4V7U3C-C2AS6Q6N.js              23.48 kB │ gzip:   7.98 kB
+dist/client/assets/cadence-CQ2zXKGN.js                                  23.66 kB │ gzip:   3.65 kB
+dist/client/assets/graphlib-B8gBHxth.js                                 23.90 kB │ gzip:   8.31 kB
+dist/client/assets/typespec-B88KGewJ.js                                 24.01 kB │ gzip:   2.58 kB
+dist/client/assets/astro-2xQ26JAi.js                                    24.02 kB │ gzip:   7.59 kB
+dist/client/assets/apl-Dqn0rotQ.js                                      24.02 kB │ gzip:   4.16 kB
+dist/client/assets/templ-CkV7d5P6.js                                    24.06 kB │ gzip:   5.41 kB
+dist/client/assets/angular-html-BSJCjMpz.js                             24.24 kB │ gzip:   3.99 kB
+dist/client/assets/vhdl-BroJfC0k.js                                     24.25 kB │ gzip:   3.86 kB
+dist/client/assets/Combination-ZQ65tFKe.js                              24.38 kB │ gzip:   8.66 kB
+dist/client/assets/vue-BhcCNOOj.js                                      24.48 kB │ gzip:   2.96 kB
+dist/client/assets/purescript-9MfHhQsQ.js                               24.67 kB │ gzip:   3.24 kB
+dist/client/assets/wardleyDiagram-EHGQE667-Dtwdu-jv.js                  25.22 kB │ gzip:   6.55 kB
+dist/client/assets/one-light-D7Lr4KcI.js                                25.29 kB │ gzip:   3.63 kB
+dist/client/assets/fsharp-D13ZGOAj.js                                   25.30 kB │ gzip:   4.12 kB
+dist/client/assets/marko-v6D4VUKa.js                                    25.48 kB │ gzip:   3.59 kB
+dist/client/assets/c3-CnJL0r0V.js                                       25.62 kB │ gzip:   3.85 kB
+dist/client/assets/night-owl-light-eJ-hLW7d.js                          25.89 kB │ gzip:   4.23 kB
+dist/client/assets/system-verilog-DJ5XKQeo.js                           26.19 kB │ gzip:   4.82 kB
+dist/client/assets/nord-Cb4Vim4T.js                                     26.72 kB │ gzip:   4.35 kB
+dist/client/assets/codeql-oeQT6MSM.js                                   26.87 kB │ gzip:   3.79 kB
+dist/client/assets/rough.esm-CSKSodPl.js                                27.10 kB │ gzip:   8.85 kB
+dist/client/assets/erDiagram-Q63AITRT-D3EEmflw.js                       27.12 kB │ gzip:   9.44 kB
+dist/client/assets/dist-CKXrWoMz.js                                     27.23 kB │ gzip:  10.49 kB
+dist/client/assets/scss-B8PjoOey.js                                     27.26 kB │ gzip:   4.23 kB
+dist/client/assets/utils-BvUo3Z-p.js                                    27.26 kB │ gzip:   8.69 kB
+dist/client/assets/java-MBw7zHAA.js                                     27.28 kB │ gzip:   4.31 kB
+dist/client/assets/coffee-CC-CTfG5.js                                   27.42 kB │ gzip:   6.35 kB
+dist/client/assets/razor-DUnZi0aC.js                                    27.45 kB │ gzip:   3.54 kB
+dist/client/assets/scala-DKOlJaKm.js                                    28.87 kB │ gzip:   3.92 kB
+dist/client/assets/night-owl-DhmEMT88.js                                28.91 kB │ gzip:   5.14 kB
+dist/client/assets/gitGraphDiagram-IHSO6WYX-MeACl01L.js                 29.01 kB │ gzip:   8.55 kB
+dist/client/assets/crystal-aZN9g_In.js                                  29.41 kB │ gzip:   4.44 kB
+dist/client/assets/mermaid-Bk4SNUv9.js                                  29.50 kB │ gzip:   3.64 kB
+dist/client/assets/applescript-CCn79oCD.js                              29.56 kB │ gzip:   5.94 kB
+dist/client/assets/timeline-definition-FHXFAJF6-BzJM_2TE.js             30.43 kB │ gzip:   9.96 kB
+dist/client/assets/chunk-ICXQ74PX-B2TfYUca.js                           30.87 kB │ gzip:   8.52 kB
+dist/client/assets/julia-CVOY6IQ9.js                                    30.99 kB │ gzip:   4.30 kB
+dist/client/assets/requirementDiagram-TGXJPOKE-CJOA2ehw.js              31.03 kB │ gzip:   9.79 kB
+dist/client/assets/stylus-B6D30XZt.js                                   31.06 kB │ gzip:   8.01 kB
+dist/client/assets/dagre-CXRCoUWR.js                                    32.05 kB │ gzip:  11.58 kB
+dist/client/assets/poimandres-DRFjx7u4.js                               33.49 kB │ gzip:   5.49 kB
+dist/client/assets/quadrantDiagram-ABIIQ3AL-CRurUsk2.js                 33.54 kB │ gzip:   9.74 kB
+dist/client/assets/one-dark-pro-CLwyXe_n.js                             33.78 kB │ gzip:   5.50 kB
+dist/client/assets/bsl-BkkzgIyY.js                                      33.86 kB │ gzip:   8.34 kB
+dist/client/assets/chunk-52WLFC77-BFxpsgvu.js                           33.95 kB │ gzip:   7.31 kB
+dist/client/assets/haxe-OTjmBuCE.js                                     35.15 kB │ gzip:   5.90 kB
+dist/client/assets/nginx-BDAkFTs4.js                                    35.35 kB │ gzip:   4.45 kB
+dist/client/assets/houston-CsvMBhTu.js                                  35.41 kB │ gzip:   5.76 kB
+dist/client/assets/tokyo-night-oM2G3aXe.js                              35.66 kB │ gzip:   6.22 kB
+dist/client/assets/erlang-Cphh6RMH.js                                   37.47 kB │ gzip:   4.36 kB
+dist/client/assets/chunk-EX3LRPZG-Tdr0qa24.js                           37.75 kB │ gzip:  12.31 kB
+dist/client/assets/cobol-Cz6009rC.js                                    39.09 kB │ gzip:  10.89 kB
+dist/client/assets/asm-Cmm7eHzH.js                                      40.71 kB │ gzip:   8.16 kB
+dist/client/assets/vennDiagram-L72KCM5P-C2wG9wq2.js                     41.19 kB │ gzip:  15.12 kB
+dist/client/assets/haskell-D8IpX4py.js                                  41.48 kB │ gzip:   6.41 kB
+dist/client/assets/shellscript-CoI_i11P.js                              41.54 kB │ gzip:   6.13 kB
+dist/client/assets/xychartDiagram-FW5EYKEG-C8HwihPc.js                  41.64 kB │ gzip:  11.70 kB
+dist/client/assets/perl-Btc9MKYd.js                                     43.14 kB │ gzip:   4.64 kB
+dist/client/assets/d-qD-0Kul2.js                                        43.78 kB │ gzip:   8.43 kB
+dist/client/assets/src-Cz8bXOH0.js                                      45.73 kB │ gzip:  16.03 kB
+dist/client/assets/ruby-lMKUMnme.js                                     45.83 kB │ gzip:   5.55 kB
+dist/client/assets/go-BJwz_mda.js                                       46.80 kB │ gzip:   5.15 kB
+dist/client/assets/chunk-Q4XR5HBZ-CKDMW9bA.js                           46.87 kB │ gzip:  14.76 kB
+dist/client/assets/apex-CGTLDQj6.js                                     46.97 kB │ gzip:   6.72 kB
+dist/client/assets/catppuccin-mocha-DYhrFGRu.js                         47.25 kB │ gzip:   7.98 kB
+dist/client/assets/catppuccin-latte-DwIHMF0Q.js                         47.25 kB │ gzip:   7.98 kB
+dist/client/assets/catppuccin-frappe-3VR1Za6u.js                        47.25 kB │ gzip:   7.99 kB
+dist/client/assets/catppuccin-macchiato-DYnBP6_5.js                     47.26 kB │ gzip:   7.99 kB
+dist/client/assets/ada-C5qYipkI.js                                      48.07 kB │ gzip:   5.96 kB
+dist/client/assets/chunk-V7JOEXUC-DF7SOmU2.js                           48.84 kB │ gzip:  15.76 kB
+dist/client/assets/css-Bpd_-uWF.js                                      49.08 kB │ gzip:  11.95 kB
+dist/client/assets/imba-DsUTQ-LC.js                                     49.92 kB │ gzip:   9.47 kB
+dist/client/assets/everforest-dark-sB-x3p7T.js                          53.74 kB │ gzip:   8.37 kB
+dist/client/assets/everforest-light-Df2xbC6M.js                         53.74 kB │ gzip:   8.36 kB
+dist/client/assets/wikitext-ClFFjSW2.js                                 55.87 kB │ gzip:   4.81 kB
+dist/client/assets/stata-Do1KM1Y1.js                                    56.99 kB │ gzip:  12.39 kB
+dist/client/assets/html-DhHa9-nS.js                                     57.32 kB │ gzip:  11.78 kB
+dist/client/assets/ballerina-B7ZEbQpA.js                                58.68 kB │ gzip:   8.10 kB
+dist/client/assets/markdown-BYOwaDjH.js                                 59.32 kB │ gzip:   5.66 kB
+dist/client/assets/chunk-PUDLZKDR-WdFDvEag.js                           60.16 kB │ gzip:  19.53 kB
+dist/client/assets/ocaml-O90oeIOV.js                                    62.44 kB │ gzip:   5.04 kB
+dist/client/assets/c4Diagram-LMCZKHZV-C0E-Xy7e.js                       69.20 kB │ gzip:  19.34 kB
+dist/client/assets/ganttDiagram-NO4QXBWP-njq-z8RQ.js                    69.43 kB │ gzip:  22.77 kB
+dist/client/assets/mojo-BgCJLMeH.js                                     69.79 kB │ gzip:   9.21 kB
+dist/client/assets/python-gzcpVVnB.js                                   69.94 kB │ gzip:   9.09 kB
+dist/client/assets/c-Blw65jlH.js                                        72.17 kB │ gzip:  10.55 kB
+dist/client/assets/latex-rYmgEcul.js                                    72.61 kB │ gzip:   6.68 kB
+dist/client/assets/blockDiagram-677ZJIJ3-xiQyiqr0.js                    72.77 kB │ gzip:  20.71 kB
+dist/client/assets/vyper-CgoNMtux.js                                    74.64 kB │ gzip:  10.69 kB
+dist/client/assets/hack-BmiOOC6t.js                                     80.18 kB │ gzip:  26.27 kB
+dist/client/assets/cose-bilkent-JH36ORCC-BN7TwEiP.js                    81.44 kB │ gzip:  21.59 kB
+dist/client/assets/swift-DonLKvLd.js                                    86.68 kB │ gzip:  14.69 kB
+dist/client/assets/fortran-free-form-CYNrtFtB.js                        88.96 kB │ gzip:  11.18 kB
+dist/client/assets/csharp-Ct8U2NOr.js                                   89.68 kB │ gzip:  10.64 kB
+dist/client/assets/racket-DcIDlBhZ.js                                   92.38 kB │ gzip:  15.07 kB
+dist/client/assets/less-DVTAwKKz.js                                     97.62 kB │ gzip:  14.84 kB
+dist/client/assets/chunk-ZGVPDNZ5-DzAvOagl.js                          101.88 kB │ gzip:  24.82 kB
+dist/client/assets/blade-UxXs1MHp.js                                   104.97 kB │ gzip:  28.29 kB
+dist/client/assets/objective-c-D1A_Heim.js                             105.40 kB │ gzip:  23.63 kB
+dist/client/assets/php-nnvROT4x.js                                     111.05 kB │ gzip:  28.64 kB
+dist/client/assets/lib-D2iI1-Ya.js                                     113.35 kB │ gzip:  34.52 kB
+dist/client/assets/swimlanes-5IMT3BWC-CSwSmnar.js                      114.11 kB │ gzip:  39.16 kB
+dist/client/assets/sequenceDiagram-DBY2YBRQ-BJ2m8dNC.js                115.85 kB │ gzip:  30.59 kB
+dist/client/assets/react-Dz_VS_Ay.js                                   120.88 kB │ gzip:  39.20 kB
+dist/client/assets/asciidoc-DE70LPWp.js                                131.52 kB │ gzip:   9.31 kB
+dist/client/assets/mdx-DQZ5AkYe.js                                     136.10 kB │ gzip:  23.54 kB
+dist/client/assets/architectureDiagram-ZJ3FMSHR-DTp5thV_.js            148.90 kB │ gzip:  41.10 kB
+dist/client/assets/objective-cpp-BsSzOQcm.js                           171.96 kB │ gzip:  30.98 kB
+dist/client/assets/javascript-BttINa8q.js                              174.89 kB │ gzip:  16.68 kB
+dist/client/assets/tsx-HeIVaWJk.js                                     175.60 kB │ gzip:  16.68 kB
+dist/client/assets/jsx-UEmBU27c.js                                     177.85 kB │ gzip:  16.77 kB
+dist/client/assets/typescript-CKFhM_78.js                              181.14 kB │ gzip:  16.29 kB
+dist/client/assets/angular-ts-DORhBINR.js                              183.73 kB │ gzip:  16.78 kB
+dist/client/assets/vue-vine-Dtw_Bvs2.js                                190.05 kB │ gzip:  18.07 kB
+dist/client/assets/chunk-WYO6CB5R-DxDTXqJ3.js                          235.33 kB │ gzip:  38.36 kB
+dist/client/assets/wolfram-DLL8P-h_.js                                 262.38 kB │ gzip:  77.63 kB
+dist/client/assets/cytoscape.esm-Djp6vQyU.js                           435.38 kB │ gzip: 137.89 kB
+dist/client/assets/index-CyArWE_4.js                                   580.53 kB │ gzip: 168.69 kB
+dist/client/assets/wasm-BnjxR4X6.js                                    622.32 kB │ gzip: 232.09 kB
+dist/client/assets/cpp-CrCo1Zjp.js                                     626.13 kB │ gzip:  48.10 kB
+dist/client/assets/chunk-KEIR6QF5-DNzq6p3w.js                          662.65 kB │ gzip: 143.23 kB
+dist/client/assets/emacs-lisp-C9PiwqqW.js                              779.84 kB │ gzip: 197.53 kB
+dist/client/assets/tutor-chat-Cs5IGg_o.js                            1,120.51 kB │ gzip: 338.59 kB
+
+✓ built in 2.20s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+vite v8.1.0 building ssr environment for production...
+[2Ktransforming...[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/notifications.functions.ts?tss-serverfn-split:33:38 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts?tss-serverfn-split:6:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts?tss-serverfn-split:39:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:66:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:93:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:107:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:132:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:157:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:171:28 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:192:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:258:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts?tss-serverfn-split:325:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts?tss-serverfn-split:8:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts?tss-serverfn-split:23:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts?tss-serverfn-split:52:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts?tss-serverfn-split:84:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts?tss-serverfn-split:100:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts?tss-serverfn-split:15:26 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts?tss-serverfn-split:87:31 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts?tss-serverfn-split:130:30 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts?tss-serverfn-split:155:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts?tss-serverfn-split:9:36 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts?tss-serverfn-split:29:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts?tss-serverfn-split:155:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts:6:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/study.functions.ts:39:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:8:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:23:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:52:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:84:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/tutor.functions.ts:100:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:15:26 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:87:31 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:130:30 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/exam.functions.ts:155:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:9:36 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:29:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/account.functions.ts:155:32 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:66:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:93:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:107:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:132:24 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:157:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:171:28 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:192:27 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:258:35 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/flashcards.functions.ts:325:34 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+[plugin tanstack-start-core::server-fn:ssr] /Users/dawidszpala/Projects/shingitai-language/src/lib/notifications.functions.ts:33:38 createServerFn().inputValidator() is deprecated. Use createServerFn().validator() instead.
+✓ 182 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/server/assets/utils-C_uf36nf.js                                   0.18 kB │ gzip:  0.15 kB
+dist/server/assets/shingitai-language-login-hero-C7jw5fuZ.js           0.22 kB │ gzip:  0.14 kB
+dist/server/assets/empty-plugin-adapters-D9UWiqvJ.js                   0.22 kB │ gzip:  0.16 kB
+dist/server/assets/exams-D6Bz1AYv.js                                   0.26 kB │ gzip:  0.20 kB
+dist/server/assets/skeleton-D9W9wFsj.js                                0.33 kB │ gzip:  0.25 kB
+dist/server/assets/createServerRpc-TAUNrjZd.js                         0.39 kB │ gzip:  0.27 kB
+dist/server/assets/createSsrRpc-e9vaIrwG.js                            0.59 kB │ gzip:  0.36 kB
+dist/server/assets/useServerFn-CrZF2pjq.js                             0.63 kB │ gzip:  0.35 kB
+dist/server/assets/label-DBD1bRRP.js                                   0.64 kB │ gzip:  0.38 kB
+dist/server/assets/textarea-kko37XEX.js                                0.66 kB │ gzip:  0.42 kB
+dist/server/assets/brand-logo-BzIghN7d.js                              0.69 kB │ gzip:  0.40 kB
+dist/server/assets/progress-DOIEKRJF.js                                0.74 kB │ gzip:  0.43 kB
+dist/server/assets/input-B8Q2ztVi.js                                   0.75 kB │ gzip:  0.45 kB
+dist/server/assets/study.functions-KMPKwTqo.js                         0.89 kB │ gzip:  0.48 kB
+dist/server/assets/start-BO7KjOv9.js                                   1.07 kB │ gzip:  0.56 kB
+dist/server/assets/avatar-gunzrkKA.js                                  1.13 kB │ gzip:  0.44 kB
+dist/server/assets/auth-Q56HWf_w.js                                    1.21 kB │ gzip:  0.55 kB
+dist/server/assets/theme-DtwkjB0S.js                                   1.26 kB │ gzip:  0.60 kB
+dist/server/assets/tutor.index-CN5-lxwN.js                             1.36 kB │ gzip:  0.68 kB
+dist/server/assets/client-CIJWV--J.js                                  1.40 kB │ gzip:  0.69 kB
+dist/server/assets/tutor._conversationId-Cy3hC65e.js                   1.54 kB │ gzip:  0.66 kB
+dist/server/assets/teacher.index-C8W_uAO-.js                           1.59 kB │ gzip:  0.76 kB
+dist/server/assets/createStart-Dt05N14y.js                             1.65 kB │ gzip:  0.57 kB
+dist/server/assets/teacher._conversationId-CuCQ68LA.js                 1.66 kB │ gzip:  0.71 kB
+dist/server/assets/client.server-CAbi825E.js                           1.74 kB │ gzip:  0.79 kB
+dist/server/assets/tutor.functions-BNphy01m.js                         1.86 kB │ gzip:  0.74 kB
+dist/server/assets/route-CmhBCx_q.js                                   1.87 kB │ gzip:  0.90 kB
+dist/server/assets/exam.functions-dKWrwRLk.js                          2.07 kB │ gzip:  0.94 kB
+dist/server/assets/button-DpdTcM3j.js                                  2.07 kB │ gzip:  0.90 kB
+dist/server/assets/account.functions-DFB2t0bS.js                       2.51 kB │ gzip:  1.13 kB
+dist/server/assets/auth-middleware-BpjT95Ur.js                         2.66 kB │ gzip:  1.09 kB
+dist/server/assets/notifications.functions-C9dqr_0b.js                 2.75 kB │ gzip:  0.94 kB
+dist/server/assets/dialog-DIo89e4g.js                                  3.11 kB │ gzip:  1.00 kB
+dist/server/server.js                                                  3.27 kB │ gzip:  1.42 kB
+dist/server/assets/flashcards.functions-BR9Oy997.js                    3.38 kB │ gzip:  1.10 kB
+dist/server/assets/quizzes-BTUCbv-z.js                                 3.50 kB │ gzip:  1.29 kB
+dist/server/assets/grammar._lessonId-D1wXa791.js                       3.55 kB │ gzip:  1.41 kB
+dist/server/assets/study.functions-lCFet_3n.js                         3.64 kB │ gzip:  1.34 kB
+dist/server/assets/grammar--NA-_xw-.js                                 3.99 kB │ gzip:  1.46 kB
+dist/server/assets/achievements-YVSkXGnB.js                            4.03 kB │ gzip:  1.50 kB
+dist/server/assets/gamification.server-BTAXNovb.js                     4.52 kB │ gzip:  1.57 kB
+dist/server/assets/app-header-CwBohhFW.js                              4.53 kB │ gzip:  1.56 kB
+dist/server/assets/leaderboard-C7aKE5gN.js                             4.54 kB │ gzip:  1.50 kB
+dist/server/assets/select-Dg1urBTx.js                                  4.67 kB │ gzip:  1.34 kB
+dist/server/assets/tutor.functions-C17297_J.js                         5.36 kB │ gzip:  1.44 kB
+dist/server/assets/shingitai-openai-J62q81qT.js                        5.72 kB │ gzip:  1.93 kB
+dist/server/assets/reset-password-B_hAZvaT.js                          5.89 kB │ gzip:  1.86 kB
+dist/server/assets/quizzes._quizId-d7ghnCLp.js                         6.37 kB │ gzip:  2.07 kB
+dist/server/assets/__23tanstack-start-server-fn-resolver-Be2ev0dH.js   6.56 kB │ gzip:  1.98 kB
+dist/server/assets/premium-BkD1bSpq.js                                 6.82 kB │ gzip:  2.09 kB
+dist/server/assets/account.functions-BXwIPFVa.js                       7.10 kB │ gzip:  2.12 kB
+dist/server/assets/notification-bell-BTlzDZlP.js                       8.19 kB │ gzip:  2.78 kB
+dist/server/assets/teacher-pbbh3DOi.js                                 8.48 kB │ gzip:  2.50 kB
+dist/server/assets/tutor-ulJreTRc.js                                   8.52 kB │ gzip:  2.48 kB
+dist/server/assets/exams.index-eCg83jNn.js                             9.00 kB │ gzip:  2.67 kB
+dist/server/assets/teacher-avatar-picker-u9ib6AeP.js                  10.17 kB │ gzip:  3.16 kB
+dist/server/assets/onboarding-B6OTS4B5.js                             10.55 kB │ gzip:  2.92 kB
+dist/server/assets/exam.functions-LhO4FOJ0.js                         10.94 kB │ gzip:  3.45 kB
+dist/server/assets/flashcards-Db4pSmd8.js                             11.74 kB │ gzip:  3.18 kB
+dist/server/assets/exams._sessionId-CtsXRhTY.js                       12.66 kB │ gzip:  3.31 kB
+dist/server/assets/routes-CPAnDupw.js                                 12.90 kB │ gzip:  3.45 kB
+dist/server/assets/_tanstack-start-manifest_v-Bm7PjlG5.js             12.93 kB │ gzip:  2.00 kB
+dist/server/assets/auth-Bn9apAcN.js                                   12.94 kB │ gzip:  3.68 kB
+dist/server/assets/dashboard-BMNwEzsI.js                              13.85 kB │ gzip:  3.78 kB
+dist/server/assets/flashcards._deckId-bTicg5yw.js                     14.44 kB │ gzip:  3.49 kB
+dist/server/assets/admin-BY4Fk-wF.js                                  14.49 kB │ gzip:  3.44 kB
+dist/server/assets/esm-9EjmF9OT.js                                    14.94 kB │ gzip:  4.27 kB
+dist/server/assets/flashcards.functions-DnPGhZES.js                   15.89 kB │ gzip:  3.96 kB
+dist/server/assets/tutor-chat-Cpn-qm_K.js                             31.46 kB │ gzip:  8.69 kB
+dist/server/assets/router-DI5gm71A.js                                 34.21 kB │ gzip:  8.29 kB
+dist/server/assets/server-CxYG22PB.js                                 50.49 kB │ gzip: 13.04 kB
+
+✓ built in 689ms
+[PASS] Production build zakończony poprawnie.
+
+================================================================================
+25. BUNDLE SIZE
+================================================================================
+
+Największe pliki client bundle:
+2300	dist/client/assets/shingitai-language-login-hero-0qLaLM01.png
+1096	dist/client/assets/tutor-chat-Cs5IGg_o.js
+932	dist/client/assets/shingitai-language-logo-transparent-D93lem6t.png
+764	dist/client/assets/emacs-lisp-C9PiwqqW.js
+648	dist/client/assets/chunk-KEIR6QF5-DNzq6p3w.js
+612	dist/client/assets/cpp-CrCo1Zjp.js
+608	dist/client/assets/wasm-BnjxR4X6.js
+568	dist/client/assets/index-CyArWE_4.js
+428	dist/client/assets/cytoscape.esm-Djp6vQyU.js
+260	dist/client/assets/wolfram-DLL8P-h_.js
+232	dist/client/assets/chunk-WYO6CB5R-DxDTXqJ3.js
+188	dist/client/assets/vue-vine-Dtw_Bvs2.js
+180	dist/client/assets/typescript-CKFhM_78.js
+180	dist/client/assets/angular-ts-DORhBINR.js
+176	dist/client/assets/jsx-UEmBU27c.js
+172	dist/client/assets/tsx-HeIVaWJk.js
+172	dist/client/assets/javascript-BttINa8q.js
+168	dist/client/assets/objective-cpp-BsSzOQcm.js
+148	dist/client/assets/architectureDiagram-ZJ3FMSHR-DTp5thV_.js
+136	dist/client/assets/mdx-DQZ5AkYe.js
+132	dist/client/assets/asciidoc-DE70LPWp.js
+120	dist/client/assets/styles-CjWDQ6_9.css
+120	dist/client/assets/react-Dz_VS_Ay.js
+116	dist/client/assets/sequenceDiagram-DBY2YBRQ-BJ2m8dNC.js
+112	dist/client/assets/swimlanes-5IMT3BWC-CSwSmnar.js
+112	dist/client/assets/php-nnvROT4x.js
+112	dist/client/assets/lib-D2iI1-Ya.js
+104	dist/client/assets/objective-c-D1A_Heim.js
+104	dist/client/assets/blade-UxXs1MHp.js
+100	dist/client/assets/chunk-ZGVPDNZ5-DzAvOagl.js
+[WARN] Liczba plików JS większych niż 500 KB: 6
+764K	dist/client/assets/emacs-lisp-C9PiwqqW.js
+608K	dist/client/assets/wasm-BnjxR4X6.js
+612K	dist/client/assets/cpp-CrCo1Zjp.js
+648K	dist/client/assets/chunk-KEIR6QF5-DNzq6p3w.js
+1.1M	dist/client/assets/tutor-chat-Cs5IGg_o.js
+568K	dist/client/assets/index-CyArWE_4.js
+[WARN] Tutor chat ma osobny duży bundle i powinien zostać oceniony pod code splitting:
+1.1M	dist/client/assets/tutor-chat-Cs5IGg_o.js
+
+================================================================================
+26. LARGE SOURCE FILES
+================================================================================
+   17166 total
+    1307 src/components/ai-elements/prompt-input.tsx
+    1041 src/integrations/supabase/types.ts
+     744 src/components/ui/sidebar.tsx
+     727 src/routeTree.gen.ts
+     431 src/routes/_authenticated/admin.tsx
+     422 src/lib/flashcards.functions.ts
+     390 src/routes/_authenticated/flashcards.$deckId.tsx
+     361 src/routes/_authenticated/exams.$sessionId.tsx
+     351 src/routes/_authenticated/dashboard.tsx
+     331 src/components/ui/chart.tsx
+     310 src/routes/auth.tsx
+     304 src/routes/_authenticated/flashcards.tsx
+     295 src/components/ai-elements/message.tsx
+     282 src/styles.css
+     271 src/routes/_authenticated/onboarding.tsx
+     246 src/routes/index.tsx
+     244 src/components/tutor-chat.tsx
+     242 src/routes/_authenticated/exams.index.tsx
+     241 src/routes/_authenticated/tutor.tsx
+     240 src/components/ui/carousel.tsx
+     239 src/routes/_authenticated/teacher.tsx
+     229 src/components/ui/menubar.tsx
+     225 src/lib/exam.functions.ts
+     222 src/components/teacher-avatar.tsx
+     191 src/lib/gamification.server.ts
+     188 src/components/ui/dropdown-menu.tsx
+     187 src/components/ui/context-menu.tsx
+     184 src/lib/account.functions.ts
+     183 src/routes/_authenticated/quizzes.$quizId.tsx
+
+================================================================================
+27. ENVIRONMENT FILE SAFETY
+================================================================================
+
+Pliki środowiskowe:
+./.env
+[FAIL] Git śledzi plik środowiskowy inny niż .env.example:
+.env
+
+--- .gitignore ---
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+*.local
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+[WARN] .gitignore może nie ignorować plików .env.
+
+================================================================================
+28. DATABASE MIGRATIONS
+================================================================================
+[INFO] Liczba migracji SQL: 9
+supabase/migrations/20260623150657_c39db05c-626c-4595-ad77-b08a393d1848.sql
+supabase/migrations/20260623150718_aa1440e8-d7ab-4752-abb4-3b823e14f30f.sql
+supabase/migrations/20260624093533_face85de-8452-4e06-8a4b-be15cf93cc95.sql
+supabase/migrations/20260625065516_ed9b0ef8-eb7e-4cf9-a60e-7902a84f8735.sql
+supabase/migrations/20260625065645_41adf506-a183-4f7a-bdcf-f9618357372a.sql
+supabase/migrations/20260626081153_1d9f07ff-11a2-4dbe-aa1d-b2620155b592.sql
+supabase/migrations/20260627191515_79e6f8f8-e0fe-4b3c-803f-4133d29a4c3f.sql
+supabase/migrations/20260702053534_fe5f8f7c-c994-49b4-91a8-2b45ea774bcf.sql
+supabase/migrations/20260711120000_language_learning_memory.sql
+[PASS] Migracje zawierają konfigurację RLS/policies.
+
+================================================================================
+29. FINAL GIT DIFF
+================================================================================
+ M src/components/app-header.tsx
+ M src/routes/auth.tsx
+ M src/routes/index.tsx
+?? audit-reports/
+?? src/assets/shingitai-language-login-hero.png
+?? src/assets/shingitai-language-logo-transparent.png
+?? src/assets/shingitai-language-logo.png
+?? src/components/brand-logo.tsx
+?? tmp/
+
+Diff stat:
+ src/components/app-header.tsx |  10 +-
+ src/routes/auth.tsx           | 298 ++++++++++------
+ src/routes/index.tsx          | 786 +++++++++++-------------------------------
+ 3 files changed, 397 insertions(+), 697 deletions(-)
+
+Untracked files:
+audit-reports/shingitai-language-full-audit-20260717-062726.txt
+src/assets/shingitai-language-login-hero.png
+src/assets/shingitai-language-logo-transparent.png
+src/assets/shingitai-language-logo.png
+src/components/brand-logo.tsx
+tmp/imagegen/shingitai-language-logo-chroma.png
+
+================================================================================
+30. AUDIT SUMMARY
+================================================================================
+PASS: 73
+WARN: 20
+FAIL: 3
+INFO: 7
+
+Raport zapisany w:
+/Users/dawidszpala/Projects/shingitai-language/audit-reports/shingitai-language-full-audit-20260717-062726.txt
+
+Interpretacja:
+Audyt wykrył błędy blokujące.
+Nie traktuj tej wersji jako release candidate przed ich usunięciem.
+
+Najważniejsze znane obszary do ręcznego sprawdzenia:
+1. Wizualny test landing/auth w Safari, Chrome i Firefox.
+2. Telefon 320 px, 375 px, 390 px i tablet 768 px.
+3. Rejestracja, potwierdzenie e-mail, login, logout i reset hasła.
+4. OAuth Google i Apple na prawdziwych callback URL.
+5. Ochrona wszystkich tras _authenticated po utracie sesji.
+6. RLS Supabase przy próbie dostępu do danych innego użytkownika.
+7. Zachowanie formularzy przy wolnej sieci, 401, 429 i 500.
+8. Poprawność logo, favicon, app icons i PWA manifest.
+9. Polityka prywatności, regulamin, cookies i dane administratora.
+10. Code splitting tutor-chat i bibliotek składni/diagramów.
