@@ -1,7 +1,7 @@
 {
-  "name": "LinguaVerse AI",
-  "short_name": "LinguaVerse",
-  "description": "Learn any language with your personal AI tutor — conversations, flashcards, grammar, and quizzes.",
+  "name": "ShinGiTai Language",
+  "short_name": "SGT Language",
+  "description": "Learn languages with your personal AI tutor — conversations, flashcards, grammar, and quizzes.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",

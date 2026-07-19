@@ -59,7 +59,7 @@ function OnboardingPage() {
 
   const totalSteps = 4;
   const canNext =
-    (step === 0) ||
+    step === 0 ||
     (step === 1 && !!nativeLang) ||
     (step === 2 && !!targetLang && targetLang !== nativeLang) ||
     (step === 3 && !!goal);
@@ -93,7 +93,7 @@ function OnboardingPage() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl gradient-brand text-primary-foreground">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="text-lg font-bold tracking-tight">LinguaVerse</span>
+          <span className="text-lg font-bold tracking-tight">ShinGiTai Language</span>
         </div>
       </header>
 
@@ -127,7 +127,6 @@ function OnboardingPage() {
               />
             </div>
           )}
-
 
           {step === 1 && (
             <div className="animate-fade-up">
@@ -223,7 +222,12 @@ function OnboardingPage() {
               Continue <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button variant="hero" size="lg" disabled={!canNext || submitting} onClick={handleFinish}>
+            <Button
+              variant="hero"
+              size="lg"
+              disabled={!canNext || submitting}
+              onClick={handleFinish}
+            >
               {submitting ? "Setting up…" : "Start learning"} <ArrowRight className="h-4 w-4" />
             </Button>
           )}

@@ -66,7 +66,7 @@ function PremiumPage() {
       <main className="mx-auto max-w-4xl px-4 py-8">
         <div className="text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-            <Crown className="h-4 w-4" /> LinguaVerse Pro
+            <Crown className="h-4 w-4" /> ShinGiTai Language Pro
           </span>
           <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
             Learn faster, without limits

@@ -90,7 +90,7 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Welcome to LinguaVerse! Your journey begins now.");
+        toast.success("Welcome to ShinGiTai Language! Your journey begins now.");
         navigate({ to: "/dashboard" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
