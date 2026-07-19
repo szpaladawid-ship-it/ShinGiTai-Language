@@ -47,7 +47,7 @@ ShinGiTai Language is part of the ArticSakuraTech product branch.
 
 It should eventually connect with:
 
-- ShinGiTai OpenAI / AI Platform for AI tutoring,
+- OdynAI for AI tutoring,
 - ShinGiTai Hub for ecosystem navigation,
 - ShinGiTai Docs for product documentation and funding readiness.
 

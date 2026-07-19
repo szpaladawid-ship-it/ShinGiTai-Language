@@ -82,22 +82,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       {
         name: "viewport",
-        content:
-          "width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5",
+        content: "width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5",
       },
-      { title: "LinguaVerse AI — Learn Any Language With Your AI Tutor" },
+      { title: "ShinGiTai Language — Learn Languages With Your AI Tutor" },
       {
         name: "description",
         content:
-          "LinguaVerse AI is an AI-powered language learning platform. Practice conversations, master grammar, and build vocabulary across 28+ languages with your personal AI tutor.",
+          "ShinGiTai Language is an AI-assisted language learning platform. Practice conversations, master grammar, and build vocabulary across 28+ languages with your personal AI tutor.",
       },
-      { name: "author", content: "LinguaVerse AI" },
+      { name: "author", content: "ShinGiTai Holding Groupe" },
       { name: "theme-color", content: "#14b8a6" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "LinguaVerse" },
-      { property: "og:title", content: "LinguaVerse AI — Learn Any Language With Your AI Tutor" },
+      { name: "apple-mobile-web-app-title", content: "ShinGiTai Language" },
+      { property: "og:title", content: "ShinGiTai Language — Learn Languages With Your AI Tutor" },
       {
         property: "og:description",
         content:
@@ -105,7 +104,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@LinguaVerseAI" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

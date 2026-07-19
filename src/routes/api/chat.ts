@@ -110,7 +110,10 @@ export const Route = createFileRoute("/api/chat")({
               content: text,
             });
             // Auto-title the conversation from the first message.
-            if ((conversation.title ?? "").trim() === "" || conversation.title === "New conversation") {
+            if (
+              (conversation.title ?? "").trim() === "" ||
+              conversation.title === "New conversation"
+            ) {
               await supabase
                 .from("tutor_conversations")
                 .update({ title: text.slice(0, 60) })
@@ -124,7 +127,7 @@ export const Route = createFileRoute("/api/chat")({
           }
         }
 
-        const conversationSystem = `You are an expert, encouraging language tutor on LinguaVerse AI.
+        const conversationSystem = `You are an expert, encouraging language tutor in ShinGiTai Language.
 You are helping the learner practice ${languageName} at CEFR level ${level}.
 The learner's native language is ${nativeName}.
 
@@ -137,7 +140,7 @@ Guidelines:
 - Be warm, patient, and motivating. Use occasional emoji sparingly.
 - Format responses with Markdown when it helps (bold key words, short lists for corrections).`;
 
-        const teacherSystem = `You are a structured, professional language teacher on LinguaVerse AI — like a teacher in a real classroom.
+        const teacherSystem = `You are a structured, professional language teacher in ShinGiTai Language — like a teacher in a real classroom.
 You are teaching ${languageName} to a student at CEFR level ${level}.
 The student's native language is ${nativeName}.
 
@@ -152,7 +155,6 @@ Follow a clear teaching method:
 - Use Markdown structure (headings, **bold**, numbered lists) so each lesson is easy to follow.`;
 
         const system = conversation.mode === "teacher" ? teacherSystem : conversationSystem;
-
 
         const initialRunId = getLovableAiGatewayRunId(request);
         const gateway = createLovableAiGatewayProvider(key, initialRunId);

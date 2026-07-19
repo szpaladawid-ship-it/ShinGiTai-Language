@@ -2,14 +2,7 @@ import { useMemo, useState } from "react";
 import { createFileRoute, useParams, useNavigate, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Loader2,
-  ArrowLeft,
-  Award,
-  CheckCircle2,
-  XCircle,
-  ScrollText,
-} from "lucide-react";
+import { Loader2, ArrowLeft, Award, CheckCircle2, XCircle, ScrollText } from "lucide-react";
 import { toast } from "sonner";
 
 import { useAuth } from "@/lib/auth";
@@ -95,8 +88,8 @@ function ExamRunner({
 }) {
   const submitFn = useServerFn(submitExam);
   const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(
-    () => questions.map((q) => (typeof q.user_answer === "number" ? q.user_answer : null)),
+  const [answers, setAnswers] = useState<(number | null)[]>(() =>
+    questions.map((q) => (typeof q.user_answer === "number" ? q.user_answer : null)),
   );
   const [submitting, setSubmitting] = useState(false);
 
@@ -153,9 +146,7 @@ function ExamRunner({
         </div>
 
         <div className="mt-6 rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-            {q.section}
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">{q.section}</p>
           <h2 className="mt-2 whitespace-pre-line text-lg font-semibold">{q.prompt}</h2>
 
           <div className="mt-5 space-y-2.5">
@@ -176,7 +167,9 @@ function ExamRunner({
                   <span
                     className={cn(
                       "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs font-bold",
-                      selected ? "border-primary bg-primary text-primary-foreground" : "border-border",
+                      selected
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border",
                     )}
                   >
                     {String.fromCharCode(65 + idx)}
@@ -296,7 +289,7 @@ function ExamResult({
               {session.score_percent}% score
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              LinguaVerse AI · CEFR {session.level} · {date}
+              ShinGiTai Language · CEFR {session.level} · {date}
             </p>
           </div>
         ) : (
@@ -304,9 +297,8 @@ function ExamResult({
             <XCircle className="mx-auto h-14 w-14 text-destructive" />
             <h1 className="mt-3 text-2xl font-bold tracking-tight">Not passed yet</h1>
             <p className="mt-2 text-muted-foreground">
-              You scored {session.score_percent}% ({session.correct_count}/
-              {session.total_questions}). You need 60% to earn the {session.level} certificate.
-              Keep studying and try again!
+              You scored {session.score_percent}% ({session.correct_count}/{session.total_questions}
+              ). You need 60% to earn the {session.level} certificate. Keep studying and try again!
             </p>
             <Button asChild variant="hero" className="mt-5">
               <Link to="/exams">Try another exam</Link>
@@ -321,10 +313,7 @@ function ExamResult({
           {reviewQuestions.map((q, i) => {
             const isCorrect = q.user_answer === q.correct_index;
             return (
-              <div
-                key={q.id}
-                className="rounded-2xl border border-border bg-card p-4 shadow-soft"
-              >
+              <div key={q.id} className="rounded-2xl border border-border bg-card p-4 shadow-soft">
                 <div className="flex items-start gap-2">
                   {isCorrect ? (
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -353,9 +342,7 @@ function ExamResult({
                       >
                         {String.fromCharCode(65 + idx)}. {opt}
                         {correct && (
-                          <span className="ml-2 text-xs font-semibold text-primary">
-                            Correct
-                          </span>
+                          <span className="ml-2 text-xs font-semibold text-primary">Correct</span>
                         )}
                         {chosen && !correct && (
                           <span className="ml-2 text-xs text-destructive">Your answer</span>
@@ -368,7 +355,6 @@ function ExamResult({
             );
           })}
         </div>
-
       </div>
     </div>
   );
